@@ -1,1 +1,23 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+    /* Prevent rubber-band scroll chaining, nicer mobile modals/menus */
+    overscroll-behavior: none;
+  }
+}
