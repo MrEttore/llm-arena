@@ -5,14 +5,11 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-export const getChatCompletion = async ({ userPrompt }) => {
+export const getChatCompletion = async ({ model, messages }) => {
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: 'You are a helpful assistant.' },
-        { role: 'user', content: userPrompt },
-      ],
+      model,
+      messages,
     });
 
     return completion.choices[0].message.content;
