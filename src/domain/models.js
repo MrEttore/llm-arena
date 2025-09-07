@@ -36,8 +36,8 @@
  * @param {string} systemPrompt
  * @returns {Contestant}
  */
-export function createContestant(name, model, systemPrompt) {
-  return { id: crypto.randomUUID(), name, model, systemPrompt };
+export function createContestant(id, name, model, systemPrompt) {
+  return { id, name, model, systemPrompt };
 }
 
 /**
@@ -72,6 +72,6 @@ export function createMatch(contestants, starter, turnsMax) {
     contestants,
     starter,
     turnsMax,
-    status: 'idle',
+    status: "idle",
   };
 }
