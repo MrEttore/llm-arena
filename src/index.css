@@ -1,10 +1,7 @@
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
 
 @layer base {
-  :root {
-    color-scheme: light dark;
-  }
-
   html,
   body,
   #root {
@@ -13,11 +10,10 @@
 
   html {
     @apply antialiased;
+    font-family: "Noto Sans";
   }
 
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
-    /* Prevent rubber-band scroll chaining, nicer mobile modals/menus */
     overscroll-behavior: none;
   }
 }

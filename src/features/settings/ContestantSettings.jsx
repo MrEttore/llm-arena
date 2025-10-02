@@ -54,9 +54,9 @@ export default function ContestantSettings() {
   };
 
   return (
-    <div className={`space-y-1 px-1 pb-2`}>
+    <div className="space-y-1 p-1">
       <h3 className="flex items-center gap-1 font-semibold">
-        Contestant{" "}
+        Contestant
         {contestantId ? <Check className="text-amber-600" size={18} /> : null}
       </h3>
       <form onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ export default function ContestantSettings() {
             id="contestantA-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`rounded border-gray-300 px-2 py-1 shadow-sm transition-all duration-200 placeholder:italic focus:ring-1 focus:ring-amber-600 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "dark:bg-gray-900" : "dark:bg-gray-800"}`}
+            className={`rounded px-2 py-1 ring-1 transition-all duration-200 placeholder:italic focus:ring-amber-600 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "ring-amber-600/50" : "ring-gray-100"}`}
             placeholder="Name"
           />
           <input
@@ -74,7 +74,7 @@ export default function ContestantSettings() {
             id="contestantA-model"
             value={model}
             onChange={(e) => setModel(e.target.value)}
-            className={`rounded border-gray-300 px-2 py-1 shadow-sm transition-all duration-200 placeholder:italic focus:ring-1 focus:ring-amber-600 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "dark:bg-gray-900" : "dark:bg-gray-800"}`}
+            className={`rounded px-2 py-1 ring-1 transition-all duration-200 placeholder:italic focus:ring-amber-600 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "ring-amber-600/50" : "ring-gray-100"}`}
             placeholder="Model"
           />
           <textarea
@@ -82,7 +82,7 @@ export default function ContestantSettings() {
             rows={2}
             value={personality}
             onChange={(e) => setPersonality(e.target.value)}
-            className={`col-span-2 resize-none rounded border-gray-300 px-2 py-1 shadow-sm transition-all duration-200 placeholder:italic focus:ring-1 focus:ring-amber-600 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "dark:bg-gray-900" : "dark:bg-gray-800"}`}
+            className={`col-span-2 resize-none rounded px-2 py-1 ring-1 transition-all duration-200 placeholder:italic focus:ring-1 focus:ring-amber-600 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "ring-amber-600/50" : "ring-gray-100"}`}
             placeholder="Personality"
           />
         </div>
@@ -90,7 +90,7 @@ export default function ContestantSettings() {
           className={`mt-2 flex ${error ? "justify-between" : "justify-end"}`}
         >
           {error && (
-            <p className="rounded bg-red-600/50 px-2 py-1 text-xs text-white">
+            <p className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white">
               {error}
             </p>
           )}
@@ -98,13 +98,13 @@ export default function ContestantSettings() {
             <button
               type="button"
               onClick={handleClear}
-              className="rounded border-1 border-amber-600 px-2 py-1 text-xs font-semibold text-white shadow transition-colors duration-300 hover:cursor-pointer hover:bg-gray-800"
+              className="rounded px-2 py-1 text-xs font-semibold shadow-sm ring-1 ring-gray-300 transition-colors duration-300 hover:cursor-pointer hover:bg-gray-100"
             >
               Clear
             </button>
             <button
               type="submit"
-              className={`rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white shadow transition-colors duration-300 hover:cursor-pointer hover:bg-amber-500`}
+              className={`rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white shadow-sm transition-colors duration-300 hover:cursor-pointer hover:bg-amber-700`}
             >
               {!contestantId ? "Add" : "Update"}
             </button>

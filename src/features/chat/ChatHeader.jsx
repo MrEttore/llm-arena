@@ -7,7 +7,7 @@ export default function ChatHeader() {
   console.log(contestants);
 
   return (
-    <header className="border-b border-gray-800 bg-white/80 pt-4 pb-2 dark:bg-gray-950/80">
+    <header className="pt-4 pb-2">
       <div className="grid grid-cols-2">
         {contestants.length === 2 &&
           contestants.map((contestant) => (

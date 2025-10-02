@@ -5,8 +5,8 @@ import ChatMessages from "./features/chat/ChatMessages";
 
 export default function App() {
   return (
-    <div className="flex min-h-dvh flex-col bg-gray-50 px-7 py-5 dark:bg-gray-900">
-      <div className="grid flex-1 grid-cols-2 divide-x-1 divide-gray-800 rounded dark:bg-gray-950 dark:text-gray-200">
+    <div className="flex min-h-dvh flex-col bg-white px-7 py-5 dark:bg-gray-700">
+      <div className="flex-1 divide-x-1 divide-gray-200 rounded lg:grid lg:grid-cols-2">
         <Settings />
         <ChatLayout>
           <ChatHeader />
