@@ -1,5 +1,5 @@
-import Bot from "../contestants/Bot";
-import User from "../contestants/User";
+import Bot from "../../contestants/Bot";
+import User from "../../contestants/User";
 
 export default function ChatMessages() {
   return (

@@ -1,12 +1,8 @@
-import type { PayloadAction} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { ChatMessage } from "../../types/domain";
-import { generateResponse } from "../thunks/generateResponse";
-
-export interface ChatState {
-  messages: ChatMessage[];
-}
+import type { ChatMessage, ChatState } from "@/domain/types";
+import { generateResponse } from "@/features/match/thunks/generateResponse";
 
 const initialState: ChatState = {
   messages: [],

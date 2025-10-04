@@ -1,17 +1,17 @@
 import OpenAI from "openai";
 
-import type { ApiMessage } from "../types/domain";
+import type { ApiMessage } from "@/domain/types";
 
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
-interface GetChatCompletionArgs {
+type GetChatCompletionArgs = {
   model: string;
   messages: ApiMessage[];
   signal?: AbortSignal;
-}
+};
 
 export const getChatCompletion = async ({
   model,
@@ -20,9 +20,9 @@ export const getChatCompletion = async ({
   try {
     const response = await openai.chat.completions.create({
       model,
-      messages: messages as any, // OpenAI SDK type mismatch vs our simplified shape
+      messages: messages,
     });
-    const completion = response.choices[0]?.message?.content;
+    const completion = response.choices[0]?.message?.content as string;
     return completion;
   } catch (error) {
     console.error("Error fetching chat completion:", error);

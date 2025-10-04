@@ -1,6 +1,7 @@
-import { buildChatMessage } from "../../domain/promptBuilder";
-import { addChatMessage } from "../slices/chatSlice";
-import type { AppDispatch, RootState } from "../store";
+import type { AppDispatch, RootState } from "@/app/store";
+import { buildChatMessage } from "@/domain/messageBuilders";
+
+import { addChatMessage } from "../slice";
 
 export const initializeChat = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {

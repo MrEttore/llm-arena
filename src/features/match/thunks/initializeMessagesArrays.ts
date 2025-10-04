@@ -1,10 +1,11 @@
+import type { AppDispatch, RootState } from "@/app/store";
 import {
   buildAssistantMessage,
   buildSystemMessage,
   buildUserMessage,
-} from "../../domain/promptBuilder";
-import { updateContestantMessages } from "../slices/matchSlice";
-import type { AppDispatch, RootState } from "../store";
+} from "@/domain/messageBuilders";
+
+import { updateContestantMessages } from "../slice";
 
 export const initializeMessagesArrays = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {

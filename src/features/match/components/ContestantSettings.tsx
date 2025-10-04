@@ -1,11 +1,11 @@
 import { Check } from "lucide-react";
-import type { FormEvent} from "react";
+import type { FormEvent } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
-import { createContestant } from "../../domain/models";
-import { addContestant, clearContestant, updateContestant } from "../../redux/slices/matchSlice";
-import type { AppDispatch } from "../../redux/store";
+import { useAppDispatch } from "@/app/hooks";
+import type { Contestant } from "@/domain/types";
+
+import { addContestant, clearContestant, updateContestant } from "../slice";
 
 export default function ContestantSettings() {
   const [name, setName] = useState("");
@@ -14,7 +14,7 @@ export default function ContestantSettings() {
   const [error, setError] = useState<string | null>(null);
   const [contestantId, setContestantId] = useState<string | null>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -25,7 +25,13 @@ export default function ContestantSettings() {
     }
 
     if (!contestantId) {
-      const contestant = createContestant(name, model, personality);
+      const contestant: Contestant = {
+        id: crypto.randomUUID(),
+        name,
+        model,
+        systemPrompt: personality,
+        messages: [],
+      };
       dispatch(addContestant(contestant));
       setContestantId(contestant.id);
       setError(null);
@@ -38,6 +44,7 @@ export default function ContestantSettings() {
         name,
         model,
         systemPrompt: personality,
+        messages: [],
       }),
     );
   };

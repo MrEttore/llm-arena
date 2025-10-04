@@ -1,18 +1,17 @@
-import type { FormEvent} from "react";
+import type { FormEvent } from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
-import { getContestants } from "../../redux/slices/matchSlice";
-import type { RootState } from "../../redux/store";
-import { runConversation } from "../../redux/thunks/runConversation";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { getContestants } from "@/features/match/slice";
+import { runConversation } from "@/features/match/thunks/runConversation";
 
 export default function MatchSettings() {
   const [startingContestant, setStartingContestant] = useState<string | null>(null);
   const [numberOfExchanges, setNumberOfExchanges] = useState("");
   const [iceBreaker, setIceBreaker] = useState("Debate: Planes are better than trains");
 
-  const dispatch = useDispatch();
-  const contestants = useSelector((state: RootState) => getContestants(state));
+  const dispatch = useAppDispatch();
+  const contestants = useAppSelector((state) => getContestants(state));
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

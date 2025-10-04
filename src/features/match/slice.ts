@@ -1,29 +1,15 @@
-import type { PayloadAction} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { ApiMessage, Contestant } from "../../types/domain";
-import type { RootState } from "../store";
-import { generateResponse } from "../thunks/generateResponse";
-
-export interface MatchState {
-  status: "idle" | "running" | "completed" | "error";
-  fetchingResponse: boolean;
-  contestants: Contestant[];
-  activeContestant?: string; // contestant id
-  numberOfExchanges?: number;
-  turns?: number;
-  error?: string;
-}
+import type { RootState } from "@/app/store";
+import type { ApiMessage, Contestant, MatchState } from "@/domain/types";
+import { generateResponse } from "@/features/match/thunks/generateResponse";
 
 const initialState: MatchState = {
   status: "idle",
   fetchingResponse: false,
   contestants: [],
 };
-
-interface UpdateContestantPayload extends Partial<Contestant> {
-  id: string;
-}
 
 const matchSlice = createSlice({
   name: "match",
@@ -50,12 +36,12 @@ const matchSlice = createSlice({
       }
     },
     setTurns: (state, action: PayloadAction<number>) => {
-      state.turns = action.payload;
+      state.numberOfExchanges = action.payload;
     },
     addContestant: (state, action: PayloadAction<Contestant>) => {
       state.contestants.push(action.payload);
     },
-    updateContestant: (state, action: PayloadAction<UpdateContestantPayload>) => {
+    updateContestant: (state, action: PayloadAction<Contestant>) => {
       const index = state.contestants.findIndex((c: Contestant) => c.id === action.payload.id);
       if (index !== -1) {
         state.contestants[index] = {

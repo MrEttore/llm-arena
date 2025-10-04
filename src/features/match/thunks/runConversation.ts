@@ -1,7 +1,8 @@
-import { setActiveContestant, setStatus } from "../slices/matchSlice";
-import type { AppDispatch } from "../store";
+import type { AppDispatch } from "@/app/store";
+import { initializeChat } from "@/features/chat/thunks/initializeChat";
+
+import { setActiveContestant, setStatus } from "../slice";
 import { generateResponse } from "./generateResponse";
-import { initializeChat } from "./initializeChat";
 import { initializeMessagesArrays } from "./initializeMessagesArrays";
 
 export function runConversation(

@@ -1,19 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import type { AppDispatch, RootState } from "@/app/store";
 import {
   buildAssistantMessage,
   buildChatMessage,
   buildUserMessage,
-} from "../../domain/promptBuilder";
-import { getChatCompletion } from "../../services/openAI";
-import type { GenerateResponseReturn } from "../../types/domain";
-import type { RootState } from "../store";
+} from "@/domain/messageBuilders";
+import { getChatCompletion } from "@/services/openAI/client";
+
+type generateResponsePayload = {
+  assistantMessage: ReturnType<typeof buildAssistantMessage>;
+  userMessage: ReturnType<typeof buildUserMessage>;
+  chatMessage: ReturnType<typeof buildChatMessage>;
+};
 
 export const generateResponse = createAsyncThunk<
-  GenerateResponseReturn,
+  generateResponsePayload,
   void,
-  { state: RootState }
->("match/generateResponse", async (_, { getState, signal, rejectWithValue }) => {
+  { state: RootState; dispatch: AppDispatch; rejectValue: string }
+>("match/generateResponse", async (_, { getState, rejectWithValue }) => {
   try {
     const { activeContestant, contestants } = getState().match;
     if (!activeContestant) throw new Error("No active contestant set");
@@ -33,7 +38,8 @@ export const generateResponse = createAsyncThunk<
     const chatMessage = buildChatMessage(otherContestant.id, completion);
 
     return { assistantMessage, userMessage, chatMessage };
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return rejectWithValue(message);
   }
 });
