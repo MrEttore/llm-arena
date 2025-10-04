@@ -10,10 +10,10 @@
 
   html {
     @apply antialiased;
-    font-family: "Noto Sans";
   }
 
   body {
     overscroll-behavior: none;
+    font-family: "Noto Sans";
   }
 }
