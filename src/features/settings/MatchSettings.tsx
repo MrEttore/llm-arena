@@ -1,27 +1,25 @@
+import type { FormEvent} from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { getContestants } from "../../redux/slices/matchSlice";
+import type { RootState } from "../../redux/store";
 import { runConversation } from "../../redux/thunks/runConversation";
 
 export default function MatchSettings() {
-  const [startingContestant, setStartingContestant] = useState(null);
+  const [startingContestant, setStartingContestant] = useState<string | null>(null);
   const [numberOfExchanges, setNumberOfExchanges] = useState("");
-  const [iceBreaker, setIceBreaker] = useState(
-    "Debate: Planes are better than trains",
-  );
+  const [iceBreaker, setIceBreaker] = useState("Debate: Planes are better than trains");
 
   const dispatch = useDispatch();
-  const contestants = useSelector(getContestants);
+  const contestants = useSelector((state: RootState) => getContestants(state));
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    // TODO: add error
     if (!startingContestant || !iceBreaker || !numberOfExchanges) return;
-
-    dispatch(
-      runConversation(startingContestant, iceBreaker, numberOfExchanges),
-    );
+    const exchangesNumber = Number(numberOfExchanges);
+    if (Number.isNaN(exchangesNumber)) return;
+    dispatch(runConversation(startingContestant, iceBreaker, exchangesNumber));
   };
 
   return (
@@ -62,8 +60,7 @@ export default function MatchSettings() {
           <p className="text-sm">
             Write an ice breaker for{" "}
             <span className="font-semibold text-amber-600">
-              {contestants.find((c) => c.id === startingContestant)?.name ??
-                "..."}
+              {contestants.find((c) => c.id === startingContestant)?.name ?? "..."}
             </span>
           </p>
           <textarea
@@ -82,9 +79,7 @@ export default function MatchSettings() {
             disabled={contestants.length < 2}
             className={`bg-amber-600 text-white ${contestants.length < 2 ? "opacity-50" : "hover:cursor-pointer hover:bg-amber-700"} rounded px-2 py-1 text-xs font-semibold shadow-sm transition-colors duration-300`}
           >
-            {contestants.length < 2
-              ? "Set up the contestants to start"
-              : "Start the conversation"}
+            {contestants.length < 2 ? "Set up the contestants to start" : "Start the conversation"}
           </button>
         </div>
       </form>

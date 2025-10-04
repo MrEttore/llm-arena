@@ -1,40 +1,24 @@
-import { addChatMessage } from "../slices/chatSlice";
-import {
-  setActiveContestant,
-  setStatus,
-  updateContestantMessages,
-} from "../slices/matchSlice";
+import { setActiveContestant, setStatus } from "../slices/matchSlice";
+import type { AppDispatch } from "../store";
 import { generateResponse } from "./generateResponse";
 import { initializeChat } from "./initializeChat";
 import { initializeMessagesArrays } from "./initializeMessagesArrays";
 
-// "Plain" thunk.
-// Best for orchestration/flows: loops, branches, chaining multiple async steps.
-// Lets you compose multiple "createAsyncThunks" (or other plain thunks).
-
 export function runConversation(
-  startingContestant,
-  conversationStarter,
-  numberOfExchanges,
+  startingContestant: string,
+  conversationStarter: string,
+  numberOfExchanges: number,
 ) {
-  return async function (dispatch) {
+  return async function (dispatch: AppDispatch) {
     try {
       dispatch(setStatus("running"));
-
-      // Seed
       dispatch(setActiveContestant(startingContestant));
       dispatch(initializeMessagesArrays(conversationStarter));
       dispatch(initializeChat(conversationStarter));
 
-      console.log("Conversation starter:", conversationStarter);
-
-      // Exchange logic.
       for (let i = 0; i < numberOfExchanges; i++) {
-        console.log("Exchange", i + 1);
-
         await dispatch(generateResponse()).unwrap();
-
-        dispatch(setActiveContestant());
+        dispatch(setActiveContestant(undefined));
       }
     } catch (error) {
       setStatus("error");

@@ -1,23 +1,22 @@
+import { Check } from "lucide-react";
+import type { FormEvent} from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Check } from "lucide-react";
-import {
-  addContestant,
-  clearContestant,
-  updateContestant,
-} from "../../redux/slices/matchSlice";
+
 import { createContestant } from "../../domain/models";
+import { addContestant, clearContestant, updateContestant } from "../../redux/slices/matchSlice";
+import type { AppDispatch } from "../../redux/store";
 
 export default function ContestantSettings() {
   const [name, setName] = useState("");
   const [model, setModel] = useState("gpt-4.1-mini");
   const [personality, setPersonality] = useState("");
-  const [error, setError] = useState(null);
-  const [contestantId, setContestantId] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [contestantId, setContestantId] = useState<string | null>(null);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     if (!name || !model || !personality) {
@@ -33,14 +32,14 @@ export default function ContestantSettings() {
       return;
     }
 
-    const updatedContestant = {
-      id: contestantId,
-      name,
-      model,
-      systemPrompt: personality,
-    };
-
-    dispatch(updateContestant(updatedContestant));
+    dispatch(
+      updateContestant({
+        id: contestantId,
+        name,
+        model,
+        systemPrompt: personality,
+      }),
+    );
   };
 
   const handleClear = () => {
@@ -86,13 +85,9 @@ export default function ContestantSettings() {
             placeholder="Personality"
           />
         </div>
-        <div
-          className={`mt-2 flex ${error ? "justify-between" : "justify-end"}`}
-        >
+        <div className={`mt-2 flex ${error ? "justify-between" : "justify-end"}`}>
           {error && (
-            <p className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white">
-              {error}
-            </p>
+            <p className="rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white">{error}</p>
           )}
           <div className="flex gap-2">
             <button

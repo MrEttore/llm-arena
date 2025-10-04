@@ -1,7 +1,14 @@
+import type { PayloadAction} from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+
+import type { ChatMessage } from "../../types/domain";
 import { generateResponse } from "../thunks/generateResponse";
 
-const initialState = {
+export interface ChatState {
+  messages: ChatMessage[];
+}
+
+const initialState: ChatState = {
   messages: [],
 };
 
@@ -9,7 +16,7 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    addChatMessage: (state, action) => {
+    addChatMessage: (state, action: PayloadAction<ChatMessage>) => {
       state.messages.push(action.payload);
     },
   },

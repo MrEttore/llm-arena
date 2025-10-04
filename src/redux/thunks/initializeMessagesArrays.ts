@@ -4,16 +4,15 @@ import {
   buildUserMessage,
 } from "../../domain/promptBuilder";
 import { updateContestantMessages } from "../slices/matchSlice";
+import type { AppDispatch, RootState } from "../store";
 
-export const initializeMessagesArrays = (conversationStarter) => {
-  return async (dispatch, getState) => {
-    const contestants = getState().match.contestants;
-    const activeContestant = getState().match.activeContestant;
+export const initializeMessagesArrays = (conversationStarter: string) => {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    const { contestants, activeContestant } = getState().match;
+    if (!activeContestant) return;
 
-    // initialize system prompts for each contestant.
     for (const contestant of contestants) {
       const systemMessage = buildSystemMessage(contestant, contestants);
-
       dispatch(
         updateContestantMessages({
           contestantId: contestant.id,

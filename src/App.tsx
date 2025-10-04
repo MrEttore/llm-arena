@@ -1,7 +1,7 @@
-import Settings from "./features/settings/Settings";
 import ChatHeader from "./features/chat/ChatHeader";
 import ChatLayout from "./features/chat/ChatLayout";
 import ChatMessages from "./features/chat/ChatMessages";
+import Settings from "./features/settings/Settings";
 
 export default function App() {
   return (

@@ -1,4 +1,6 @@
-export default function Bot({ children }) {
+import type { PropsWithChildren } from "react";
+
+export default function Bot({ children }: PropsWithChildren) {
   return (
     <div className="flex items-start gap-3">
       <div className="h-8 w-8 shrink-0 rounded-full bg-gray-200 dark:bg-gray-800" />

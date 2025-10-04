@@ -12,10 +12,8 @@ export default function ChatMessages() {
       aria-atomic="false"
     >
       <div className="mx-auto max-w-3xl space-y-4 px-4 py-6">
-        {/* message bubbles */}
         <Bot>Hi! How can I help?</Bot>
         <User>Show me best practices…</User>
-        {/* ... */}
         <div id="end-of-messages" />
       </div>
     </div>

@@ -1,37 +1,77 @@
-import js from '@eslint/js';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import pluginQuery from '@tanstack/eslint-plugin-query';
-import globals from 'globals';
+import js from "@eslint/js";
+import { configs as ts } from "typescript-eslint";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import jsxA11y from "eslint-plugin-jsx-a11y";
+import reactRefresh from "eslint-plugin-react-refresh";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import unusedImports from "eslint-plugin-unused-imports";
+import globals from "globals";
 
 export default [
-  ...pluginQuery.configs['flat/recommended'],
-  { ignores: ['dist'] },
-
-  js.configs.recommended,
+  {
+    ignores: ["dist", "coverage", "**/*.css", "**/*.d.ts", "eslint.config.js"],
+  },
 
   {
-    files: ['**/*.{js,jsx,mjs,cjs}'],
+    ...js.configs.recommended,
     languageOptions: {
-      ecmaVersion: 2020,
-      sourceType: 'module',
-      globals: globals.browser,
-
-      parserOptions: { ecmaFeatures: { jsx: true } },
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: {
+        ...globals.browser,
+        ...globals.es2022,
+      },
     },
+  },
+
+  ...ts.recommended,
+
+  {
+    files: ["**/*.{ts,tsx}"],
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      react,
+      "react-hooks": reactHooks,
+      "jsx-a11y": jsxA11y,
+      "react-refresh": reactRefresh,
+      "simple-import-sort": simpleImportSort,
+      "unused-imports": unusedImports,
+    },
+    settings: {
+      react: { version: "detect" },
     },
     rules: {
-      ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
-      'react/jsx-no-undef': 'error',
-      'react/react-in-jsx-scope': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-uses-react": "off",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+
+      "jsx-a11y/alt-text": "warn",
+
+      "simple-import-sort/imports": "warn",
+      "simple-import-sort/exports": "warn",
+
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+        },
       ],
+      "@typescript-eslint/no-unused-vars": "off",
+
+      "@typescript-eslint/consistent-type-imports": ["warn", { prefer: "type-imports" }],
+    },
+  },
+
+  {
+    rules: {
+      "arrow-body-style": "off",
+      "prefer-arrow-callback": "off",
     },
   },
 ];
