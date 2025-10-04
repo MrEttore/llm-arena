@@ -26,3 +26,5 @@ dist-ssr
 .env
 
 todos_and_ideas.txt
+
+.eslintcache
