@@ -1,12 +1,12 @@
-import ContestantSettings from "./ContestantSettings";
+import ContestantSettings from "../../contestants/components/ContestantSettings";
 import MatchSettings from "./MatchSettings";
 
 export default function Settings() {
   return (
-    <div className="flex flex-col space-y-2 divide-y-1 divide-gray-200 px-4 py-4">
-      <div className="pb-2">
+    <div className="flex flex-col space-y-2 divide-y-2 divide-white/10 p-2">
+      <div className="space-y-3 pb-2">
         {Array.from({ length: 2 }).map((_, i) => (
-          <ContestantSettings key={i} />
+          <ContestantSettings key={i} contestantNumber={i} />
         ))}
       </div>
       <MatchSettings />

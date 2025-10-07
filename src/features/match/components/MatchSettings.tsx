@@ -1,14 +1,16 @@
+import { Play } from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { getContestants } from "@/features/match/slice";
+import type { Contestant } from "@/domain/types";
+import { getContestants } from "@/features/contestants/slice";
 import { runConversation } from "@/features/match/thunks/runConversation";
 
 export default function MatchSettings() {
-  const [startingContestant, setStartingContestant] = useState<string | null>(null);
+  const [startingContestant, setStartingContestant] = useState<Contestant | null>(null);
   const [numberOfExchanges, setNumberOfExchanges] = useState("");
-  const [iceBreaker, setIceBreaker] = useState("Debate: Planes are better than trains");
+  const [iceBreaker, setIceBreaker] = useState("");
 
   const dispatch = useAppDispatch();
   const contestants = useAppSelector((state) => getContestants(state));
@@ -16,58 +18,61 @@ export default function MatchSettings() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!startingContestant || !iceBreaker || !numberOfExchanges) return;
-    const exchangesNumber = Number(numberOfExchanges);
-    if (Number.isNaN(exchangesNumber)) return;
-    dispatch(runConversation(startingContestant, iceBreaker, exchangesNumber));
+    dispatch(runConversation(startingContestant.id, iceBreaker, Number(numberOfExchanges)));
   };
 
   return (
-    <div className="flex flex-1 px-1 pt-2 pb-1">
-      <form className="flex w-full flex-col space-y-4" onSubmit={handleSubmit}>
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-sm">Who should start the conversation?</p>
-          <div className="flex items-center gap-2">
-            {contestants.map((contestant) => (
-              <button
-                type="button"
-                className={`rounded px-1 py-0.5 text-sm transition-all duration-300 hover:cursor-pointer ${startingContestant === contestant.id ? "ring-1 ring-amber-600" : "ring-1 ring-gray-300"}`}
-                onClick={() => setStartingContestant(contestant.id)}
-                key={contestant.id}
-              >
-                {contestant.name}
-              </button>
-            ))}
+    <div className="flex flex-1 flex-col space-y-2 rounded-xl border-1 border-white/20 bg-linear-to-br from-white/15 to-white/10 p-2 font-medium shadow-2xl backdrop-blur-lg">
+      <h3 className={`flex items-center justify-center gap-1 text-white`}>Match Settings</h3>
+      <form className="flex flex-1 flex-col space-y-2" onSubmit={handleSubmit}>
+        <div className="flex items-center justify-between">
+          <label htmlFor="number-of-exchanges" className="text-xs text-white/80">
+            Number of Exchanges
+          </label>
+          <input
+            type="text"
+            id="number-of-exchanges"
+            value={numberOfExchanges}
+            onChange={(e) => setNumberOfExchanges(e.target.value)}
+            className={`w-15 rounded-lg border-1 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs ${numberOfExchanges ? "border-white/40" : "border-white/10"}`}
+            placeholder="e.g., 5"
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <label htmlFor="conversation-starter" className="text-xs text-white/80">
+            Who starts?
+          </label>
+          <div className="flex min-w-15 items-center justify-around overflow-hidden rounded-lg border-1 border-white/10">
+            {contestants.length ? (
+              contestants.map((contestant) => (
+                <button
+                  key={contestant.id}
+                  onClick={() => setStartingContestant(contestant)}
+                  className={`cursor-pointer px-2 py-1 text-xs text-white transition-colors duration-300 ${startingContestant?.id === contestant.id ? "bg-white/15" : "hover:bg-white/5"}`}
+                >
+                  {contestant.name}
+                </button>
+              ))
+            ) : (
+              <>
+                <p className={`s px-2 py-1 text-xs text-white`}>?</p>
+                <p className={`s px-2 py-1 text-xs text-white`}>?</p>
+              </>
+            )}
           </div>
         </div>
 
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-sm">How long should the conversation go?</p>
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              id="number-of-exchanges"
-              value={numberOfExchanges}
-              onChange={(e) => setNumberOfExchanges(e.target.value)}
-              className={`w-15 rounded px-2 py-1 text-xs ring-1 transition-all duration-200 placeholder:italic focus:ring-amber-600 focus:outline-none ${numberOfExchanges ? "ring-amber-600/50" : "ring-gray-100"}`}
-              placeholder="e.g., 5"
-            />
-            <p className="text-xs">exchanges</p>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <p className="text-sm">
-            Write an ice breaker for{" "}
-            <span className="font-semibold text-amber-600">
-              {contestants.find((c) => c.id === startingContestant)?.name ?? "..."}
-            </span>
-          </p>
+        <div className="flex flex-col space-y-2">
+          <label htmlFor="conversation-starter" className={`text-xs text-white/80`}>
+            {startingContestant ? `${startingContestant.name}'s ice breaker` : "Ice Breaker"}
+          </label>
           <textarea
-            id="first-message"
-            rows={3}
+            id="ice-breaker"
+            rows={2}
             value={iceBreaker}
             onChange={(e) => setIceBreaker(e.target.value)}
-            className={`w-full resize-none rounded px-2 py-1 text-xs ring-1 transition-all duration-200 placeholder:italic focus:ring-amber-600 focus:outline-none ${iceBreaker ? "ring-amber-600/50" : "ring-gray-100"}`}
+            className={`flex-1 resize-none rounded-lg border-1 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200 ${iceBreaker ? "border-white/40" : "border-white/10"}`}
             placeholder="e.g., Debate: Is pineapple on pizza acceptable?"
           />
         </div>
@@ -75,10 +80,16 @@ export default function MatchSettings() {
         <div className="mt-auto flex items-end justify-end">
           <button
             type="submit"
-            disabled={contestants.length < 2}
-            className={`bg-amber-600 text-white ${contestants.length < 2 ? "opacity-50" : "hover:cursor-pointer hover:bg-amber-700"} rounded px-2 py-1 text-xs font-semibold shadow-sm transition-colors duration-300`}
+            disabled={contestants.length !== 2}
+            className={`flex items-center gap-0.5 rounded-lg border-1 border-white/30 bg-white/15 px-2 py-1 text-xs font-semibold text-white shadow-md transition-all duration-300 ${contestants.length !== 2 ? "opacity-50 hover:cursor-not-allowed hover:opacity-50" : "hover:cursor-pointer hover:opacity-80"}`}
           >
-            {contestants.length < 2 ? "Set up the contestants to start" : "Start the conversation"}
+            {contestants.length === 2 && numberOfExchanges && iceBreaker ? (
+              <>
+                <Play size={12} strokeWidth={2} /> Start the conversation
+              </>
+            ) : (
+              <>Set up the contestants to start</>
+            )}
           </button>
         </div>
       </form>

@@ -1,8 +1,8 @@
 import { useAppSelector } from "@/app/hooks";
 import type { Contestant } from "@/domain/types";
-import { getContestants } from "@/features/match/slice";
+import { getContestants } from "@/features/contestants/slice";
 
-import ContestantProfile from "../../contestants/ContestantProfile";
+import ContestantProfile from "../../contestants/components/ContestantProfile";
 
 export default function ChatHeader() {
   const contestants = useAppSelector((state) => getContestants(state));

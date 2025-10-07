@@ -3,14 +3,17 @@
 export type MatchState = {
   status: "idle" | "running" | "completed" | "error";
   fetchingResponse: boolean;
-  contestants: Contestant[];
-  activeContestant?: string;
   numberOfExchanges?: number;
   error?: string;
 };
 
 export type ChatState = {
   messages: ChatMessage[];
+};
+
+export type ContestantsState = {
+  contestants: Contestant[];
+  activeContestant?: string;
 };
 
 // Domain types

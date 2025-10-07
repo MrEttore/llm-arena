@@ -7,9 +7,9 @@ import {
 
 import { updateContestantMessages } from "../slice";
 
-export const initializeMessagesArrays = (conversationStarter: string) => {
+export const initializeContestantMessages = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { contestants, activeContestant } = getState().match;
+    const { contestants, activeContestant } = getState().contestants;
     if (!activeContestant) return;
 
     for (const contestant of contestants) {
