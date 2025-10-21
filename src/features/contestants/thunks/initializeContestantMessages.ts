@@ -9,8 +9,8 @@ import { updateContestantMessages } from "../slice";
 
 export const initializeContestantMessages = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { contestants, activeContestant } = getState().contestants;
-    if (!activeContestant) return;
+    const { contestants, activeContestantId } = getState().contestants;
+    if (!activeContestantId) return;
 
     for (const contestant of contestants) {
       const systemMessage = buildSystemMessage(contestant, contestants);
@@ -21,7 +21,7 @@ export const initializeContestantMessages = (conversationStarter: string) => {
         }),
       );
 
-      if (contestant.id === activeContestant) {
+      if (contestant.id === activeContestantId) {
         const userMessage = buildUserMessage(conversationStarter);
         dispatch(
           updateContestantMessages({

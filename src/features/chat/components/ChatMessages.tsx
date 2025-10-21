@@ -1,18 +1,17 @@
+import { useAppSelector } from "@/app/hooks";
+import ContestantSpeechBubble from "@/features/contestants/components/ContestantSpeechBubble";
+
+import { getMessages } from "../slice";
 
 export default function ChatMessages() {
+  const messages = useAppSelector(getMessages);
+
   return (
-    <div
-      className="flex-1 overflow-y-auto overscroll-contain"
-      id="chat-log"
-      role="log"
-      aria-live="polite"
-      aria-relevant="additions"
-      aria-atomic="false"
-    >
-      <div className="mx-auto max-w-3xl space-y-4 px-4 py-6">
-        {/* <Bot>Hi! How can I help?</Bot>
-        <User>Show me best practices…</User>
-        <div id="end-of-messages" /> */}
+    <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-b-1 border-white/10 p-2">
+      <div className="mx-auto max-w-3xl space-y-4">
+        {messages.map((message) => (
+          <ContestantSpeechBubble message={message} key={message.id} />
+        ))}
       </div>
     </div>
   );

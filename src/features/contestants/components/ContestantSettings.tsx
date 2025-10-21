@@ -76,7 +76,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`rounded-lg border-1 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs ${contestantId ? "border-white/40" : "border-white/10"}`}
+            className={`rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
             placeholder="Name"
           />
           <input
@@ -84,7 +84,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
             id="model"
             value={model}
             onChange={(e) => setModel(e.target.value)}
-            className={`rounded-lg border-1 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs ${contestantId ? "border-white/40" : "border-white/10"}`}
+            className={`rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
             placeholder="Model"
           />
           <textarea
@@ -92,7 +92,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
             rows={2}
             value={personality}
             onChange={(e) => setPersonality(e.target.value)}
-            className={`col-span-2 resize-none rounded-lg border-1 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200 ${contestantId ? "border-white/40" : "border-white/10"}`}
+            className={`col-span-2 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200`}
             placeholder="Personality"
           />
         </div>
@@ -108,14 +108,14 @@ export default function ContestantSettings({ contestantNumber }: Props) {
             <button
               type="button"
               onClick={handleClear}
-              className="flex items-center gap-0.5 rounded-lg border-1 border-white/30 bg-white/5 px-2 py-1 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80"
+              className="flex items-center gap-0.5 rounded-lg border-1 border-red-700 bg-red-700/10 px-2 py-1 text-xs font-semibold text-red-700 shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80"
             >
               <Trash size={12} />
               Clear
             </button>
             <button
               type="submit"
-              className={`flex items-center gap-0.5 rounded-lg border-1 border-white/30 bg-white/15 px-2 py-1 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80`}
+              className={`flex items-center gap-0.5 rounded-lg border-1 border-white/70 bg-white/10 px-2 py-1 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80`}
             >
               {!contestantId ? (
                 <Plus size={12} strokeWidth={2} />

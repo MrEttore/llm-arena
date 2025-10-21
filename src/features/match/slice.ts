@@ -1,6 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import type { RootState } from "@/app/store";
 import type { MatchState } from "@/domain/types";
 import { generateResponse } from "@/features/match/thunks/generateResponse";
 
@@ -37,6 +38,8 @@ const matchSlice = createSlice({
     });
   },
 });
+
+export const getIsTyping = (state: RootState) => state.match.fetchingResponse;
 
 export const { setStatus, setNumberOfExchanges, setTurns } = matchSlice.actions;
 export default matchSlice.reducer;

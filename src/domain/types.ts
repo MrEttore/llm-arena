@@ -8,12 +8,13 @@ export type MatchState = {
 };
 
 export type ChatState = {
-  messages: ChatMessage[];
+  messageIds: string[];
+  messagesById: { [id: string]: ChatMessage };
 };
 
 export type ContestantsState = {
   contestants: Contestant[];
-  activeContestant?: string;
+  activeContestantId?: string;
 };
 
 // Domain types
@@ -35,5 +36,6 @@ export type Contestant = {
   name: string;
   model: string;
   systemPrompt: string;
-  messages: ApiMessage[];
+  messages: ApiMessage[]; // rename to "messageHistory" or "promptHistory"?
+  isThinking?: boolean;
 };

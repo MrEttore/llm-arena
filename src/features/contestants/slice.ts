@@ -13,19 +13,14 @@ const contestantsSlice = createSlice({
   name: "contestants",
   initialState,
   reducers: {
-    setActiveContestant: (state, action: PayloadAction<string | undefined>) => {
-      if (!state.activeContestant && action.payload) {
-        state.activeContestant = action.payload;
-        return;
-      }
-      if (state.activeContestant) {
-        const otherContestant = state.contestants.find(
-          (c: Contestant) => c.id !== state.activeContestant,
-        );
-        if (otherContestant) state.activeContestant = otherContestant.id;
-      } else if (action.payload) {
-        state.activeContestant = action.payload;
-      }
+    setActiveContestantId: (state, action: PayloadAction<string>) => {
+      state.activeContestantId = action.payload;
+    },
+    switchActiveContestant: (state) => {
+      const nonActiveContestant = state.contestants.find((c) => c.id !== state.activeContestantId);
+      if (!nonActiveContestant) return;
+
+      state.activeContestantId = nonActiveContestant.id;
     },
     addContestant: (state, action: PayloadAction<Contestant>) => {
       state.contestants.push(action.payload);
@@ -52,34 +47,51 @@ const contestantsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(generateResponse.pending, (state) => {
+      const activeContestantId = state.activeContestantId;
+      const activeContestantIndex = state.contestants.findIndex((c) => c.id === activeContestantId);
+      if (activeContestantIndex !== -1) state.contestants[activeContestantIndex].isThinking = true;
+    });
     builder.addCase(generateResponse.fulfilled, (state, action) => {
       const { assistantMessage, userMessage } = action.payload;
-      const activeContestant = state.activeContestant;
-      if (!activeContestant) return;
+
+      const activeContestantId = state.activeContestantId;
+      const activeContestantIndex = state.contestants.findIndex((c) => c.id === activeContestantId);
+      if (!activeContestantId) return;
+
       const nonActiveContestant = state.contestants.find(
-        (c: Contestant) => c.id !== activeContestant,
+        (c: Contestant) => c.id !== activeContestantId,
       );
+      if (!nonActiveContestant) return;
+
       contestantsSlice.caseReducers.updateContestantMessages(state, {
-        payload: { contestantId: activeContestant, message: assistantMessage },
         type: "match/updateContestantMessages",
+        payload: { contestantId: activeContestantId, message: assistantMessage },
       });
-      if (nonActiveContestant) {
-        contestantsSlice.caseReducers.updateContestantMessages(state, {
-          payload: {
-            contestantId: nonActiveContestant.id,
-            message: userMessage,
-          },
-          type: "match/updateContestantMessages",
-        });
-      }
+
+      contestantsSlice.caseReducers.updateContestantMessages(state, {
+        type: "match/updateContestantMessages",
+        payload: {
+          contestantId: nonActiveContestant.id,
+          message: userMessage,
+        },
+      });
+
+      if (activeContestantIndex !== -1) state.contestants[activeContestantIndex].isThinking = false;
     });
   },
 });
 
 export const getContestants = (state: RootState) => state.contestants.contestants;
+export const getContestantById = (state: RootState, id: string) => {
+  const contestant = state.contestants.contestants.find((c) => c.id === id);
+  const index = state.contestants.contestants.findIndex((c) => c.id === id);
+  return { contestant, index };
+};
 
 export const {
-  setActiveContestant,
+  setActiveContestantId,
+  switchActiveContestant,
   addContestant,
   updateContestant,
   clearContestant,

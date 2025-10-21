@@ -20,22 +20,23 @@ export const generateResponse = createAsyncThunk<
   { state: RootState; dispatch: AppDispatch; rejectValue: string }
 >("match/generateResponse", async (_, { getState, rejectWithValue }) => {
   try {
-    const { activeContestant, contestants } = getState().match;
-    if (!activeContestant) throw new Error("No active contestant set");
-    const contestant = contestants.find((c) => c.id === activeContestant);
-    const otherContestant = contestants.find((c) => c.id !== activeContestant);
-    if (!contestant || !otherContestant) throw new Error("Contestants not properly initialized");
+    const { activeContestantId, contestants } = getState().contestants;
+
+    const activeContestant = contestants.find((c) => c.id === activeContestantId);
+    if (!activeContestant) throw new Error("No active contestant found");
+
+    const nonActiveContestant = contestants.find((c) => c.id !== activeContestantId);
+    if (!nonActiveContestant) throw new Error("No non-active contestant found");
 
     const completion = await getChatCompletion({
-      model: contestant.model,
-      messages: contestant.messages,
+      model: activeContestant.model,
+      messages: activeContestant.messages,
     });
-
     if (!completion) throw new Error("No completion received");
 
     const assistantMessage = buildAssistantMessage(completion);
     const userMessage = buildUserMessage(completion);
-    const chatMessage = buildChatMessage(otherContestant.id, completion);
+    const chatMessage = buildChatMessage(nonActiveContestant.id, completion);
 
     return { assistantMessage, userMessage, chatMessage };
   } catch (err) {

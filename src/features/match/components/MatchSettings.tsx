@@ -7,6 +7,8 @@ import type { Contestant } from "@/domain/types";
 import { getContestants } from "@/features/contestants/slice";
 import { runConversation } from "@/features/match/thunks/runConversation";
 
+import { initConversation } from "../thunks/initConversation";
+
 export default function MatchSettings() {
   const [startingContestant, setStartingContestant] = useState<Contestant | null>(null);
   const [numberOfExchanges, setNumberOfExchanges] = useState("");
@@ -18,7 +20,14 @@ export default function MatchSettings() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!startingContestant || !iceBreaker || !numberOfExchanges) return;
-    dispatch(runConversation(startingContestant.id, iceBreaker, Number(numberOfExchanges)));
+
+    const ok = await dispatch(
+      initConversation(startingContestant.id, Number(numberOfExchanges), iceBreaker),
+    );
+
+    if (!ok) return;
+
+    dispatch(runConversation());
   };
 
   return (
@@ -34,7 +43,7 @@ export default function MatchSettings() {
             id="number-of-exchanges"
             value={numberOfExchanges}
             onChange={(e) => setNumberOfExchanges(e.target.value)}
-            className={`w-15 rounded-lg border-1 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs ${numberOfExchanges ? "border-white/40" : "border-white/10"}`}
+            className={`w-15 rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
             placeholder="e.g., 5"
           />
         </div>
@@ -72,7 +81,7 @@ export default function MatchSettings() {
             rows={2}
             value={iceBreaker}
             onChange={(e) => setIceBreaker(e.target.value)}
-            className={`flex-1 resize-none rounded-lg border-1 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200 ${iceBreaker ? "border-white/40" : "border-white/10"}`}
+            className={`flex-1 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200`}
             placeholder="e.g., Debate: Is pineapple on pizza acceptable?"
           />
         </div>
