@@ -28,7 +28,8 @@ export type ChatMessage = {
   id: string;
   authorId: string;
   content: string;
-  timeStamp: number;
+  timestamp: number;
+  status?: "sent" | "pending" | "error";
 };
 
 export type Contestant = {

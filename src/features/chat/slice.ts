@@ -19,14 +19,46 @@ const chatSlice = createSlice({
       state.messagesById[message.id] = message;
       if (!state.messageIds.includes(message.id)) state.messageIds.push(message.id);
     },
+    setMessageStatus: (
+      state,
+      action: PayloadAction<{ messageId: string; status: "sent" | "pending" | "error" }>,
+    ) => {
+      const { messageId, status } = action.payload;
+      const message = state.messagesById[messageId];
+      if (message) message.status = status;
+    },
+    updateMessageContent: (
+      state,
+      action: PayloadAction<{ messageId: string; content: string }>,
+    ) => {
+      const { messageId, content } = action.payload;
+      const message = state.messagesById[messageId];
+      if (message) message.content = content;
+    },
     // upsertMessage: (state, action) => {},
     // addManyMessages: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder.addCase(generateResponse.fulfilled, (state, action) => {
       const { chatMessage } = action.payload;
-      state.messagesById[chatMessage.id] = chatMessage;
-      if (!state.messageIds.includes(chatMessage.id)) state.messageIds.push(chatMessage.id);
+
+      chatSlice.caseReducers.updateMessageContent(
+        state,
+        updateMessageContent({ messageId: chatMessage.id, content: chatMessage.content }),
+      );
+      chatSlice.caseReducers.setMessageStatus(
+        state,
+        setMessageStatus({ messageId: chatMessage.id, status: "sent" }),
+      );
+    });
+    builder.addCase(generateResponse.rejected, (state, action) => {
+      const chatMessageId = action.payload?.chatMessageId;
+
+      if (chatMessageId)
+        chatSlice.caseReducers.setMessageStatus(
+          state,
+          setMessageStatus({ messageId: chatMessageId, status: "error" }),
+        );
     });
   },
 });
@@ -39,5 +71,5 @@ export const getMessages = createSelector(
 export const getMessageById = (state: RootState, id: string) => state.chat.messagesById[id];
 export const getMessagesCount = (state: RootState) => state.chat.messageIds.length;
 
-export const { addChatMessage } = chatSlice.actions;
+export const { addChatMessage, setMessageStatus, updateMessageContent } = chatSlice.actions;
 export default chatSlice.reducer;

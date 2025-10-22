@@ -6,19 +6,27 @@ import {
   buildChatMessage,
   buildUserMessage,
 } from "@/domain/messageBuilders";
+import type { ApiMessage, ChatMessage } from "@/domain/types";
+import { addChatMessage } from "@/features/chat/slice";
 import { getChatCompletion } from "@/services/openAI/client";
 
 type generateResponsePayload = {
-  assistantMessage: ReturnType<typeof buildAssistantMessage>;
-  userMessage: ReturnType<typeof buildUserMessage>;
-  chatMessage: ReturnType<typeof buildChatMessage>;
+  assistantMessage: ApiMessage;
+  userMessage: ApiMessage;
+  chatMessage: ChatMessage;
 };
 
 export const generateResponse = createAsyncThunk<
   generateResponsePayload,
   void,
-  { state: RootState; dispatch: AppDispatch; rejectValue: string }
->("match/generateResponse", async (_, { getState, rejectWithValue }) => {
+  {
+    state: RootState;
+    dispatch: AppDispatch;
+    rejectValue: { message: string; chatMessageId?: string };
+  }
+>("match/generateResponse", async (_, { getState, dispatch, rejectWithValue }) => {
+  let chatMessageId: string | undefined;
+
   try {
     const { activeContestantId, contestants } = getState().contestants;
 
@@ -28,6 +36,10 @@ export const generateResponse = createAsyncThunk<
     const nonActiveContestant = contestants.find((c) => c.id !== activeContestantId);
     if (!nonActiveContestant) throw new Error("No non-active contestant found");
 
+    const pendingChatMessage = buildChatMessage(nonActiveContestant.id, "", "pending");
+    chatMessageId = pendingChatMessage.id;
+    dispatch(addChatMessage(pendingChatMessage));
+
     const completion = await getChatCompletion({
       model: activeContestant.model,
       messages: activeContestant.messages,
@@ -36,11 +48,11 @@ export const generateResponse = createAsyncThunk<
 
     const assistantMessage = buildAssistantMessage(completion);
     const userMessage = buildUserMessage(completion);
-    const chatMessage = buildChatMessage(nonActiveContestant.id, completion);
+    const chatMessage: ChatMessage = { ...pendingChatMessage, content: completion, status: "sent" };
 
     return { assistantMessage, userMessage, chatMessage };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    return rejectWithValue(message);
+    return rejectWithValue({ message, chatMessageId });
   }
 });

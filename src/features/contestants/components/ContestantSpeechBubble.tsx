@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default function ContestantSpeechBubble({ message }: Props) {
-  const { content, authorId } = message;
+  const { content, authorId, status } = message;
   const { contestant, index } = useAppSelector((state) => getContestantById(state, authorId));
   const side = index === 0 ? "left" : "right";
 
@@ -29,7 +29,10 @@ export default function ContestantSpeechBubble({ message }: Props) {
           />
         </div>
 
-        <p className={`text-xs`}>{content}</p>
+        {status === "sent" && <p className={`text-xs`}>{content}</p>}
+        {status === "pending" && (
+          <p className={`animate-pulse text-xs font-light italic`}>thinking...</p>
+        )}
       </div>
     </div>
   );

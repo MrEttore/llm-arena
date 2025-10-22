@@ -20,6 +20,16 @@ export function buildUserMessage(content: string): ApiMessage {
   return { role: "user", content };
 }
 
-export function buildChatMessage(authorId: string, content: string): ChatMessage {
-  return { id: crypto.randomUUID(), authorId, content, timeStamp: Date.now() };
+export function buildChatMessage(
+  authorId: string,
+  content: string,
+  status?: "sent" | "pending" | "error",
+): ChatMessage {
+  return {
+    id: crypto.randomUUID(),
+    authorId,
+    content,
+    timestamp: Date.now(),
+    status: status ?? "sent",
+  };
 }
