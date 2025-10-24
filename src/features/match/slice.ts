@@ -23,6 +23,7 @@ const matchSlice = createSlice({
     setTurns: (state, action: PayloadAction<number>) => {
       state.numberOfExchanges = action.payload;
     },
+    resetMatch: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(generateResponse.pending, (state) => {
@@ -32,14 +33,18 @@ const matchSlice = createSlice({
       state.fetchingResponse = false;
     });
     builder.addCase(generateResponse.rejected, (state, action) => {
+      const isCanceled = action.payload?.canceled;
+
       state.fetchingResponse = false;
-      state.status = "error";
-      state.error = (action.payload as string) ?? "Unknown error";
+      state.error = action.payload?.message;
+
+      matchSlice.caseReducers.setStatus(state, setStatus(isCanceled ? "canceled" : "error"));
     });
   },
 });
 
 export const getIsTyping = (state: RootState) => state.match.fetchingResponse;
+export const getMatchStatus = (state: RootState) => state.match.status;
 
-export const { setStatus, setNumberOfExchanges, setTurns } = matchSlice.actions;
+export const { setStatus, setNumberOfExchanges, setTurns, resetMatch } = matchSlice.actions;
 export default matchSlice.reducer;

@@ -1,16 +1,16 @@
 import { Check } from "lucide-react";
-import { CircleX, Plus, RotateCcw, Trash } from "lucide-react";
+import { CircleX } from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { useAppDispatch } from "@/app/hooks";
+import { PRESETS } from "@/domain/presets";
 import type { Contestant } from "@/domain/types";
+import { AddButton, ClearButton, LoadPresentsButton } from "@/ui/buttons";
 
 import { addContestant, clearContestant, updateContestant } from "../slice";
 
-type Props = {
-  contestantNumber: number;
-};
+type Props = { contestantNumber: number };
 
 export default function ContestantSettings({ contestantNumber }: Props) {
   const [name, setName] = useState<string>("");
@@ -63,67 +63,82 @@ export default function ContestantSettings({ contestantNumber }: Props) {
     setContestantId(null);
   };
 
+  const handleLoadPreset = () => {
+    const { name, model, systemPrompt } = PRESETS[contestantNumber];
+    setName(name);
+    setModel(model);
+    setPersonality(systemPrompt);
+  };
+
   return (
-    <div className="space-y-2 rounded-xl border-1 border-white/20 bg-linear-to-br from-white/15 to-white/10 p-2 font-medium shadow-2xl backdrop-blur-lg">
-      <h3 className={`flex items-center justify-center gap-1 text-white`}>
-        Contestant {contestantNumber + 1}
-        {contestantId ? <Check className="text-green-600" size={18} /> : null}
+    <div className="min-h-0 space-y-2">
+      <h3 className={`flex items-center gap-2 text-sm font-semibold tracking-wide text-white`}>
+        {contestantId ? <Check className="text-green-500" size={16} strokeWidth={2.5} /> : null}
+        {/* Character */}
+        Contestant
       </h3>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-2">
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={`rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
-            placeholder="Name"
-          />
-          <input
-            type="text"
-            id="model"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            className={`rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
-            placeholder="Model"
-          />
-          <textarea
-            id="personality"
-            rows={2}
-            value={personality}
-            onChange={(e) => setPersonality(e.target.value)}
-            className={`col-span-2 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200`}
-            placeholder="Personality"
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="name" className="pl-1 text-xs font-medium tracking-wider text-white/60">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
+              placeholder={`e.g., ${PRESETS[contestantNumber].name}`}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="model"
+              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+            >
+              Model
+            </label>
+            <input
+              type="text"
+              id="model"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
+              placeholder={`e.g., ${PRESETS[contestantNumber].model}`}
+            />
+          </div>
+          <div className="col-span-2 flex flex-col gap-1.5">
+            <label
+              htmlFor="personality"
+              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+            >
+              Personality
+            </label>
+            <textarea
+              id="personality"
+              rows={2}
+              value={personality}
+              onChange={(e) => setPersonality(e.target.value)}
+              className="resize-none rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
+              placeholder={`e.g., ${PRESETS[contestantNumber].systemPrompt}`}
+            />
+          </div>
         </div>
 
         <div className={`mt-2 flex ${error ? "justify-between" : "justify-end"}`}>
           {error && (
-            <p className="flex items-center gap-0.5 rounded-lg border-1 border-red-600/80 bg-white/5 px-2 py-1 text-xs font-semibold text-red-600/80 shadow-md">
+            <p className="flex items-center gap-0.5 rounded-lg border-1 border-orange-700/30 bg-orange-700/15 px-2 py-1 text-xs font-semibold text-orange-700 shadow-md">
               <CircleX size={12} />
               {error}
             </p>
           )}
           <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleClear}
-              className="flex items-center gap-0.5 rounded-lg border-1 border-red-700 bg-red-700/10 px-2 py-1 text-xs font-semibold text-red-700 shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80"
-            >
-              <Trash size={12} />
-              Clear
-            </button>
-            <button
-              type="submit"
-              className={`flex items-center gap-0.5 rounded-lg border-1 border-white/70 bg-white/10 px-2 py-1 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80`}
-            >
-              {!contestantId ? (
-                <Plus size={12} strokeWidth={2} />
-              ) : (
-                <RotateCcw size={12} strokeWidth={2} />
-              )}
-              {!contestantId ? "Add" : "Update"}
-            </button>
+            <ClearButton onClear={handleClear} />
+            <div className="flex gap-2 border-l-1 border-white/20 pl-2">
+              <LoadPresentsButton onLoad={handleLoadPreset} />
+              <AddButton contestantId={contestantId} />
+            </div>
           </div>
         </div>
       </form>

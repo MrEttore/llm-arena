@@ -1,7 +1,7 @@
 // Slice state types
 
 export type MatchState = {
-  status: "idle" | "running" | "completed" | "error";
+  status: "idle" | "running" | "completed" | "error" | "canceled";
   fetchingResponse: boolean;
   numberOfExchanges?: number;
   error?: string;
@@ -29,7 +29,7 @@ export type ChatMessage = {
   authorId: string;
   content: string;
   timestamp: number;
-  status?: "sent" | "pending" | "error";
+  status?: "sent" | "pending" | "error" | "canceled";
 };
 
 export type Contestant = {

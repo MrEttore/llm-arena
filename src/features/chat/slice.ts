@@ -21,7 +21,10 @@ const chatSlice = createSlice({
     },
     setMessageStatus: (
       state,
-      action: PayloadAction<{ messageId: string; status: "sent" | "pending" | "error" }>,
+      action: PayloadAction<{
+        messageId: string;
+        status: "sent" | "pending" | "error" | "canceled";
+      }>,
     ) => {
       const { messageId, status } = action.payload;
       const message = state.messagesById[messageId];
@@ -37,6 +40,7 @@ const chatSlice = createSlice({
     },
     // upsertMessage: (state, action) => {},
     // addManyMessages: (state, action) => {},
+    resetChat: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(generateResponse.fulfilled, (state, action) => {
@@ -53,12 +57,14 @@ const chatSlice = createSlice({
     });
     builder.addCase(generateResponse.rejected, (state, action) => {
       const chatMessageId = action.payload?.chatMessageId;
+      const isCanceled = action.payload?.canceled;
 
-      if (chatMessageId)
-        chatSlice.caseReducers.setMessageStatus(
-          state,
-          setMessageStatus({ messageId: chatMessageId, status: "error" }),
-        );
+      if (!chatMessageId) return;
+
+      chatSlice.caseReducers.setMessageStatus(
+        state,
+        setMessageStatus({ messageId: chatMessageId, status: isCanceled ? "canceled" : "error" }),
+      );
     });
   },
 });
@@ -71,5 +77,6 @@ export const getMessages = createSelector(
 export const getMessageById = (state: RootState, id: string) => state.chat.messagesById[id];
 export const getMessagesCount = (state: RootState) => state.chat.messageIds.length;
 
-export const { addChatMessage, setMessageStatus, updateMessageContent } = chatSlice.actions;
+export const { addChatMessage, setMessageStatus, updateMessageContent, resetChat } =
+  chatSlice.actions;
 export default chatSlice.reducer;

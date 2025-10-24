@@ -45,6 +45,7 @@ const contestantsSlice = createSlice({
       const contestant = state.contestants.find((c: Contestant) => c.id === contestantId);
       if (contestant) contestant.messages.push(message);
     },
+    resetContestants: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(generateResponse.pending, (state) => {
@@ -96,5 +97,6 @@ export const {
   updateContestant,
   clearContestant,
   updateContestantMessages,
+  resetContestants,
 } = contestantsSlice.actions;
 export default contestantsSlice.reducer;

@@ -21,7 +21,7 @@ export default function ContestantSpeechBubble({ message }: Props) {
       >
         <div className="flex items-center gap-2">
           <p className="text-[10px] font-light italic opacity-75">
-            {contestant?.name} ({contestant?.model})
+            <span className="font-semibold">{contestant?.name}</span> ({contestant?.model})
           </p>
           <AudioLines
             className="rounded-lg p-1 hover:cursor-pointer hover:bg-white/20"
