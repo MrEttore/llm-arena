@@ -1,4 +1,4 @@
-import VirtualizedChatList from "./VirtualizedChatList";
+import { VirtualizedChatList } from "@/features/chat/components";
 
 export default function ChatMessages() {
   return (

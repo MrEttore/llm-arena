@@ -1,9 +1,8 @@
 import { Virtuoso } from "react-virtuoso";
 
 import { useAppSelector } from "@/app/hooks";
+import { getMessages } from "@/features/chat/slice";
 import ContestantSpeechBubble from "@/features/contestants/components/ContestantSpeechBubble";
-
-import { getMessages } from "../slice";
 
 function VirtualizedChatList() {
   const messages = useAppSelector(getMessages);

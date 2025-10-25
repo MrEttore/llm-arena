@@ -1,10 +1,9 @@
 import { useEffect, useRef } from "react";
 
 import { useAppSelector } from "@/app/hooks";
+import { getMessages } from "@/features/chat/slice";
 import ContestantSpeechBubble from "@/features/contestants/components/ContestantSpeechBubble";
 import { isNearBottom } from "@/utils/isNearBottom";
-
-import { getMessages } from "../slice";
 
 export default function ChatMessages() {
   const messages = useAppSelector(getMessages);
