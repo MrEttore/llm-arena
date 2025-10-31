@@ -1,9 +1,14 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { PRESETS } from "@/data/presets";
-import { addContestant, clearContestant, updateContestant } from "@/features/contestants/slice";
+import {
+  addContestant,
+  clearContestant,
+  getContestants,
+  updateContestant,
+} from "@/features/contestants/slice";
 import type { Contestant } from "@/types";
 
 export function useContestantForm(contestantNumber: number) {
@@ -11,9 +16,17 @@ export function useContestantForm(contestantNumber: number) {
   const [model, setModel] = useState<string>("gpt-4.1-mini");
   const [personality, setPersonality] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [contestantId, setContestantId] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
+  const contestants = useAppSelector(getContestants);
+
+  const existing = contestants[contestantNumber];
+
+  useEffect(() => {
+    setName(existing?.name ?? "");
+    setModel(existing?.model ?? "gpt-4.1-mini");
+    setPersonality(existing?.systemPrompt ?? "");
+  }, [existing]);
 
   const handleNameChange = (value: string) => setName(value);
   const handleModelChange = (value: string) => setModel(value);
@@ -35,42 +48,40 @@ export function useContestantForm(contestantNumber: number) {
       return;
     }
 
-    if (!contestantId) {
-      const contestant: Contestant = {
+    if (existing) {
+      dispatch(
+        updateContestant({
+          id: existing.id,
+          name,
+          model,
+          systemPrompt: personality,
+        }),
+      );
+    } else {
+      const newContestant: Contestant = {
         id: crypto.randomUUID(),
         name,
         model,
         systemPrompt: personality,
         messages: [],
       };
-      dispatch(addContestant(contestant));
-      setContestantId(contestant.id);
-      setError(null);
-    } else {
-      dispatch(
-        updateContestant({
-          id: contestantId,
-          name,
-          model,
-          systemPrompt: personality,
-        }),
-      );
+      dispatch(addContestant(newContestant));
     }
+    setError(null);
   };
 
   const handleClear = () => {
-    if (contestantId) dispatch(clearContestant(contestantId));
+    if (existing) dispatch(clearContestant(existing.id));
     setName("");
-    setModel("");
+    setModel("gpt-4.1-mini");
     setPersonality("");
     setError(null);
-    setContestantId(null);
   };
 
   return {
     fields: { name, model, personality },
-    contestantId,
     error,
+    existing,
     handleNameChange,
     handleModelChange,
     handlePersonalityChange,

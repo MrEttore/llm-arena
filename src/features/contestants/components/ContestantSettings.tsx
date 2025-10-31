@@ -1,5 +1,4 @@
-import { Check } from "lucide-react";
-import { CircleX } from "lucide-react";
+import { Dot, CircleX } from "lucide-react";
 
 import { PRESETS } from "@/data/presets";
 import { useContestantForm } from "@/features/contestants/hooks/useContestantForm";
@@ -10,8 +9,8 @@ type Props = { contestantNumber: number };
 export default function ContestantSettings({ contestantNumber }: Props) {
   const {
     fields: { name, model, personality },
-    contestantId,
     error,
+    existing,
     handleNameChange,
     handleModelChange,
     handlePersonalityChange,
@@ -22,10 +21,13 @@ export default function ContestantSettings({ contestantNumber }: Props) {
 
   return (
     <div className="min-h-0 space-y-2">
-      <h3 className={`flex items-center gap-2 text-sm font-semibold tracking-wide text-white`}>
-        {contestantId ? <Check className="text-green-500" size={16} strokeWidth={2.5} /> : null}
-        {/* Character */}
-        Contestant
+      <h3 className={`flex items-center gap-0.5 text-sm font-semibold tracking-wide text-white`}>
+        <Dot
+          className={`${existing ? "text-green-700" : "text-white/20"}`}
+          size={12}
+          strokeWidth={8}
+        />
+        {`${contestantNumber + 1}. Contestants`}
       </h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-3">
@@ -87,7 +89,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
             <ClearButton onClear={handleClear} />
             <div className="flex gap-2 border-l-1 border-white/20 pl-2">
               <LoadPresentsButton onLoad={handleLoadPreset} />
-              <AddButton contestantId={contestantId} />
+              <AddButton contestantId={existing?.id} />
             </div>
           </div>
         </div>
