@@ -20,9 +20,7 @@ const matchSlice = createSlice({
     setNumberOfExchanges: (state, action: PayloadAction<number>) => {
       state.numberOfExchanges = action.payload;
     },
-    setTurns: (state, action: PayloadAction<number>) => {
-      state.numberOfExchanges = action.payload;
-    },
+
     resetMatch: () => initialState,
   },
   extraReducers: (builder) => {
@@ -46,5 +44,5 @@ const matchSlice = createSlice({
 export const getIsTyping = (state: RootState) => state.match.fetchingResponse;
 export const getMatchStatus = (state: RootState) => state.match.status;
 
-export const { setStatus, setNumberOfExchanges, setTurns, resetMatch } = matchSlice.actions;
+export const { setStatus, setNumberOfExchanges, resetMatch } = matchSlice.actions;
 export default matchSlice.reducer;
