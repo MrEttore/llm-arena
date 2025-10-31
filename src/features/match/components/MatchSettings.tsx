@@ -80,7 +80,7 @@ export default function MatchSettings() {
             />
           </div>
         </div>
-        <div className="mt-auto flex items-end justify-end gap-2">
+        <div className="mt-auto flex items-end justify-end gap-2 border-t-1 border-white/20 pt-2">
           <ResetButton onReset={handleReset} />
           {matchStatus !== "running" ? (
             <StartButton
