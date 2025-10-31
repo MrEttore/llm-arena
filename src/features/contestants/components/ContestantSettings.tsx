@@ -1,74 +1,24 @@
 import { Check } from "lucide-react";
 import { CircleX } from "lucide-react";
-import type { FormEvent } from "react";
-import { useState } from "react";
 
-import { useAppDispatch } from "@/app/hooks";
 import { PRESETS } from "@/data/presets";
-import type { Contestant } from "@/types";
+import { useContestantForm } from "@/features/contestants/hooks/useContestantForm";
 import { AddButton, ClearButton, LoadPresentsButton } from "@/ui/buttons";
-
-import { addContestant, clearContestant, updateContestant } from "../slice";
 
 type Props = { contestantNumber: number };
 
 export default function ContestantSettings({ contestantNumber }: Props) {
-  const [name, setName] = useState<string>("");
-  const [model, setModel] = useState<string>("gpt-4.1-mini");
-  const [personality, setPersonality] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [contestantId, setContestantId] = useState<string | null>(null);
-
-  const dispatch = useAppDispatch();
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!name || !model || !personality) {
-      setError("All fields are required!");
-      return;
-    }
-
-    if (!contestantId) {
-      const contestant: Contestant = {
-        id: crypto.randomUUID(),
-        name,
-        model,
-        systemPrompt: personality,
-        messages: [],
-      };
-      dispatch(addContestant(contestant));
-      setContestantId(contestant.id);
-      setError(null);
-      return;
-    }
-
-    dispatch(
-      updateContestant({
-        id: contestantId,
-        name,
-        model,
-        systemPrompt: personality,
-        messages: [],
-      }),
-    );
-  };
-
-  const handleClear = () => {
-    if (contestantId) dispatch(clearContestant(contestantId));
-    setName("");
-    setModel("");
-    setPersonality("");
-    setError(null);
-    setContestantId(null);
-  };
-
-  const handleLoadPreset = () => {
-    const { name, model, systemPrompt } = PRESETS[contestantNumber];
-    setName(name);
-    setModel(model);
-    setPersonality(systemPrompt);
-  };
+  const {
+    fields: { name, model, personality },
+    contestantId,
+    error,
+    handleNameChange,
+    handleModelChange,
+    handlePersonalityChange,
+    handleLoadPreset,
+    handleSubmit,
+    handleClear,
+  } = useContestantForm(contestantNumber);
 
   return (
     <div className="min-h-0 space-y-2">
@@ -87,7 +37,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               type="text"
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => handleNameChange(e.target.value)}
               className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
               placeholder={`e.g., ${PRESETS[contestantNumber].name}`}
             />
@@ -103,7 +53,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               type="text"
               id="model"
               value={model}
-              onChange={(e) => setModel(e.target.value)}
+              onChange={(e) => handleModelChange(e.target.value)}
               className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
               placeholder={`e.g., ${PRESETS[contestantNumber].model}`}
             />
@@ -119,7 +69,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               id="personality"
               rows={2}
               value={personality}
-              onChange={(e) => setPersonality(e.target.value)}
+              onChange={(e) => handlePersonalityChange(e.target.value)}
               className="resize-none rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
               placeholder={`e.g., ${PRESETS[contestantNumber].systemPrompt}`}
             />

@@ -25,7 +25,7 @@ const contestantsSlice = createSlice({
     addContestant: (state, action: PayloadAction<Contestant>) => {
       state.contestants.push(action.payload);
     },
-    updateContestant: (state, action: PayloadAction<Contestant>) => {
+    updateContestant: (state, action: PayloadAction<Partial<Contestant>>) => {
       const index = state.contestants.findIndex((c: Contestant) => c.id === action.payload.id);
       if (index !== -1) {
         state.contestants[index] = {
