@@ -1,71 +1,21 @@
-import type { FormEvent, MouseEvent } from "react";
-import { useState } from "react";
-
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { resetChat } from "@/features/chat/slice";
-import { getContestants, resetContestants } from "@/features/contestants/slice";
-import { runConversation } from "@/features/match/thunks/runConversation";
-import type { Contestant } from "@/types";
 import { CancelButton, ResetButton, StartButton } from "@/ui/buttons";
 
-import { getMatchStatus, resetMatch } from "../slice";
-import { cancelGenerateResponse } from "../thunks/generateResponse";
-import { initConversation } from "../thunks/initConversation";
+import { useMatchControl } from "../hooks/useMatchControl";
 
 export default function MatchSettings() {
-  const [startingContestant, setStartingContestant] = useState<Contestant | null>(null);
-  const [numberOfExchanges, setNumberOfExchanges] = useState("");
-  const [iceBreaker, setIceBreaker] = useState("");
-
-  const dispatch = useAppDispatch();
-  const contestants = useAppSelector(getContestants);
-  const matchStatus = useAppSelector(getMatchStatus);
-
-  const isRunning = matchStatus === "running";
-  const isReadyToStart =
-    contestants.length === 2 &&
-    iceBreaker !== "" &&
-    numberOfExchanges !== "" &&
-    startingContestant !== null;
-
-  // TODO: Refactor...
-  const handleStart = async (e: FormEvent) => {
-    console.log("handleSubmit!");
-
-    e.preventDefault();
-    if (!isReadyToStart) return;
-
-    const ok = await dispatch(
-      initConversation(startingContestant.id, Number(numberOfExchanges), iceBreaker),
-    );
-
-    if (!ok) return;
-
-    dispatch(runConversation());
-  };
-
-  const handleCancel = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log("handleCancel!");
-
-    e.preventDefault();
-    e.stopPropagation();
-    dispatch(cancelGenerateResponse());
-  };
-
-  const handleReset = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log("handleReset!");
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    setStartingContestant(null);
-    setIceBreaker("");
-    setNumberOfExchanges("");
-
-    dispatch(resetChat());
-    dispatch(resetMatch());
-    dispatch(resetContestants());
-  };
+  const {
+    fields: { startingContestant, numberOfExchanges, iceBreaker },
+    handleNumberOfExchangesChange,
+    handleStartingContestantChange,
+    handleIceBreakerChange,
+    matchStatus,
+    isRunning,
+    isReadyToStart,
+    handleStart,
+    handleCancel,
+    handleReset,
+    contestants,
+  } = useMatchControl();
 
   return (
     <div className="flex min-h-0 flex-1 flex-col space-y-2 rounded-xl border-1 border-white/20 bg-linear-to-br from-white/15 to-white/10 p-2 font-medium shadow-2xl backdrop-blur-lg">
@@ -83,7 +33,7 @@ export default function MatchSettings() {
               type="text"
               id="number-of-exchanges"
               value={numberOfExchanges}
-              onChange={(e) => setNumberOfExchanges(e.target.value)}
+              onChange={(e) => handleNumberOfExchangesChange(e.target.value)}
               className={`w-15 rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
               placeholder="e.g., 5"
             />
@@ -101,7 +51,7 @@ export default function MatchSettings() {
                   <button
                     type="button"
                     key={contestant.id}
-                    onClick={() => setStartingContestant(contestant)}
+                    onClick={() => handleStartingContestantChange(contestant)}
                     className={`cursor-pointer px-2 py-1 text-xs text-white transition-colors duration-300 ${startingContestant?.id === contestant.id ? "bg-white/15" : "hover:bg-white/5"}`}
                   >
                     {contestant.name}
@@ -124,7 +74,7 @@ export default function MatchSettings() {
               id="ice-breaker"
               rows={2}
               value={iceBreaker}
-              onChange={(e) => setIceBreaker(e.target.value)}
+              onChange={(e) => handleIceBreakerChange(e.target.value)}
               className={`flex-1 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200`}
               placeholder="e.g., Debate: Is pineapple on pizza acceptable?"
             />
