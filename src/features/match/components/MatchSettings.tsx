@@ -26,7 +26,10 @@ export default function MatchSettings() {
       >
         <div className="flex-1 space-y-2 overflow-y-auto">
           <div className="flex items-center justify-between">
-            <label htmlFor="number-of-exchanges" className="text-xs text-white/80">
+            <label
+              htmlFor="number-of-exchanges"
+              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+            >
               Number of Exchanges
             </label>
             <input
@@ -40,7 +43,9 @@ export default function MatchSettings() {
           </div>
 
           <div className="flex items-center justify-between">
-            <label className="text-xs text-white/80">Who starts?</label>
+            <label className="pl-1 text-xs font-medium tracking-wider text-white/60">
+              Who starts?
+            </label>
             <div
               role="group"
               aria-label="starting-contestant"
@@ -67,7 +72,10 @@ export default function MatchSettings() {
           </div>
 
           <div className="flex flex-col space-y-2">
-            <label htmlFor="ice-breaker" className={`text-xs text-white/80`}>
+            <label
+              htmlFor="ice-breaker"
+              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+            >
               {startingContestant ? `${startingContestant.name}'s ice breaker` : "Ice Breaker"}
             </label>
             <textarea
