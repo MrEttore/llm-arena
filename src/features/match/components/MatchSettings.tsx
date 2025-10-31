@@ -2,10 +2,10 @@ import type { FormEvent, MouseEvent } from "react";
 import { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import type { Contestant } from "@/domain/types";
 import { resetChat } from "@/features/chat/slice";
 import { getContestants, resetContestants } from "@/features/contestants/slice";
 import { runConversation } from "@/features/match/thunks/runConversation";
+import type { Contestant } from "@/types";
 import { CancelButton, ResetButton, StartButton } from "@/ui/buttons";
 
 import { getMatchStatus, resetMatch } from "../slice";

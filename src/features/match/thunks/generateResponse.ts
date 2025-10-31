@@ -1,14 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import type { AppDispatch, RootState } from "@/app/store";
-import {
-  buildAssistantMessage,
-  buildChatMessage,
-  buildUserMessage,
-} from "@/domain/messageBuilders";
-import type { ApiMessage, ChatMessage } from "@/domain/types";
 import { addChatMessage, setMessageStatus } from "@/features/chat/slice";
-import { getChatCompletion } from "@/services/openAI/api";
+import { getChatCompletion } from "@/services/llmManagerApi";
+import type { ApiMessage, ChatMessage } from "@/types";
+import { buildAssistantMessage, buildChatMessage, buildUserMessage } from "@/utils/messageBuilders";
 
 let inFlight: { controller: AbortController; messageId: string } | null = null;
 

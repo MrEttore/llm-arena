@@ -1,5 +1,5 @@
 import type { AppDispatch, RootState } from "@/app/store";
-import { buildChatMessage } from "@/domain/messageBuilders";
+import { buildChatMessage } from "@/utils/messageBuilders";
 
 import { addChatMessage } from "../slice";
 

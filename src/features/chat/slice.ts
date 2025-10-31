@@ -2,8 +2,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import type { ChatMessage, ChatState } from "@/domain/types";
 import { generateResponse } from "@/features/match/thunks/generateResponse";
+import type { ChatMessage, ChatState } from "@/types";
 
 const initialState: ChatState = {
   messageIds: [],
@@ -37,6 +37,25 @@ const chatSlice = createSlice({
       const { messageId, content } = action.payload;
       const message = state.messagesById[messageId];
       if (message) message.content = content;
+    },
+    startMessageStream: (state, action: PayloadAction<{ messageId: string }>) => {
+      const message = state.messagesById[action.payload.messageId];
+      if (!message) return;
+      message.status = "streaming";
+      message.stream = { chunks: [], startedAt: Date.now() };
+    },
+    appendMessageChunk: (state, action: PayloadAction<{ messageId: string; chunk: string }>) => {
+      const message = state.messagesById[action.payload.messageId];
+      if (!message || message.status !== "streaming") return;
+      message.stream?.chunks.push(action.payload.chunk);
+    },
+    finalizeMessageStream: (state, action: PayloadAction<{ messageId: string }>) => {
+      const message = state.messagesById[action.payload.messageId];
+      if (!message || message.status !== "streaming") return;
+      const finalContent = message.stream?.chunks.join("") ?? "";
+      message.content = finalContent;
+      message.status = "sent";
+      if (message.stream) message.stream.finishedAt = Date.now();
     },
     // upsertMessage: (state, action) => {},
     // addManyMessages: (state, action) => {},

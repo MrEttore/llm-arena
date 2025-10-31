@@ -1,7 +1,7 @@
 import { AudioLines } from "lucide-react";
 
 import { useAppSelector } from "@/app/hooks";
-import type { ChatMessage } from "@/domain/types";
+import type { ChatMessage } from "@/types";
 
 import { getContestantById } from "../slice";
 

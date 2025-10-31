@@ -4,8 +4,8 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 
 import { useAppDispatch } from "@/app/hooks";
-import { PRESETS } from "@/domain/presets";
-import type { Contestant } from "@/domain/types";
+import { PRESETS } from "@/data/presets";
+import type { Contestant } from "@/types";
 import { AddButton, ClearButton, LoadPresentsButton } from "@/ui/buttons";
 
 import { addContestant, clearContestant, updateContestant } from "../slice";

@@ -1,4 +1,4 @@
-import type { ApiMessage, ChatMessage, Contestant } from "./types";
+import type { ApiMessage, ChatMessage, Contestant } from "../types";
 
 export function buildSystemMessage(contestant: Contestant, contestants: Contestant[]): ApiMessage {
   const otherContestant = contestants.find((c) => c.id !== contestant.id);

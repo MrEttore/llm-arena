@@ -24,12 +24,21 @@ export type ApiMessage = {
   content: string;
 };
 
+export type ChatMessageStatus = "pending" | "streaming" | "sent" | "error" | "canceled";
+
+export type ChatMessageStream = {
+  chunks: string[];
+  startedAt: number;
+  finishedAt?: number;
+};
+
 export type ChatMessage = {
   id: string;
   authorId: string;
   content: string;
   timestamp: number;
-  status?: "sent" | "pending" | "error" | "canceled";
+  status?: ChatMessageStatus;
+  stream?: ChatMessageStream;
 };
 
 export type Contestant = {
@@ -37,6 +46,6 @@ export type Contestant = {
   name: string;
   model: string;
   systemPrompt: string;
-  messages: ApiMessage[]; // rename to "messageHistory" or "promptHistory"?
+  messages: ApiMessage[]; // rename to "messageHistory" or "promptHistory" or (better) ConversationBufferMemory?
   isThinking?: boolean;
 };

@@ -2,8 +2,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import type { ApiMessage, Contestant, ContestantsState } from "@/domain/types";
 import { generateResponse } from "@/features/match/thunks/generateResponse";
+import type { ApiMessage, Contestant, ContestantsState } from "@/types";
 
 const initialState: ContestantsState = {
   contestants: [],

@@ -3,7 +3,7 @@ import {
   buildAssistantMessage,
   buildSystemMessage,
   buildUserMessage,
-} from "@/domain/messageBuilders";
+} from "@/utils/messageBuilders";
 
 import { updateContestantMessages } from "../slice";
 

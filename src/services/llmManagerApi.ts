@@ -1,4 +1,4 @@
-import type { ApiMessage } from "@/domain/types";
+import type { ApiMessage } from "@/types";
 
 const LLM_MANAGER_BASE_URL = import.meta.env.VITE_LLM_MANAGER_BASE_URL;
 
