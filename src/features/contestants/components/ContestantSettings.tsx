@@ -1,4 +1,4 @@
-import { Dot, CircleX } from "lucide-react";
+import { CircleX, Dot } from "lucide-react";
 
 import { PRESETS } from "@/data/presets";
 import { useContestantForm } from "@/features/contestants/hooks/useContestantForm";
@@ -20,19 +20,24 @@ export default function ContestantSettings({ contestantNumber }: Props) {
   } = useContestantForm(contestantNumber);
 
   return (
-    <div className="min-h-0 space-y-2">
-      <h3 className={`flex items-center gap-0.5 text-sm font-semibold tracking-wide text-white`}>
+    <div className="min-h-0 lg:space-y-2 2xl:space-y-6">
+      <h3
+        className={`flex items-center gap-0.5 font-semibold tracking-wide text-white lg:text-sm 2xl:text-lg`}
+      >
         <Dot
           className={`${existing ? "text-green-700" : "text-white/20"}`}
           size={12}
           strokeWidth={8}
         />
-        {`${contestantNumber + 1}. Contestants`}
+        {`${contestantNumber + 1}. Contestant`}
       </h3>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="name" className="pl-1 text-xs font-medium tracking-wider text-white/60">
+            <label
+              htmlFor="name"
+              className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
+            >
               Name
             </label>
             <input
@@ -40,14 +45,14 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               id="name"
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
+              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].name}`}
             />
           </div>
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="model"
-              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+              className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
             >
               Model
             </label>
@@ -56,14 +61,14 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               id="model"
               value={model}
               onChange={(e) => handleModelChange(e.target.value)}
-              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
+              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].model}`}
             />
           </div>
           <div className="col-span-2 flex flex-col gap-1.5">
             <label
               htmlFor="personality"
-              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+              className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
             >
               Personality
             </label>
@@ -72,7 +77,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               rows={2}
               value={personality}
               onChange={(e) => handlePersonalityChange(e.target.value)}
-              className="resize-none rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-xs text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none"
+              className="resize-none rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].systemPrompt}`}
             />
           </div>

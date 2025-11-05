@@ -19,7 +19,9 @@ export default function MatchSettings() {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col space-y-2 rounded-xl border-1 border-white/20 bg-linear-to-br from-white/15 to-white/10 p-2 font-medium shadow-2xl backdrop-blur-lg">
-      <h3 className={`flex items-center justify-center gap-1 text-white`}>Match Settings</h3>
+      <h3 className={`flex items-center justify-center gap-1 text-white lg:text-sm 2xl:text-lg`}>
+        Match Settings
+      </h3>
       <form
         className="flex min-h-0 flex-1 flex-col space-y-2 overflow-hidden"
         onSubmit={handleStart}
@@ -28,7 +30,7 @@ export default function MatchSettings() {
           <div className="flex items-center justify-between">
             <label
               htmlFor="number-of-exchanges"
-              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+              className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
             >
               Number of Exchanges
             </label>
@@ -37,13 +39,13 @@ export default function MatchSettings() {
               id="number-of-exchanges"
               value={numberOfExchanges}
               onChange={(e) => handleNumberOfExchangesChange(e.target.value)}
-              className={`w-15 rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs`}
+              className="w-15 rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder="e.g., 5"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <label className="pl-1 text-xs font-medium tracking-wider text-white/60">
+            <label className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base">
               Who starts?
             </label>
             <div
@@ -57,15 +59,15 @@ export default function MatchSettings() {
                     type="button"
                     key={contestant.id}
                     onClick={() => handleStartingContestantChange(contestant)}
-                    className={`cursor-pointer px-2 py-1 text-xs text-white transition-colors duration-300 ${startingContestant?.id === contestant.id ? "bg-white/15" : "hover:bg-white/5"}`}
+                    className={`cursor-pointer px-2 py-1 text-white transition-colors duration-300 lg:text-xs 2xl:text-base ${startingContestant?.id === contestant.id ? "bg-white/15" : "hover:bg-white/5"}`}
                   >
                     {contestant.name}
                   </button>
                 ))
               ) : (
                 <>
-                  <p className={`s px-2 py-1 text-xs text-white`}>?</p>
-                  <p className={`s px-2 py-1 text-xs text-white`}>?</p>
+                  <p className="px-2 py-1 text-white lg:text-xs 2xl:text-base">?</p>
+                  <p className="px-2 py-1 text-white lg:text-xs 2xl:text-base">?</p>
                 </>
               )}
             </div>
@@ -74,7 +76,7 @@ export default function MatchSettings() {
           <div className="flex flex-col space-y-2">
             <label
               htmlFor="ice-breaker"
-              className="pl-1 text-xs font-medium tracking-wider text-white/60"
+              className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
             >
               {startingContestant ? `${startingContestant.name}'s ice breaker` : "Ice Breaker"}
             </label>
@@ -83,7 +85,7 @@ export default function MatchSettings() {
               rows={2}
               value={iceBreaker}
               onChange={(e) => handleIceBreakerChange(e.target.value)}
-              className={`flex-1 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none sm:text-xs dark:text-gray-200`}
+              className="flex-1 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none lg:text-xs 2xl:text-base dark:text-gray-200"
               placeholder="e.g., Debate: Is pineapple on pizza acceptable?"
             />
           </div>

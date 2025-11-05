@@ -7,8 +7,8 @@ import ChatHeader from "./features/chat/components/ChatHeader";
 
 export default function App() {
   return (
-    <div className="flex h-dvh flex-col px-2 py-2">
-      <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr] space-x-2 rounded lg:grid-cols-2 lg:grid-rows-[1fr]">
+    <div className="flex h-dvh flex-col lg:p-2 2xl:p-6">
+      <div className="grid min-h-0 flex-1 grid-cols-1 grid-rows-[auto_1fr] rounded lg:grid-cols-2 lg:grid-rows-[1fr] lg:space-x-2 2xl:space-x-6">
         <Settings />
         <ChatLayout>
           <ChatHeader />
