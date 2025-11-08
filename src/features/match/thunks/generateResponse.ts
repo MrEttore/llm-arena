@@ -1,8 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import type { AppDispatch, RootState } from "@/app/store";
-import { addChatMessage, setMessageStatus } from "@/features/chat/slice";
-import { getChatCompletion } from "@/services/llmManagerApi";
+import {
+  addChatMessage,
+  appendMessageChunk,
+  failMessageStream,
+  finalizeMessageStream,
+  setMessageStatus,
+  startMessageStream,
+} from "@/features/chat/slice";
+import { getActiveContestantPair } from "@/features/contestants/slice";
+import { streamChatCompletion } from "@/services/llmManagerApi";
 import type { ApiMessage, ChatMessage } from "@/types";
 import { buildAssistantMessage, buildChatMessage, buildUserMessage } from "@/utils/messageBuilders";
 
@@ -25,34 +33,43 @@ export const generateResponse = createAsyncThunk<
     rejectValue: RejectedPayload;
   }
 >("match/generateResponse", async (_, { getState, dispatch, rejectWithValue }) => {
-  let chatMessageId: string | undefined;
+  let currentMessageId: string | undefined;
+  let finalResponse = "";
   const controller = new AbortController();
 
   try {
-    const { activeContestantId, contestants } = getState().contestants;
+    const { activeContestant, nonActiveContestant } = getActiveContestantPair(getState());
+    if (!activeContestant || !nonActiveContestant) throw new Error("Contestant lookup failed");
 
-    const activeContestant = contestants.find((c) => c.id === activeContestantId);
-    if (!activeContestant) throw new Error("No active contestant found");
+    const pendingChatMessage = buildChatMessage(nonActiveContestant.id, "pending");
+    currentMessageId = pendingChatMessage.id;
 
-    const nonActiveContestant = contestants.find((c) => c.id !== activeContestantId);
-    if (!nonActiveContestant) throw new Error("No non-active contestant found");
-
-    const pendingChatMessage = buildChatMessage(nonActiveContestant.id, "", "pending");
-    chatMessageId = pendingChatMessage.id;
     dispatch(addChatMessage(pendingChatMessage));
+    dispatch(startMessageStream({ messageId: pendingChatMessage.id }));
 
     inFlight = { controller, messageId: pendingChatMessage.id };
 
-    const completion = await getChatCompletion({
+    await streamChatCompletion({
       model: activeContestant.model,
       messages: activeContestant.messages,
       signal: controller.signal,
-    });
-    if (!completion) throw new Error("No completion received");
+      onChunk: (chunk) => {
+        finalResponse += chunk;
 
-    const assistantMessage = buildAssistantMessage(completion);
-    const userMessage = buildUserMessage(completion);
-    const chatMessage: ChatMessage = { ...pendingChatMessage, content: completion, status: "sent" };
+        // TODO: Is it efficient to dispatch for every chunk?
+        dispatch(appendMessageChunk({ messageId: pendingChatMessage.id, chunk }));
+      },
+    });
+
+    const assistantMessage = buildAssistantMessage(finalResponse);
+    const userMessage = buildUserMessage(finalResponse);
+    const chatMessage: ChatMessage = {
+      ...pendingChatMessage,
+      content: finalResponse,
+      status: "sent",
+    };
+
+    dispatch(finalizeMessageStream({ messageId: chatMessage.id }));
 
     return { assistantMessage, userMessage, chatMessage };
   } catch (error) {
@@ -62,9 +79,18 @@ export const generateResponse = createAsyncThunk<
     const errorText = String(error ?? "");
     const isCanceled = name === "AbortError" || String(error).toLowerCase().includes("abort");
 
+    if (currentMessageId)
+      dispatch(
+        failMessageStream({
+          messageId: currentMessageId,
+          status: isCanceled ? "canceled" : "error",
+          reason: errorText,
+        }),
+      );
+
     return rejectWithValue({
       message: isCanceled ? "canceled" : errorText,
-      chatMessageId,
+      chatMessageId: currentMessageId,
       canceled: isCanceled,
     });
   } finally {
@@ -76,6 +102,5 @@ export const cancelGenerateResponse = () => (dispatch: AppDispatch) => {
   if (inFlight) {
     inFlight.controller.abort();
     dispatch(setMessageStatus({ messageId: inFlight.messageId, status: "canceled" }));
-    console.log("Request aborted!");
   }
 };

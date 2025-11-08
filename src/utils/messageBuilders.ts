@@ -22,14 +22,14 @@ export function buildUserMessage(content: string): ApiMessage {
 
 export function buildChatMessage(
   authorId: string,
-  content: string,
-  status?: "sent" | "pending" | "error",
+  status: "sent" | "pending" | "error",
+  content?: string,
 ): ChatMessage {
   return {
     id: crypto.randomUUID(),
     authorId,
-    content,
+    content: content ?? "",
     timestamp: Date.now(),
-    status: status ?? "sent",
+    status,
   };
 }

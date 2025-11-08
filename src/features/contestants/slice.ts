@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
 import { generateResponse } from "@/features/match/thunks/generateResponse";
@@ -58,25 +58,23 @@ const contestantsSlice = createSlice({
 
       const activeContestantId = state.activeContestantId;
       const activeContestantIndex = state.contestants.findIndex((c) => c.id === activeContestantId);
-      if (!activeContestantId) return;
-
       const nonActiveContestant = state.contestants.find(
         (c: Contestant) => c.id !== activeContestantId,
       );
-      if (!nonActiveContestant) return;
+      if (!activeContestantId || !nonActiveContestant?.id) return;
 
-      contestantsSlice.caseReducers.updateContestantMessages(state, {
-        type: "match/updateContestantMessages",
-        payload: { contestantId: activeContestantId, message: assistantMessage },
-      });
+      contestantsSlice.caseReducers.updateContestantMessages(
+        state,
+        updateContestantMessages({ contestantId: activeContestantId, message: assistantMessage }),
+      );
 
-      contestantsSlice.caseReducers.updateContestantMessages(state, {
-        type: "match/updateContestantMessages",
-        payload: {
+      contestantsSlice.caseReducers.updateContestantMessages(
+        state,
+        updateContestantMessages({
           contestantId: nonActiveContestant.id,
           message: userMessage,
-        },
-      });
+        }),
+      );
 
       if (activeContestantIndex !== -1) state.contestants[activeContestantIndex].isThinking = false;
     });
@@ -84,11 +82,20 @@ const contestantsSlice = createSlice({
 });
 
 export const getContestants = (state: RootState) => state.contestants.contestants;
+export const getActiveContestantId = (state: RootState) => state.contestants.activeContestantId;
 export const getContestantById = (state: RootState, id: string) => {
   const contestant = state.contestants.contestants.find((c) => c.id === id);
   const index = state.contestants.contestants.findIndex((c) => c.id === id);
   return { contestant, index };
 };
+export const getActiveContestantPair = createSelector(
+  [getContestants, getActiveContestantId],
+  (contestants, activeContestantId) => {
+    const activeContestant = contestants.find((c) => c.id === activeContestantId);
+    const nonActiveContestant = contestants.find((c) => c.id !== activeContestantId);
+    return { activeContestant, nonActiveContestant };
+  },
+);
 
 export const {
   setActiveContestantId,

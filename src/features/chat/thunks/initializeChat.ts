@@ -7,7 +7,7 @@ export const initializeChat = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const activeContestantId = getState().contestants.activeContestantId;
     if (!activeContestantId) return;
-    const firstChatMessage = buildChatMessage(activeContestantId, conversationStarter);
+    const firstChatMessage = buildChatMessage(activeContestantId, "sent", conversationStarter);
     dispatch(addChatMessage(firstChatMessage));
   };
 };

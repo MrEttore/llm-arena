@@ -2,8 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import { generateResponse } from "@/features/match/thunks/generateResponse";
-import type { ChatMessage, ChatState } from "@/types";
+import type { ChatMessage, ChatMessageStatus, ChatState } from "@/types";
 
 const initialState: ChatState = {
   messageIds: [],
@@ -23,7 +22,7 @@ const chatSlice = createSlice({
       state,
       action: PayloadAction<{
         messageId: string;
-        status: "sent" | "pending" | "error" | "canceled";
+        status: ChatMessageStatus;
       }>,
     ) => {
       const { messageId, status } = action.payload;
@@ -57,34 +56,22 @@ const chatSlice = createSlice({
       message.status = "sent";
       if (message.stream) message.stream.finishedAt = Date.now();
     },
-    // upsertMessage: (state, action) => {},
-    // addManyMessages: (state, action) => {},
+    failMessageStream: (
+      state,
+      action: PayloadAction<{ messageId: string; status: "error" | "canceled"; reason?: string }>,
+    ) => {
+      const { messageId, status, reason } = action.payload;
+      const message = state.messagesById[messageId];
+      if (!message) return;
+      message.status = status;
+      if (message.stream) message.stream.finishedAt = Date.now();
+      if (reason)
+        message.stream = {
+          ...(message.stream ?? { chunks: [], startedAt: Date.now() }),
+          error: reason,
+        } as typeof message.stream;
+    },
     resetChat: () => initialState,
-  },
-  extraReducers: (builder) => {
-    builder.addCase(generateResponse.fulfilled, (state, action) => {
-      const { chatMessage } = action.payload;
-
-      chatSlice.caseReducers.updateMessageContent(
-        state,
-        updateMessageContent({ messageId: chatMessage.id, content: chatMessage.content }),
-      );
-      chatSlice.caseReducers.setMessageStatus(
-        state,
-        setMessageStatus({ messageId: chatMessage.id, status: "sent" }),
-      );
-    });
-    builder.addCase(generateResponse.rejected, (state, action) => {
-      const chatMessageId = action.payload?.chatMessageId;
-      const isCanceled = action.payload?.canceled;
-
-      if (!chatMessageId) return;
-
-      chatSlice.caseReducers.setMessageStatus(
-        state,
-        setMessageStatus({ messageId: chatMessageId, status: isCanceled ? "canceled" : "error" }),
-      );
-    });
   },
 });
 
@@ -96,6 +83,14 @@ export const getMessages = createSelector(
 export const getMessageById = (state: RootState, id: string) => state.chat.messagesById[id];
 export const getMessagesCount = (state: RootState) => state.chat.messageIds.length;
 
-export const { addChatMessage, setMessageStatus, updateMessageContent, resetChat } =
-  chatSlice.actions;
+export const {
+  addChatMessage,
+  setMessageStatus,
+  updateMessageContent,
+  startMessageStream,
+  finalizeMessageStream,
+  failMessageStream,
+  appendMessageChunk,
+  resetChat,
+} = chatSlice.actions;
 export default chatSlice.reducer;
