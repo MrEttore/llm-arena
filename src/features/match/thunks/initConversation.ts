@@ -1,5 +1,5 @@
 import type { AppDispatch } from "@/app/store";
-import { initializeChat } from "@/features/chat/thunks/initializeChat";
+import { initChat } from "@/features/chat/thunks";
 import { setActiveContestantId } from "@/features/contestants/slice";
 import { initializeContestantMessages } from "@/features/contestants/thunks/initializeContestantMessages";
 
@@ -15,7 +15,7 @@ export function initConversation(
       dispatch(setActiveContestantId(startingContestant));
       dispatch(setNumberOfExchanges(numberOfExchanges));
       await dispatch(initializeContestantMessages(conversationStarter));
-      await dispatch(initializeChat(conversationStarter));
+      await dispatch(initChat(conversationStarter));
       return true;
     } catch {
       return false;
