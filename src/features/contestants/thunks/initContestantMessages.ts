@@ -7,7 +7,7 @@ import {
 
 import { updateContestantMessages } from "../slice";
 
-export const initializeContestantMessages = (conversationStarter: string) => {
+export const initContestantMessages = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     const { contestants, activeContestantId } = getState().contestants;
     if (!activeContestantId) return;
