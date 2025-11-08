@@ -1,9 +1,9 @@
 import type { AppDispatch, RootState } from "@/app/store";
 import { switchActiveContestant } from "@/features/contestants/slice";
+import { generateResponse } from "@/features/match/thunks";
 
 import { setStatus } from "../slice";
 import type { RejectedPayload } from "./generateResponse";
-import { generateResponse } from "./generateResponse";
 
 export function runConversation() {
   return async function (dispatch: AppDispatch, getState: () => RootState) {
