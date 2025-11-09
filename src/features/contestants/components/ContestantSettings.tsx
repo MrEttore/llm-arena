@@ -1,7 +1,7 @@
 import { CircleX, Dot } from "lucide-react";
 
 import { PRESETS } from "@/data/presets";
-import { useContestantForm } from "@/features/contestants/hooks/useContestantForm";
+import { useContestantForm } from "@/features/contestants/hooks";
 import { AddButton, ClearButton, LoadPresentsButton } from "@/ui/buttons";
 
 type Props = { contestantNumber: number };

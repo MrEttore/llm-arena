@@ -3,7 +3,7 @@ import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
 
 import { useAppSelector } from "@/app/hooks";
 import { getMessages } from "@/features/chat/slice";
-import ContestantSpeechBubble from "@/features/contestants/components/ContestantSpeechBubble";
+import { ContestantSpeechBubble } from "@/features/contestants/components";
 
 function VirtualizedChatList() {
   const [isAtBottom, setIsAtBottom] = useState(true);

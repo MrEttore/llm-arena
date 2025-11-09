@@ -1,5 +1,5 @@
-import ContestantSettings from "../../contestants/components/ContestantSettings";
-import MatchSettings from "./MatchSettings";
+import { ContestantSettings } from "@/features/contestants/components";
+import { MatchSettings } from "@/features/match/components";
 
 export default function Settings() {
   return (
