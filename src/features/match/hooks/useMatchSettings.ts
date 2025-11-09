@@ -10,7 +10,7 @@ import type { Contestant } from "@/types";
 
 import { cancelGenerateResponse } from "../thunks/generateResponse";
 
-export function useMatchControl() {
+export function useMatchSettings() {
   const [startingContestant, setStartingContestant] = useState<Contestant | null>(null);
   const [numberOfExchanges, setNumberOfExchanges] = useState("");
   const [iceBreaker, setIceBreaker] = useState("");
@@ -19,11 +19,6 @@ export function useMatchControl() {
   const contestants = useAppSelector(getContestants);
   const matchStatus = useAppSelector(getMatchStatus);
 
-  const handleNumberOfExchangesChange = (value: string) => setNumberOfExchanges(value);
-  const handleStartingContestantChange = (value: Contestant) => setStartingContestant(value);
-  const handleIceBreakerChange = (value: string) => setIceBreaker(value);
-
-  const isRunning = matchStatus === "running";
   const isReadyToStart =
     contestants.length === 2 &&
     iceBreaker.trim() !== "" &&
@@ -65,15 +60,12 @@ export function useMatchControl() {
       numberOfExchanges,
       iceBreaker,
     },
-    handleNumberOfExchangesChange,
-    handleStartingContestantChange,
-    handleIceBreakerChange,
+    setters: { setStartingContestant, setNumberOfExchanges, setIceBreaker },
     matchStatus,
-    isRunning,
     isReadyToStart,
+    contestants,
     handleStart,
     handleCancel,
     handleReset,
-    contestants,
   };
 }

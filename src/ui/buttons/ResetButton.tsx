@@ -2,21 +2,23 @@ import { RotateCcw } from "lucide-react";
 import type { MouseEvent } from "react";
 
 type Props = {
-  onReset: (e: MouseEvent<HTMLButtonElement>) => void;
+  disabled?: boolean;
+  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-function ResetButton({ onReset }: Props) {
+export default function ResetButton({ disabled = false, onClick }: Props) {
   return (
     <button
       type="button"
-      onClick={onReset}
-      // className={`flex items-center gap-1 rounded-lg border-1 border-white/30 bg-white/15 px-2 py-1 text-xs font-semibold text-white shadow-md transition-all duration-300 hover:cursor-pointer hover:opacity-80 active:scale-[98%]`}
-      className="flex items-center gap-1 rounded-lg border-1 border-transparent px-2 py-1 font-semibold tracking-wider text-white transition-all duration-300 hover:cursor-pointer hover:border-white/5 hover:bg-white/5 hover:shadow-xs active:scale-[98%] lg:text-xs 2xl:text-sm"
+      onClick={onClick}
+      className={`flex items-center gap-1 rounded-lg border-1 border-transparent px-2 py-1 font-semibold tracking-wider text-white transition-all duration-300 lg:text-xs 2xl:text-sm ${
+        disabled
+          ? "cursor-not-allowed opacity-50"
+          : "cursor-pointer hover:border-white/5 hover:bg-white/5 hover:shadow-xs active:scale-[98%]"
+      }`}
     >
       <RotateCcw size={12} strokeWidth={2} />
       <p>Reset</p>
     </button>
   );
 }
-
-export default ResetButton;

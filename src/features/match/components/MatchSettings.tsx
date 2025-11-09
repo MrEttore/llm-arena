@@ -1,21 +1,17 @@
-import { CancelButton, ResetButton, StartButton } from "@/ui/buttons";
-
-import { useMatchControl } from "../hooks/useMatchControl";
+import { MatchControls } from "@/features/match/components";
+import { useMatchSettings } from "@/features/match/hooks";
 
 export default function MatchSettings() {
   const {
     fields: { startingContestant, numberOfExchanges, iceBreaker },
-    handleNumberOfExchangesChange,
-    handleStartingContestantChange,
-    handleIceBreakerChange,
+    setters: { setStartingContestant, setNumberOfExchanges, setIceBreaker },
     matchStatus,
-    isRunning,
     isReadyToStart,
+    contestants,
     handleStart,
     handleCancel,
     handleReset,
-    contestants,
-  } = useMatchControl();
+  } = useMatchSettings();
 
   return (
     <div className="flex min-h-0 flex-1 flex-col space-y-2 rounded-xl border-1 border-white/20 bg-linear-to-br from-white/15 to-white/10 p-2 font-medium shadow-2xl backdrop-blur-lg">
@@ -37,8 +33,10 @@ export default function MatchSettings() {
             <input
               type="text"
               id="number-of-exchanges"
+              inputMode="numeric"
+              pattern="[0-9]*"
               value={numberOfExchanges}
-              onChange={(e) => handleNumberOfExchangesChange(e.target.value)}
+              onChange={(e) => setNumberOfExchanges(e.target.value)}
               className="w-15 rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder="e.g., 5"
             />
@@ -58,7 +56,7 @@ export default function MatchSettings() {
                   <button
                     type="button"
                     key={contestant.id}
-                    onClick={() => handleStartingContestantChange(contestant)}
+                    onClick={() => setStartingContestant(contestant)}
                     className={`cursor-pointer px-2 py-1 text-white transition-colors duration-300 lg:text-xs 2xl:text-base ${startingContestant?.id === contestant.id ? "bg-white/15" : "hover:bg-white/5"}`}
                   >
                     {contestant.name}
@@ -84,23 +82,18 @@ export default function MatchSettings() {
               id="ice-breaker"
               rows={2}
               value={iceBreaker}
-              onChange={(e) => handleIceBreakerChange(e.target.value)}
+              onChange={(e) => setIceBreaker(e.target.value)}
               className="flex-1 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none lg:text-xs 2xl:text-base dark:text-gray-200"
               placeholder="e.g., Debate: Is pineapple on pizza acceptable?"
             />
           </div>
         </div>
-        <div className="mt-auto flex items-end justify-end gap-2 border-t-1 border-white/20 pt-2">
-          <ResetButton onReset={handleReset} />
-          {matchStatus !== "running" ? (
-            <StartButton
-              isReadyToStart={isReadyToStart}
-              isConversationCanceled={matchStatus === "canceled"}
-            />
-          ) : (
-            <CancelButton onCancel={handleCancel} />
-          )}
-        </div>
+        <MatchControls
+          matchStatus={matchStatus}
+          isReadyToStart={isReadyToStart}
+          onCancel={handleCancel}
+          onReset={handleReset}
+        />
       </form>
     </div>
   );

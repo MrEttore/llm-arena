@@ -1,17 +1,16 @@
 import { Play } from "lucide-react";
 
 type Props = {
-  isReadyToStart: boolean;
-  isConversationCanceled: boolean;
+  disabled?: boolean;
 };
 
-function StartButton({ isReadyToStart, isConversationCanceled }: Props) {
+export default function StartButton({ disabled = false }: Props) {
   return (
     <button
       type="submit"
-      disabled={!isReadyToStart || isConversationCanceled}
+      disabled={disabled}
       className={`flex items-center gap-1 rounded-lg border-1 border-white/30 bg-white/15 px-2 py-1 font-semibold text-white shadow-md transition-all duration-300 lg:text-xs 2xl:text-sm ${
-        !isReadyToStart || isConversationCanceled
+        disabled
           ? "opacity-50 hover:cursor-not-allowed hover:opacity-50"
           : "hover:cursor-pointer hover:opacity-80 active:scale-[98%]"
       }`}
@@ -21,5 +20,3 @@ function StartButton({ isReadyToStart, isConversationCanceled }: Props) {
     </button>
   );
 }
-
-export default StartButton;
