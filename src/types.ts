@@ -48,4 +48,5 @@ export type Contestant = {
   systemPrompt: string;
   messages: ApiMessage[]; // rename to "messageHistory" or "promptHistory" or (better) ConversationBufferMemory?
   isThinking?: boolean;
+  avatarUrl?: string;
 };

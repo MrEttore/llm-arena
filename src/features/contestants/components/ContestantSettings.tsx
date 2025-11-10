@@ -1,39 +1,48 @@
-import { CircleX, Dot } from "lucide-react";
+import { CircleX, LoaderCircle } from "lucide-react";
 
 import { PRESETS } from "@/data/presets";
 import { useContestantForm } from "@/features/contestants/hooks";
-import { AddButton, ClearButton, LoadPresentsButton } from "@/ui/buttons";
+import { AddButton, ClearButton, GenAvatarButton, LoadPresentsButton } from "@/ui/buttons";
 
 type Props = { contestantNumber: number };
 
 export default function ContestantSettings({ contestantNumber }: Props) {
   const {
-    fields: { name, model, personality },
+    fields: { name, model, personality, avatarUrl, isLoadingImage },
+    setters: { setName, setModel, setPersonality, setIsLoadingImage },
     error,
     existing,
-    handleNameChange,
-    handleModelChange,
-    handlePersonalityChange,
     handleLoadPreset,
+    handleGenerateAvatar,
     handleSubmit,
     handleClear,
   } = useContestantForm(contestantNumber);
 
   return (
     <div className="min-h-0 lg:space-y-2 2xl:space-y-6">
-      <h3
-        className={`flex items-center gap-0.5 font-semibold tracking-wide text-white lg:text-sm 2xl:text-lg`}
-      >
-        <Dot
-          className={`${existing ? "text-green-700" : "text-white/20"}`}
-          size={12}
-          strokeWidth={8}
-        />
-        {`${contestantNumber + 1}. Contestant`}
-      </h3>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1.5">
+        <div className="grid grid-cols-[auto_1fr_1fr] gap-1.5">
+          <div className="flex flex-row">
+            <div className="relative h-14 w-14">
+              {isLoadingImage && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full border border-white/10 bg-white/10 shadow-sm">
+                  <LoaderCircle className="h-5 w-5 animate-spin text-white/60" />
+                </div>
+              )}
+              <img
+                className={`absolute inset-0 h-full w-full rounded-full border border-white/10 object-cover shadow-sm transition-opacity duration-300 ${isLoadingImage ? "opacity-0" : "opacity-100"}`}
+                src={avatarUrl || "./placeholder-avatar.svg"}
+                alt={`Contestant ${contestantNumber}'s avatar`}
+                onLoad={() => setIsLoadingImage(false)}
+                onError={(e) => {
+                  e.currentTarget.src = "./placeholder-avatar.svg";
+                  setIsLoadingImage(false);
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="ml-3 flex flex-col gap-1.5">
             <label
               htmlFor="name"
               className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
@@ -44,11 +53,12 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               type="text"
               id="name"
               value={name}
-              onChange={(e) => handleNameChange(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].name}`}
             />
           </div>
+
           <div className="flex flex-col gap-1.5">
             <label
               htmlFor="model"
@@ -60,12 +70,13 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               type="text"
               id="model"
               value={model}
-              onChange={(e) => handleModelChange(e.target.value)}
+              onChange={(e) => setModel(e.target.value)}
               className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].model}`}
             />
           </div>
-          <div className="col-span-2 flex flex-col gap-1.5">
+
+          <div className="col-span-3 flex flex-col gap-1.5">
             <label
               htmlFor="personality"
               className="pl-1 font-medium tracking-wider text-white/60 lg:text-xs 2xl:text-base"
@@ -76,7 +87,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               id="personality"
               rows={2}
               value={personality}
-              onChange={(e) => handlePersonalityChange(e.target.value)}
+              onChange={(e) => setPersonality(e.target.value)}
               className="resize-none rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].systemPrompt}`}
             />
@@ -90,9 +101,13 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               {error}
             </p>
           )}
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <ClearButton onClear={handleClear} />
-            <div className="flex gap-2 border-l-1 border-white/20 pl-2">
+            <div className="flex gap-0.5 border-l-1 border-white/20 pl-1">
+              <GenAvatarButton
+                disabled={!personality ? true : false}
+                onClick={handleGenerateAvatar}
+              />
               <LoadPresentsButton onLoad={handleLoadPreset} />
               <AddButton contestantId={existing?.id} />
             </div>

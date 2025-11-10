@@ -15,6 +15,8 @@ export function useContestantForm(contestantNumber: number) {
   const [name, setName] = useState<string>("");
   const [model, setModel] = useState<string>("gpt-4.1-mini");
   const [personality, setPersonality] = useState<string>("");
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
@@ -26,11 +28,16 @@ export function useContestantForm(contestantNumber: number) {
     setName(existing?.name ?? "");
     setModel(existing?.model ?? "gpt-4.1-mini");
     setPersonality(existing?.systemPrompt ?? "");
+    setAvatarUrl(existing?.avatarUrl ?? "");
+    setIsLoadingImage(false);
   }, [existing]);
 
-  const handleNameChange = (value: string) => setName(value);
-  const handleModelChange = (value: string) => setModel(value);
-  const handlePersonalityChange = (value: string) => setPersonality(value);
+  // TODO: Generate avatar using AI service
+  const handleGenerateAvatar = () => {
+    setIsLoadingImage(true);
+    const url = `https://avatar.iran.liara.run/public?ts=${Date.now()}`;
+    setAvatarUrl(url);
+  };
 
   const handleLoadPreset = () => {
     const { name, model, systemPrompt } = PRESETS[contestantNumber];
@@ -55,6 +62,7 @@ export function useContestantForm(contestantNumber: number) {
           name,
           model,
           systemPrompt: personality,
+          avatarUrl,
         }),
       );
     } else {
@@ -64,6 +72,7 @@ export function useContestantForm(contestantNumber: number) {
         model,
         systemPrompt: personality,
         messages: [],
+        avatarUrl,
       };
       dispatch(addContestant(newContestant));
     }
@@ -75,17 +84,18 @@ export function useContestantForm(contestantNumber: number) {
     setName("");
     setModel("gpt-4.1-mini");
     setPersonality("");
+    setAvatarUrl("");
+    setIsLoadingImage(false);
     setError(null);
   };
 
   return {
-    fields: { name, model, personality },
+    fields: { name, model, personality, avatarUrl, isLoadingImage },
+    setters: { setName, setModel, setPersonality, setIsLoadingImage },
     error,
     existing,
-    handleNameChange,
-    handleModelChange,
-    handlePersonalityChange,
     handleLoadPreset,
+    handleGenerateAvatar,
     handleSubmit,
     handleClear,
   };
