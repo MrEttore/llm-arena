@@ -2,7 +2,7 @@ import { AudioLines } from "lucide-react";
 
 import { useAppSelector } from "@/app/hooks";
 import { getContestantById } from "@/features/contestants/slice";
-import type { ChatMessage } from "@/types";
+import type { ChatMessage } from "@/types/domain";
 
 type Props = {
   message: ChatMessage;

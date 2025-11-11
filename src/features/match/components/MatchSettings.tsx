@@ -14,10 +14,7 @@ export default function MatchSettings() {
   } = useMatchSettings();
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col space-y-2 rounded-xl border-1 border-white/20 bg-linear-to-br from-white/15 to-white/10 p-2 font-medium shadow-2xl backdrop-blur-lg">
-      <h3 className={`flex items-center justify-center gap-1 text-white lg:text-sm 2xl:text-lg`}>
-        Match Settings
-      </h3>
+    <div className="flex min-h-0 flex-1 flex-col p-1 font-medium">
       <form className="flex min-h-0 flex-1 flex-col" onSubmit={handleStart}>
         <div className="flex min-h-0 space-y-2 overflow-hidden">
           <div className="grid flex-1 grid-cols-2 gap-1.5 overflow-y-auto">
@@ -35,7 +32,7 @@ export default function MatchSettings() {
                 pattern="[0-9]*"
                 value={numberOfExchanges}
                 onChange={(e) => setNumberOfExchanges(e.target.value)}
-                className="w-15 rounded-lg border-1 border-white/10 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none lg:text-xs 2xl:text-base"
+                className="w-15 rounded border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
                 placeholder="e.g., 5"
               />
             </div>
@@ -47,7 +44,7 @@ export default function MatchSettings() {
               <div
                 role="group"
                 aria-label="starting-contestant"
-                className="flex min-w-15 items-center justify-around overflow-hidden rounded-lg border-1 border-white/10"
+                className="flex min-w-15 items-center justify-around overflow-hidden rounded border-1 border-white/10 bg-white/5"
               >
                 {contestants.length ? (
                   contestants.map((contestant) => (
@@ -78,10 +75,10 @@ export default function MatchSettings() {
               </label>
               <textarea
                 id="ice-breaker"
-                rows={2}
+                rows={3}
                 value={iceBreaker}
                 onChange={(e) => setIceBreaker(e.target.value)}
-                className="flex-1 resize-none rounded-lg border-1 border-white/10 px-2 py-1 transition-colors duration-300 placeholder:font-light placeholder:text-white/30 placeholder:italic hover:border-white/30 focus:border-white/40 focus:outline-none lg:text-xs 2xl:text-base dark:text-gray-200"
+                className="resize-none rounded border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
                 placeholder="e.g., Debate: Is pineapple on pizza acceptable?"
               />
             </div>

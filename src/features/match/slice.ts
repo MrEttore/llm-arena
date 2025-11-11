@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
 import { generateResponse } from "@/features/match/thunks/generateResponse";
-import type { MatchState } from "@/types";
+import type { MatchState } from "@/types/domain";
 
 const initialState: MatchState = {
   status: "idle",

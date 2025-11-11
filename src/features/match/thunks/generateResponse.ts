@@ -11,7 +11,7 @@ import {
 } from "@/features/chat/slice";
 import { getActiveContestantPair } from "@/features/contestants/slice";
 import { streamChatCompletion } from "@/services/llmManagerApi";
-import type { ApiMessage, ChatMessage } from "@/types";
+import type { ApiMessage, ChatMessage } from "@/types/domain";
 import { buildAssistantMessage, buildChatMessage, buildUserMessage } from "@/utils/messageBuilders";
 
 let inFlight: { controller: AbortController; messageId: string } | null = null;

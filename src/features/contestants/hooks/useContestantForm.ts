@@ -9,7 +9,7 @@ import {
   getContestants,
   updateContestant,
 } from "@/features/contestants/slice";
-import type { Contestant } from "@/types";
+import type { Contestant } from "@/types/domain";
 
 export function useContestantForm(contestantNumber: number) {
   const [name, setName] = useState<string>("");

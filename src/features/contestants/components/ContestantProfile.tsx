@@ -1,4 +1,4 @@
-import type { Contestant } from "@/types";
+import type { Contestant } from "@/types/domain";
 
 interface Props {
   profile?: Contestant;

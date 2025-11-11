@@ -1,5 +1,6 @@
 import { CircleX, LoaderCircle } from "lucide-react";
 
+import placeholderAvatar from "@/assets/placeholder-avatar.svg";
 import { PRESETS } from "@/data/presets";
 import { useContestantForm } from "@/features/contestants/hooks";
 import { AddButton, ClearButton, GenAvatarButton, LoadPresentsButton } from "@/ui/buttons";
@@ -19,7 +20,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
   } = useContestantForm(contestantNumber);
 
   return (
-    <div className="min-h-0 lg:space-y-2 2xl:space-y-6">
+    <div className="min-h-0 p-1 lg:space-y-2 2xl:space-y-6">
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-[auto_1fr_1fr] gap-1.5">
           <div className="flex flex-row">
@@ -31,7 +32,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               )}
               <img
                 className={`absolute inset-0 h-full w-full rounded-full border border-white/10 object-cover shadow-sm transition-opacity duration-300 ${isLoadingImage ? "opacity-0" : "opacity-100"}`}
-                src={avatarUrl || "./placeholder-avatar.svg"}
+                src={avatarUrl || placeholderAvatar}
                 alt={`Contestant ${contestantNumber}'s avatar`}
                 onLoad={() => setIsLoadingImage(false)}
                 onError={(e) => {
@@ -54,7 +55,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
+              className="rounded border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].name}`}
             />
           </div>
@@ -71,7 +72,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               id="model"
               value={model}
               onChange={(e) => setModel(e.target.value)}
-              className="rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
+              className="rounded border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].model}`}
             />
           </div>
@@ -88,7 +89,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               rows={2}
               value={personality}
               onChange={(e) => setPersonality(e.target.value)}
-              className="resize-none rounded-lg border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
+              className="resize-none rounded border-1 border-white/10 bg-white/5 px-2 py-1 text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none lg:text-xs 2xl:text-base"
               placeholder={`e.g., ${PRESETS[contestantNumber].systemPrompt}`}
             />
           </div>
@@ -101,9 +102,9 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               {error}
             </p>
           )}
-          <div className="flex gap-1">
+          <div className="flex overflow-hidden rounded border border-white/10 bg-white/5">
             <ClearButton onClear={handleClear} />
-            <div className="flex gap-0.5 border-l-1 border-white/20 pl-1">
+            <div className="flex border-l-1 border-white/10">
               <GenAvatarButton
                 disabled={!personality ? true : false}
                 onClick={handleGenerateAvatar}

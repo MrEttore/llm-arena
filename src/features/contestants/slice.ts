@@ -3,7 +3,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
 import { generateResponse } from "@/features/match/thunks/generateResponse";
-import type { ApiMessage, Contestant, ContestantsState } from "@/types";
+import type { ApiMessage, Contestant, ContestantsState } from "@/types/domain";
 
 const initialState: ContestantsState = {
   contestants: [],

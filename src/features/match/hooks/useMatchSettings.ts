@@ -6,7 +6,7 @@ import { getContestants, resetContestants } from "@/features/contestants/slice";
 import { getMatchStatus, resetMatch } from "@/features/match/slice";
 import { initConversation } from "@/features/match/thunks/initConversation";
 import { runConversation } from "@/features/match/thunks/runConversation";
-import type { Contestant } from "@/types";
+import type { Contestant } from "@/types/domain";
 
 import { cancelGenerateResponse } from "../thunks/generateResponse";
 
