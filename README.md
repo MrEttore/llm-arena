@@ -2,67 +2,142 @@
   <img src="assets/logo.png" alt="Logo" width="200" draggable="false"/>
 </p>
 
-# Dialectiq
+# Dialectiq <!-- omit in toc -->
 
-> Watch AI minds meet and speak. Dialectiq is a playground for multi‑agent conversation and reasoning experiments.
+Watch AI minds meet and speak — a multi‑agent conversation playground for experimenting with streaming generative AI, real‑time UI patterns, and scalable frontend state.
 
-Dialectiq started as a personal exploration into modern generative AI APIs from streaming chat completions to image generation and text‑to‑speech. It quickly evolved into a full‑featured experimental web app where multiple AI “contestants” debate, respond, and build on each other’s ideas while the UI streams their words in real time.
+## Table of Contents <!-- omit in toc -->
 
-This is not a product; it’s a learning lab. The goal is to prototype, refine, and push the boundaries of UI/AI integration: fast and resilient state management, performance‑minded rendering, and ergonomic hooks that make experimentation fun. If you’re curious about scalable frontend architecture for AI experiences, this is the kind of playground where ideas grow into patterns.
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Environment Variables](#environment-variables)
+  - [Installation](#installation)
+  - [Run Locally](#run-locally)
+  - [Build](#build)
+- [Roadmap](#roadmap)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-## 💡 Current Features
+## Overview
 
-- Multi‑agent chat (“contestants”) powered by streaming text completions. Messages render as they arrive via a SSE stream parser. Abort/cancel support for long or runaway generations
-- Configurable agent personalities. Choose model, system prompt, avatar, and an icebreaker to kick off the match
-- Efficient chat rendering using virtualization. Smooth scrolling and low memory footprint even with long conversations
-- Normalized Redux state for messages and participants
+Dialectiq began as a personal exploration into modern generative AI APIs (OpenAI, custom LLM manager) and evolved into a laboratory for multi‑agent dialogue and reasoning. Multiple AI "contestants" respond, debate, and build on each other's ideas while the UI streams their words chunk‑by‑chunk.
 
-## 🔮 Roadmap / Upcoming Work
+Core objectives:
 
-- Image generation: dynamic avatars for contestants via AI APIs
-- Text‑to‑Speech: let contestants “speak” their messages
-- Multi‑modal expansion: combine text, voice, and visuals
-- Advanced reasoning / scoring mode: analyze conversation quality
-- Session saving & replays: explore past debates and outcomes
+- Rapid, resilient UI updates from streaming sources (Server‑Sent style parsing over fetch body)
+- Scalable, normalized Redux state (messages + agents) with ergonomic selector & hook patterns
+- Performance‑minded rendering (virtualized lists, minimal re-renders, small memory footprint)
+- A safe sandbox to experiment with multi‑agent orchestration & prompt design
 
-## 🧰 Tech Stack
+## Tech Stack
 
-- Frontend: React 19, TypeScript, Vite, Tailwind CSS
-- State management: Redux Toolkit + custom hooks
-- Async & API layer: OpenAI (and other GenAI providers) via a [personal LLM manager](https://github.com/MrEttore/SanctuAIry/tree/main/llm-manager) service
-- Optimizations: Chat message virtualization + normalized state
+- Language: TypeScript
+- Frontend: React 19 + Vite
+- Styling: Tailwind CSS
+- State: Redux Toolkit + custom hooks
+- Async AI layer: Fetch + streaming parser to a personal LLM manager service (OpenAI under the hood)
+- Tooling: ESLint (custom config), Prettier (+ Tailwind plugin), Vitest, TypeScript strict mode
 
-These choices are intentional for learning best practices in scalable frontend architecture: co‑locating feature logic, normalizing state to avoid re‑renders, composing UI from focused components, and wiring streaming APIs through predictable async boundaries.
+## Features
 
-## 🧪 Learning Goals
+Implemented:
 
-- Build modular, scalable React apps with Redux and custom hooks
-- Integrate real‑time streaming APIs for conversational UIs
-- Experiment with generative AI (text now; image/audio next)
-- Design clean component architecture and performance‑first UIs
+- Multi‑agent chat with streaming message generation (append chunks as they arrive)
+- Abort support for runaway generations
+- Configurable contestant personalities: model, system prompt, avatar seed, icebreaker
+- Virtualized message list for long conversations (`react-virtuoso`)
+- Normalized message & agent state slices (fast lookup + derived selectors)
 
-## 🧱 Project Structure
+Planned / in progress:
+
+- Dynamic AI‑generated avatars (image generation)
+- Text‑to‑speech playback for messages
+- Multi‑modal (text + voice + images) expansion
+- Conversation scoring / reasoning analytics layer
+- Session persistence & replay
+
+## Project Structure
 
 ```text
 src/
-├─ app/                # store, app-wide setup
+├─ app/                # Redux store setup
 ├─ features/
-│  ├─ chat/            # chat logic, streaming state, virtualization
-│  ├─ contestants/     # agent settings, avatars
-│  └─ match/           # match orchestration & flow
-├─ ui/
-│  ├─ layout/          # layout pieces
-│  └─ buttons/         # reusable UI components
-├─ assets/             # local assets (logos, images)
-├─ services/           # LLM manager API client
+│  ├─ chat/            # chat slice, streaming components
+│  ├─ contestants/     # contestant slice, settings & profiles
+│  └─ match/           # match flow orchestration & async thunks
+├─ ui/                 # reusable UI
+├─ services/           # API client to LLM manager (stream + completion)
 ├─ types/              # domain models & shared types
-└─ utils/              # small helpers (scroll, builders)
+├─ utils/              # small helpers
+├─ assets/             # local images/logo
+└─ public/             # static assets served by Vite
 ```
 
-## ✨ About This Project
+## Getting Started
 
-Dialectiq reflects my curiosity for modern frontend engineering and AI‑powered experiences. It's being built in my free time to explore how humans and machines might reason together. It’s an evolving space to practice scalable UI patterns while integrating real‑time generative systems.
+### Prerequisites
+
+- Node.js 18+ (tested on recent LTS)
+- npm (bundled) — or swap for pnpm/yarn if preferred
+
+### Environment Variables
+
+Create a `.env` file at the project root:
+
+```bash
+# LLM manager base URL (point to your running manager instance)
+VITE_LLM_MANAGER_BASE_URL=http://localhost:8787
+```
+
+`VITE_` prefix exposes the variable to the client via Vite.
+
+### Installation
+
+```bash
+git clone https://github.com/MrEttore/Dialectiq.git
+cd Dialectiq
+npm install
+```
+
+### Run Locally
+
+```bash
+npm run dev           # start Vite dev server
+npm run test          # run unit tests (Vitest)
+npm run test:coverage # coverage report
+npm run lint          # ESLint checks
+npm run typecheck     # TypeScript type checking
+```
+
+### Build
+
+```bash
+npm run build         # type check then create production bundle
+npm run preview       # locally preview production build
+```
+
+## Roadmap
+
+- [ ] AI avatar/image generation for contestants
+- [ ] Text‑to‑speech integration
+- [ ] Conversation scoring & reasoning analytics
+- [ ] Session save + replay viewer
+- [ ] Multi‑modal expansion (voice/image alongside text)
+
+## License
+
+Currently unlicensed (personal learning project). If you intend to use code beyond personal experimentation, please open an issue to discuss adding a license.
+
+## Acknowledgements
+
+- OpenAI API
+- Inspiration from chat UIs focusing on streaming & virtualization techniques
+- Community tooling: Vite, Redux Toolkit, Tailwind CSS, React Query, React Virtuoso
 
 ---
 
-If you read this far and want to chat about frontend + AI, reach out — always happy to exchange notes on patterns and performance.
+If you read this far and want to chat about frontend + AI, reach out. I'm always happy to connect.
