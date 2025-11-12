@@ -4,7 +4,7 @@
 
 # Dialectiq <!-- omit in toc -->
 
-Watch AI minds meet and speak — a multi‑agent conversation playground for experimenting with streaming generative AI, real‑time UI patterns, and scalable frontend state.
+Watch AI minds meet and speak. Spin up AI contestants that generate, debate, and refine ideas in streamed conversations. Built to explore agent orchestration, prompting strategies, and reasoning.
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -140,4 +140,4 @@ Currently unlicensed (personal learning project). If you intend to use code beyo
 
 ---
 
-If you read this far and want to chat about frontend + AI, reach out. I'm always happy to connect.
+If you read this far and want to chat about frontend and AI, reach out. I'm always happy to connect!
