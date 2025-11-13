@@ -53,7 +53,7 @@ function VirtualizedChatList() {
         style={{ height: "100%" }}
         useWindowScroll={false}
         itemContent={(_, message) => (
-          <div className="mx-auto max-w-3xl px-2 py-2">
+          <div className="mx-auto w-full max-w-2xl py-2 sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl">
             <ContestantSpeechBubble key={message.id} message={message} />
           </div>
         )}
@@ -63,7 +63,7 @@ function VirtualizedChatList() {
         <button
           type="button"
           onClick={handleJumpToLatest}
-          className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/80 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur transition hover:cursor-pointer hover:bg-white"
+          className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur transition hover:cursor-pointer hover:bg-white sm:text-sm"
         >
           {unseenCount} new {unseenCount === 1 ? "message" : "messages"}
           <span className="text-slate-600">Jump to latest</span>
