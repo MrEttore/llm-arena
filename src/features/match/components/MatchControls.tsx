@@ -15,7 +15,7 @@ export default function MatchControls({ matchStatus, isReadyToStart, onCancel, o
   const canReset = matchStatus !== "idle";
 
   return (
-    <div className="mt-auto flex items-end justify-end gap-2 pt-2">
+    <div className="mt-auto flex flex-wrap items-end justify-end gap-2 pt-2">
       {canReset && <ResetButton onClick={onReset} />}
       {canCancel ? <CancelButton onClick={onCancel} /> : <StartButton disabled={!canStart} />}
     </div>
