@@ -3,8 +3,8 @@ import { MatchSettings } from "@/features/match/components";
 
 export default function Settings() {
   return (
-    <div className="flex min-h-0 flex-1 flex-col border-r border-white/10 lg:space-y-4 2xl:space-y-6">
-      <div className="space-y-1 font-medium">
+    <div className="space-y-4 overflow-y-auto border-b border-white/10 pb-4 lg:gap-5 lg:border-r lg:border-b-0 lg:pr-4 lg:pb-0 xl:pr-6 2xl:gap-6">
+      <div className="space-y-3 font-medium sm:space-y-4">
         {Array.from({ length: 2 }).map((_, i) => (
           <ContestantSettings key={i} contestantNumber={i} />
         ))}

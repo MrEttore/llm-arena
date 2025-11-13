@@ -16,9 +16,9 @@ export default function ContestantSpeechBubble({ message }: Props) {
     status === "streaming" ? (stream?.chunks.join("") ?? "") : (content ?? "");
 
   return (
-    <div className={`flex space-y-1 ${side === "right" ? "justify-end" : "justify-start"}`}>
+    <div className={`flex py-1 ${side === "right" ? "justify-end" : "justify-start"}`}>
       <div
-        className={`flex w-fit max-w-[75%] flex-col space-y-1 rounded-2xl ${side === "right" ? "rounded-tr-sm" : "rounded-tl-sm"} border-1 border-white/10 px-3 py-2 leading-snug break-words whitespace-pre-wrap text-white shadow backdrop-blur-2xl`}
+        className={`flex w-full max-w-[92%] flex-col space-y-1 rounded-2xl ${side === "right" ? "rounded-tr-sm" : "rounded-tl-sm"} border-1 border-white/10 px-3 py-2 leading-snug break-words whitespace-pre-wrap text-white shadow backdrop-blur-2xl sm:max-w-[85%] lg:max-w-[72%] xl:max-w-[65%]`}
       >
         <div className="flex items-center gap-2">
           <p className="text-[10px] font-light italic opacity-75">
@@ -35,15 +35,19 @@ export default function ContestantSpeechBubble({ message }: Props) {
         )}
 
         {(status === "streaming" || status === "sent") && (
-          <p className="relative text-xs">{resolvedContent}</p>
+          <p className="relative sm:text-base lg:text-sm 2xl:text-base">{resolvedContent}</p>
         )}
 
         {status === "error" && (
-          <p className="text-xs font-semibold text-rose-300">Something went wrong.</p>
+          <p className="font-semibold text-rose-300 sm:text-base lg:text-sm 2xl:text-base">
+            Something went wrong.
+          </p>
         )}
 
         {status === "canceled" && (
-          <p className="text-xs font-light text-white/60 italic">Response canceled.</p>
+          <p className="font-light text-white/60 italic sm:text-base lg:text-sm 2xl:text-base">
+            Response canceled.
+          </p>
         )}
       </div>
     </div>
