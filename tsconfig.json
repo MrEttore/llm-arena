@@ -13,7 +13,7 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["node", "vite/client"],
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
