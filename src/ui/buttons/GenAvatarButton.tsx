@@ -11,7 +11,7 @@ export default function GenAvatarButton({ disabled = false, onClick }: Props) {
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`flex items-center gap-1 px-2 py-1 font-semibold tracking-wide text-white transition-all duration-300 lg:text-xs 2xl:text-sm ${
+      className={`flex items-center gap-1 px-2 py-1 font-semibold tracking-wide text-white transition-all duration-300 lg:text-sm 2xl:text-base ${
         disabled
           ? "opacity-50 hover:cursor-not-allowed hover:opacity-50"
           : "hover:cursor-pointer hover:bg-white/5 hover:shadow-xs active:scale-[98%]"
