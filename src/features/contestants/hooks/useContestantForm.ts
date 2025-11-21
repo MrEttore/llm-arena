@@ -89,6 +89,8 @@ export function useContestantForm(contestantNumber: number) {
     setError(null);
   };
 
+  const handleClearError = () => setError(null);
+
   return {
     fields: { name, model, personality, avatarUrl, isLoadingImage },
     setters: { setName, setModel, setPersonality, setIsLoadingImage },
@@ -98,5 +100,6 @@ export function useContestantForm(contestantNumber: number) {
     handleGenerateAvatar,
     handleSubmit,
     handleClear,
+    handleClearError,
   };
 }
