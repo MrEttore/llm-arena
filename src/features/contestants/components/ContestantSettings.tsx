@@ -1,9 +1,9 @@
-import { CircleX, LoaderCircle } from "lucide-react";
+import { Ban, LoaderCircle, X } from "lucide-react";
 
 import placeholderAvatar from "@/assets/placeholder-avatar.svg";
 import { PRESETS } from "@/data/presets";
 import { useContestantForm } from "@/features/contestants/hooks";
-import { AddButton, ClearButton, GenAvatarButton, LoadPresentsButton } from "@/ui/buttons";
+import { AddButton, ClearButton, GenAvatarButton, LoadPresetsButton } from "@/ui/buttons";
 
 type Props = { contestantNumber: number };
 
@@ -17,6 +17,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
     handleGenerateAvatar,
     handleSubmit,
     handleClear,
+    handleClearError,
   } = useContestantForm(contestantNumber);
 
   return (
@@ -36,7 +37,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
                 alt={`Contestant ${contestantNumber}'s avatar`}
                 onLoad={() => setIsLoadingImage(false)}
                 onError={(e) => {
-                  e.currentTarget.src = "./placeholder-avatar.svg";
+                  e.currentTarget.src = placeholderAvatar;
                   setIsLoadingImage(false);
                 }}
               />
@@ -95,26 +96,32 @@ export default function ContestantSettings({ contestantNumber }: Props) {
           </div>
         </div>
 
-        <div
-          className={`flex items-center justify-between gap-2 pt-1 sm:justify-end ${error ? "justify-start" : "justify-end"}`}
-        >
-          {error && (
-            <p className="flex items-center gap-0.5 rounded-lg border-1 border-orange-700/30 bg-orange-700/15 px-2 py-1 text-xs font-semibold text-orange-700 shadow-md">
-              <CircleX size={12} />
-              {error}
-            </p>
-          )}
-          <div className="flex overflow-hidden rounded-xl border border-white/10 bg-white/5">
-            <ClearButton onClear={handleClear} />
+        <div className="flex flex-col gap-2 pt-1 sm:justify-end">
+          <div className="ml-auto flex overflow-hidden rounded-xl border border-white/10 bg-white/5">
+            <ClearButton onClick={handleClear} />
             <div className="flex border-l-1 border-white/10">
               <GenAvatarButton
                 disabled={!personality ? true : false}
                 onClick={handleGenerateAvatar}
               />
-              <LoadPresentsButton onLoad={handleLoadPreset} />
-              <AddButton contestantId={existing?.id} />
+              <LoadPresetsButton onClick={handleLoadPreset} />
+              <AddButton isUpdate={!existing ? false : true} />
             </div>
           </div>
+
+          {error && (
+            <div className="ml-auto flex items-center gap-1 rounded-xl border-1 border-white/10 bg-orange-700/10 px-2 py-1 text-xs font-semibold text-orange-700">
+              <Ban size={14} />
+              {error}
+              <button
+                type="button"
+                className="rounded-full bg-orange-700/20 p-0.5 text-xs font-normal transition-colors duration-300 hover:cursor-pointer hover:bg-orange-700/40"
+                onClick={handleClearError}
+              >
+                <X size={14} />
+              </button>
+            </div>
+          )}
         </div>
       </form>
     </div>
