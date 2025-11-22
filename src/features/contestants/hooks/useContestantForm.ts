@@ -2,7 +2,6 @@ import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { PRESETS } from "@/data/presets";
 import {
   addContestant,
   clearContestant,
@@ -10,6 +9,7 @@ import {
   updateContestant,
 } from "@/features/contestants/slice";
 import type { Contestant } from "@/types/domain";
+import { loadRandomPreset } from "@/utils/loadRandomPreset";
 
 export function useContestantForm(contestantNumber: number) {
   const [name, setName] = useState<string>("");
@@ -40,7 +40,9 @@ export function useContestantForm(contestantNumber: number) {
   };
 
   const handleLoadPreset = () => {
-    const { name, model, systemPrompt } = PRESETS[contestantNumber];
+    const randomPreset = loadRandomPreset();
+    const { name, model, systemPrompt } = randomPreset;
+
     setName(name);
     setModel(model);
     setPersonality(systemPrompt);
