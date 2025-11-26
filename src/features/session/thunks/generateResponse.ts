@@ -32,7 +32,7 @@ export const generateResponse = createAsyncThunk<
     dispatch: AppDispatch;
     rejectValue: RejectedPayload;
   }
->("match/generateResponse", async (_, { getState, dispatch, rejectWithValue }) => {
+>("session/generateResponse", async (_, { getState, dispatch, rejectWithValue }) => {
   let currentMessageId: string | undefined;
   let finalResponse = "";
   const controller = new AbortController();

@@ -2,7 +2,7 @@ import type { AppDispatch } from "@/app/store";
 import { setActiveAgentId } from "@/features/agents/slice";
 import { initAgentConversationMemory } from "@/features/agents/thunks";
 import { initChat } from "@/features/chat/thunks";
-import { setNumberOfExchanges } from "@/features/match/slice";
+import { setNumberOfExchanges } from "@/features/session/slice";
 
 export function initConversation(
   startingAgent: string,

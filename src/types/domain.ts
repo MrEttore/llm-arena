@@ -1,12 +1,5 @@
 // Slice state types
 
-export type MatchState = {
-  status: "idle" | "running" | "completed" | "error" | "canceled";
-  fetchingResponse: boolean;
-  numberOfExchanges?: number;
-  error?: string;
-};
-
 export type ChatState = {
   messageIds: string[];
   messagesById: { [id: string]: ChatMessage };

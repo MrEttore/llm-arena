@@ -65,7 +65,7 @@ src/
 ├─ features/
 │  ├─ chat/            # chat slice, streaming components
 │  ├─ agents/          # agents slice, settings & profiles
-│  └─ match/           # match flow orchestration & async thunks
+│  └─ session/         # session flow orchestration & async thunks
 ├─ ui/                 # reusable UI
 ├─ services/           # API client to LLM manager (stream + completion)
 ├─ types/              # domain models & shared types
