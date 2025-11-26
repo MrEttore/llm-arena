@@ -1,6 +1,6 @@
 import type { Agent } from "@/features/agents/types";
-
-import type { ApiMessage, ChatMessage } from "../types/domain";
+import type { ChatMessage } from "@/features/chat/types";
+import type { ApiMessage } from "@/types/domain";
 
 export function buildSystemMessage(agent: Agent, agents: Agent[]): ApiMessage {
   const otherAgent = agents.find((a) => a.id !== agent.id);

@@ -10,8 +10,9 @@ import {
   setMessageStatus,
   startMessageStream,
 } from "@/features/chat/slice";
+import type { ChatMessage } from "@/features/chat/types";
 import { streamChatCompletion } from "@/services/llmManagerApi";
-import type { ApiMessage, ChatMessage } from "@/types/domain";
+import type { ApiMessage } from "@/types/domain";
 import { buildAssistantMessage, buildChatMessage, buildUserMessage } from "@/utils/messageBuilders";
 
 let inFlight: { controller: AbortController; messageId: string } | null = null;
