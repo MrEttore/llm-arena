@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import type { ChatMessage, ChatMessageStatus, ChatState } from "@/types/domain";
+import type { ChatMessage, ChatMessageStatus, ChatState } from "@/features/chat/types";
 
 const initialState: ChatState = {
   messageIds: [],

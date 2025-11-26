@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import agentsReducer from "@/features/agents/slice";
 import chatReducer from "@/features/chat/slice";
-import contestantsReducer from "@/features/contestants/slice";
-import matchReducer from "@/features/match/slice";
+import sessionReducer from "@/features/session/slice";
 
 export const store = configureStore({
   reducer: {
     chat: chatReducer,
-    match: matchReducer,
-    contestants: contestantsReducer,
+    session: sessionReducer,
+    agents: agentsReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

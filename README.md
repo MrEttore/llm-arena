@@ -4,7 +4,7 @@
 
 # Dialectiq <!-- omit in toc -->
 
-Watch AI minds meet and speak. Spin up AI contestants that generate, debate, and refine ideas in streamed conversations. Built to explore agent orchestration, prompting strategies, and reasoning.
+Watch AI minds meet and speak. Spin up AI agents that generate, debate, and refine ideas in streamed conversations. Built to explore agent orchestration, prompting strategies, and reasoning.
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -22,7 +22,7 @@ Watch AI minds meet and speak. Spin up AI contestants that generate, debate, and
 
 ## Overview
 
-Dialectiq began as a personal exploration into modern generative AI APIs (OpenAI, Anthropic, Ollama) and evolved into a laboratory for multi‑agent dialogue and reasoning. Multiple AI "contestants" respond, debate, and build on each other's ideas while the UI streams their dialogs chunk‑by‑chunk.
+Dialectiq began as a personal exploration into modern generative AI APIs (OpenAI, Anthropic, Ollama) and evolved into a laboratory for multi‑agent dialogue and reasoning. Multiple AI "agents" respond, debate, and build on each other's ideas while the UI streams their dialogs chunk‑by‑chunk.
 
 Core objectives:
 
@@ -43,7 +43,7 @@ Core objectives:
 
 Implemented:
 
-- Configurable contestant personalities: model, system prompt, avatar seed, icebreaker
+- Configurable agent personalities: model, system prompt, avatar seed, icebreaker
 - Multi‑agent chat with streaming message generation
 - Abort support for runaway generations
 - Virtualized message list for long conversations (`react-virtuoso`)
@@ -64,8 +64,8 @@ src/
 ├─ app/                # Redux store setup
 ├─ features/
 │  ├─ chat/            # chat slice, streaming components
-│  ├─ contestants/     # contestant slice, settings & profiles
-│  └─ match/           # match flow orchestration & async thunks
+│  ├─ agents/          # agents slice, settings & profiles
+│  └─ session/         # session flow orchestration & async thunks
 ├─ ui/                 # reusable UI
 ├─ services/           # API client to LLM manager (stream + completion)
 ├─ types/              # domain models & shared types

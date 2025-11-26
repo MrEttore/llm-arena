@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
 
 import { useAppSelector } from "@/app/hooks";
+import { AgentSpeechBubble } from "@/features/agents/components";
 import { getMessages } from "@/features/chat/slice";
-import { ContestantSpeechBubble } from "@/features/contestants/components";
 
 function VirtualizedChatList() {
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -54,7 +54,7 @@ function VirtualizedChatList() {
         useWindowScroll={false}
         itemContent={(_, message) => (
           <div className="mx-auto w-full max-w-2xl py-2 sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-            <ContestantSpeechBubble key={message.id} message={message} />
+            <AgentSpeechBubble key={message.id} message={message} />
           </div>
         )}
       />

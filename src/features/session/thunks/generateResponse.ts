@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import type { AppDispatch, RootState } from "@/app/store";
+import { getActiveAgentPair } from "@/features/agents/slice";
 import {
   addChatMessage,
   appendMessageChunk,
@@ -9,9 +10,9 @@ import {
   setMessageStatus,
   startMessageStream,
 } from "@/features/chat/slice";
-import { getActiveContestantPair } from "@/features/contestants/slice";
+import type { ChatMessage } from "@/features/chat/types";
 import { streamChatCompletion } from "@/services/llmManagerApi";
-import type { ApiMessage, ChatMessage } from "@/types/domain";
+import type { ApiMessage } from "@/types/domain";
 import { buildAssistantMessage, buildChatMessage, buildUserMessage } from "@/utils/messageBuilders";
 
 let inFlight: { controller: AbortController; messageId: string } | null = null;
@@ -32,16 +33,16 @@ export const generateResponse = createAsyncThunk<
     dispatch: AppDispatch;
     rejectValue: RejectedPayload;
   }
->("match/generateResponse", async (_, { getState, dispatch, rejectWithValue }) => {
+>("session/generateResponse", async (_, { getState, dispatch, rejectWithValue }) => {
   let currentMessageId: string | undefined;
   let finalResponse = "";
   const controller = new AbortController();
 
   try {
-    const { activeContestant, nonActiveContestant } = getActiveContestantPair(getState());
-    if (!activeContestant || !nonActiveContestant) throw new Error("Contestant lookup failed");
+    const { activeAgent, nonActiveAgent } = getActiveAgentPair(getState());
+    if (!activeAgent || !nonActiveAgent) throw new Error("Agent lookup failed");
 
-    const pendingChatMessage = buildChatMessage(nonActiveContestant.id, "pending");
+    const pendingChatMessage = buildChatMessage(nonActiveAgent.id, "pending");
     currentMessageId = pendingChatMessage.id;
 
     dispatch(addChatMessage(pendingChatMessage));
@@ -50,8 +51,8 @@ export const generateResponse = createAsyncThunk<
     inFlight = { controller, messageId: pendingChatMessage.id };
 
     await streamChatCompletion({
-      model: activeContestant.model,
-      messages: activeContestant.messages,
+      model: activeAgent.model,
+      messages: activeAgent.conversationMemory,
       signal: controller.signal,
       onChunk: (chunk) => {
         finalResponse += chunk;

@@ -1,20 +1,19 @@
 import type { AppDispatch } from "@/app/store";
+import { setActiveAgentId } from "@/features/agents/slice";
+import { initAgentConversationMemory } from "@/features/agents/thunks";
 import { initChat } from "@/features/chat/thunks";
-import { setActiveContestantId } from "@/features/contestants/slice";
-import { initContestantMessages } from "@/features/contestants/thunks";
-
-import { setNumberOfExchanges } from "../slice";
+import { setNumberOfExchanges } from "@/features/session/slice";
 
 export function initConversation(
-  startingContestant: string,
+  startingAgent: string,
   numberOfExchanges: number,
   conversationStarter: string,
 ) {
   return async function (dispatch: AppDispatch) {
     try {
-      dispatch(setActiveContestantId(startingContestant));
+      dispatch(setActiveAgentId(startingAgent));
       dispatch(setNumberOfExchanges(numberOfExchanges));
-      await dispatch(initContestantMessages(conversationStarter));
+      await dispatch(initAgentConversationMemory(conversationStarter));
       await dispatch(initChat(conversationStarter));
       return true;
     } catch {

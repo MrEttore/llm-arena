@@ -2,26 +2,26 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import { generateResponse } from "@/features/match/thunks/generateResponse";
-import type { MatchState } from "@/types/domain";
+import { generateResponse } from "@/features/session/thunks";
+import type { SessionState } from "@/features/session/types";
 
-const initialState: MatchState = {
+const initialState: SessionState = {
   status: "idle",
   fetchingResponse: false,
 };
 
-const matchSlice = createSlice({
-  name: "match",
+const sessionSlice = createSlice({
+  name: "session",
   initialState,
   reducers: {
-    setStatus: (state, action: PayloadAction<MatchState["status"]>) => {
+    setStatus: (state, action: PayloadAction<SessionState["status"]>) => {
       state.status = action.payload;
     },
     setNumberOfExchanges: (state, action: PayloadAction<number>) => {
       state.numberOfExchanges = action.payload;
     },
 
-    resetMatch: () => initialState,
+    resetSession: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(generateResponse.pending, (state) => {
@@ -36,13 +36,12 @@ const matchSlice = createSlice({
       state.fetchingResponse = false;
       state.error = action.payload?.message;
 
-      matchSlice.caseReducers.setStatus(state, setStatus(isCanceled ? "canceled" : "error"));
+      sessionSlice.caseReducers.setStatus(state, setStatus(isCanceled ? "canceled" : "error"));
     });
   },
 });
 
-export const getIsTyping = (state: RootState) => state.match.fetchingResponse;
-export const getMatchStatus = (state: RootState) => state.match.status;
+export const getSessionStatus = (state: RootState) => state.session.status;
 
-export const { setStatus, setNumberOfExchanges, resetMatch } = matchSlice.actions;
-export default matchSlice.reducer;
+export const { setStatus, setNumberOfExchanges, resetSession } = sessionSlice.actions;
+export default sessionSlice.reducer;
