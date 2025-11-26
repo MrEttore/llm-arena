@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 
 import { useAppSelector } from "@/app/hooks";
+import { AgentSpeechBubble } from "@/features/agents/components";
 import { getMessages } from "@/features/chat/slice";
-import ContestantSpeechBubble from "@/features/contestants/components/ContestantSpeechBubble";
 import { isNearBottom } from "@/utils/isNearBottom";
 
 export default function ChatMessages() {
@@ -36,7 +36,7 @@ export default function ChatMessages() {
     >
       <div className="mx-auto max-w-3xl space-y-4">
         {messages.map((message) => (
-          <ContestantSpeechBubble message={message} key={message.id} />
+          <AgentSpeechBubble message={message} key={message.id} />
         ))}
       </div>
     </div>

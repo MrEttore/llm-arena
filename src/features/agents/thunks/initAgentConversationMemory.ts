@@ -1,39 +1,38 @@
 import type { AppDispatch, RootState } from "@/app/store";
+import { updateAgentConversationMemory } from "@/features/agents/slice";
 import {
   buildAssistantMessage,
   buildSystemMessage,
   buildUserMessage,
 } from "@/utils/messageBuilders";
 
-import { updateContestantMessages } from "../slice";
-
-export const initContestantMessages = (conversationStarter: string) => {
+export const initAgentConversationMemory = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { contestants, activeContestantId } = getState().contestants;
-    if (!activeContestantId) return;
+    const { agents, activeAgentId } = getState().agents;
+    if (!activeAgentId) return;
 
-    for (const contestant of contestants) {
-      const systemMessage = buildSystemMessage(contestant, contestants);
+    for (const agent of agents) {
+      const systemMessage = buildSystemMessage(agent, agents);
       dispatch(
-        updateContestantMessages({
-          contestantId: contestant.id,
+        updateAgentConversationMemory({
+          agentId: agent.id,
           message: systemMessage,
         }),
       );
 
-      if (contestant.id === activeContestantId) {
+      if (agent.id === activeAgentId) {
         const userMessage = buildUserMessage(conversationStarter);
         dispatch(
-          updateContestantMessages({
-            contestantId: contestant.id,
+          updateAgentConversationMemory({
+            agentId: agent.id,
             message: userMessage,
           }),
         );
       } else {
         const assistantMessage = buildAssistantMessage(conversationStarter);
         dispatch(
-          updateContestantMessages({
-            contestantId: contestant.id,
+          updateAgentConversationMemory({
+            agentId: agent.id,
             message: assistantMessage,
           }),
         );

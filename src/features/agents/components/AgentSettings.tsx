@@ -2,12 +2,12 @@ import { Ban, LoaderCircle, X } from "lucide-react";
 
 import placeholderAvatar from "@/assets/placeholder-avatar.svg";
 import { PRESETS } from "@/data/presets";
-import { useContestantForm } from "@/features/contestants/hooks";
+import { useAgentSettings } from "@/features/agents/hooks";
 import { AddButton, ClearButton, GenAvatarButton, LoadPresetsButton } from "@/ui/buttons";
 
-type Props = { contestantNumber: number };
+type Props = { agentIndex: number };
 
-export default function ContestantSettings({ contestantNumber }: Props) {
+export default function AgentSettings({ agentIndex }: Props) {
   const {
     fields: { name, model, personality, avatarUrl, isLoadingImage },
     setters: { setName, setModel, setPersonality, setIsLoadingImage },
@@ -18,7 +18,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
     handleSubmit,
     handleClear,
     handleClearError,
-  } = useContestantForm(contestantNumber);
+  } = useAgentSettings(agentIndex);
 
   return (
     <div className="min-h-0 rounded-xl border border-white/10 bg-white/10 p-3 shadow-sm backdrop-blur sm:p-4 lg:space-y-4 2xl:space-y-6">
@@ -34,7 +34,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               <img
                 className={`absolute inset-0 rounded-full border border-white/10 object-cover shadow-sm transition-opacity duration-300 ${isLoadingImage ? "opacity-0" : "opacity-100"}`}
                 src={avatarUrl || placeholderAvatar}
-                alt={`Contestant ${contestantNumber}'s avatar`}
+                alt={`Agent ${agentIndex}'s avatar`}
                 onLoad={() => setIsLoadingImage(false)}
                 onError={(e) => {
                   e.currentTarget.src = placeholderAvatar;
@@ -57,7 +57,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`e.g., ${PRESETS[contestantNumber].name}`}
+              placeholder={`e.g., ${PRESETS[agentIndex].name}`}
             />
           </div>
 
@@ -74,7 +74,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               value={model}
               onChange={(e) => setModel(e.target.value)}
               className="rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`e.g., ${PRESETS[contestantNumber].model}`}
+              placeholder={`e.g., ${PRESETS[agentIndex].model}`}
             />
           </div>
 
@@ -91,7 +91,7 @@ export default function ContestantSettings({ contestantNumber }: Props) {
               value={personality}
               onChange={(e) => setPersonality(e.target.value)}
               className="min-h-[96px] resize-none rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`e.g., ${PRESETS[contestantNumber].systemPrompt}`}
+              placeholder={`e.g., ${PRESETS[agentIndex].systemPrompt}`}
             />
           </div>
         </div>

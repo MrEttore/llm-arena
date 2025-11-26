@@ -12,11 +12,6 @@ export type ChatState = {
   messagesById: { [id: string]: ChatMessage };
 };
 
-export type ContestantsState = {
-  contestants: Contestant[];
-  activeContestantId?: string;
-};
-
 // Domain types
 
 export type ApiMessage = {
@@ -39,14 +34,4 @@ export type ChatMessage = {
   timestamp: number;
   status?: ChatMessageStatus;
   stream?: ChatMessageStream;
-};
-
-export type Contestant = {
-  id: string;
-  name: string;
-  model: string;
-  systemPrompt: string;
-  messages: ApiMessage[]; // rename to "messageHistory" or "promptHistory" or (better) ConversationBufferMemory?
-  isThinking?: boolean;
-  avatarUrl?: string;
 };

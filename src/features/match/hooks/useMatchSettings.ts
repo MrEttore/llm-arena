@@ -1,37 +1,34 @@
 import { type FormEvent, type MouseEvent, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { getAgents, resetAgents } from "@/features/agents/slice";
+import type { Agent } from "@/features/agents/types";
 import { resetChat } from "@/features/chat/slice";
-import { getContestants, resetContestants } from "@/features/contestants/slice";
 import { getMatchStatus, resetMatch } from "@/features/match/slice";
-import { initConversation } from "@/features/match/thunks/initConversation";
-import { runConversation } from "@/features/match/thunks/runConversation";
-import type { Contestant } from "@/types/domain";
-
-import { cancelGenerateResponse } from "../thunks/generateResponse";
+import { cancelGenerateResponse, initConversation, runConversation } from "@/features/match/thunks";
 
 export function useMatchSettings() {
-  const [startingContestant, setStartingContestant] = useState<Contestant | null>(null);
+  const [startingAgent, setStartingAgent] = useState<Agent | null>(null);
   const [numberOfExchanges, setNumberOfExchanges] = useState("");
   const [iceBreaker, setIceBreaker] = useState("");
 
   const dispatch = useAppDispatch();
-  const contestants = useAppSelector(getContestants);
+  const agents = useAppSelector(getAgents);
   const matchStatus = useAppSelector(getMatchStatus);
 
   const isReadyToStart =
-    contestants.length === 2 &&
+    agents.length === 2 &&
     iceBreaker.trim() !== "" &&
     numberOfExchanges.trim() !== "" &&
-    startingContestant !== null;
+    startingAgent !== null;
 
   const handleStart = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!isReadyToStart || !startingContestant) return;
+    if (!isReadyToStart || !startingAgent) return;
 
     const ok = await dispatch(
-      initConversation(startingContestant.id, Number(numberOfExchanges), iceBreaker),
+      initConversation(startingAgent.id, Number(numberOfExchanges), iceBreaker),
     );
 
     if (ok) dispatch(runConversation());
@@ -46,24 +43,24 @@ export function useMatchSettings() {
   const handleReset = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setStartingContestant(null);
+    setStartingAgent(null);
     setIceBreaker("");
     setNumberOfExchanges("");
     dispatch(resetChat());
     dispatch(resetMatch());
-    dispatch(resetContestants());
+    dispatch(resetAgents());
   };
 
   return {
     fields: {
-      startingContestant,
+      startingAgent,
       numberOfExchanges,
       iceBreaker,
     },
-    setters: { setStartingContestant, setNumberOfExchanges, setIceBreaker },
+    setters: { setStartingAgent, setNumberOfExchanges, setIceBreaker },
     matchStatus,
     isReadyToStart,
-    contestants,
+    agents,
     handleStart,
     handleCancel,
     handleReset,

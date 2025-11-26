@@ -3,11 +3,11 @@ import { useMatchSettings } from "@/features/match/hooks";
 
 export default function MatchSettings() {
   const {
-    fields: { startingContestant, numberOfExchanges, iceBreaker },
-    setters: { setStartingContestant, setNumberOfExchanges, setIceBreaker },
+    fields: { startingAgent, numberOfExchanges, iceBreaker },
+    setters: { setStartingAgent, setNumberOfExchanges, setIceBreaker },
     matchStatus,
     isReadyToStart,
-    contestants,
+    agents,
     handleStart,
     handleCancel,
     handleReset,
@@ -43,22 +43,20 @@ export default function MatchSettings() {
               </label>
               <div
                 role="group"
-                aria-label="starting-contestant"
+                aria-label="starting-agent"
                 className="flex w-fit items-center justify-between overflow-hidden rounded-xl border-1 border-white/10 bg-white/5"
               >
-                {contestants.length ? (
-                  contestants.map((contestant) => (
+                {agents.length ? (
+                  agents.map((agent) => (
                     <button
                       type="button"
-                      key={contestant.id}
-                      onClick={() => setStartingContestant(contestant)}
+                      key={agent.id}
+                      onClick={() => setStartingAgent(agent)}
                       className={`cursor-pointer px-3 py-2 text-sm text-white transition-colors duration-300 sm:text-base lg:text-sm 2xl:text-base ${
-                        startingContestant?.id === contestant.id
-                          ? "bg-white/15"
-                          : "hover:bg-white/5"
+                        startingAgent?.id === agent.id ? "bg-white/15" : "hover:bg-white/5"
                       }`}
                     >
-                      {contestant.name}
+                      {agent.name}
                     </button>
                   ))
                 ) : (
@@ -79,7 +77,7 @@ export default function MatchSettings() {
                 htmlFor="ice-breaker"
                 className="pl-1 text-xs font-medium tracking-wider text-white/60 sm:text-sm lg:text-xs xl:text-sm 2xl:text-base"
               >
-                {startingContestant ? `${startingContestant.name}'s ice breaker` : "Ice Breaker"}
+                {startingAgent ? `${startingAgent.name}'s ice breaker` : "Ice Breaker"}
               </label>
               <textarea
                 id="ice-breaker"

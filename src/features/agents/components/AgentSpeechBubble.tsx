@@ -1,16 +1,16 @@
 import { AudioLines } from "lucide-react";
 
 import { useAppSelector } from "@/app/hooks";
-import { getContestantById } from "@/features/contestants/slice";
+import { getAgentById } from "@/features/agents/slice";
 import type { ChatMessage } from "@/types/domain";
 
 type Props = {
   message: ChatMessage;
 };
 
-export default function ContestantSpeechBubble({ message }: Props) {
+export default function AgentSpeechBubble({ message }: Props) {
   const { content, authorId, status, stream } = message;
-  const { contestant, index } = useAppSelector((state) => getContestantById(state, authorId));
+  const { agent, index } = useAppSelector((state) => getAgentById(state, authorId));
   const side = index === 0 ? "left" : "right";
   const resolvedContent =
     status === "streaming" ? (stream?.chunks.join("") ?? "") : (content ?? "");
@@ -22,7 +22,7 @@ export default function ContestantSpeechBubble({ message }: Props) {
       >
         <div className="flex items-center gap-2">
           <p className="text-[10px] font-light italic opacity-75">
-            <span className="font-semibold">{contestant?.name}</span> ({contestant?.model})
+            <span className="font-semibold">{agent?.name}</span> ({agent?.model})
           </p>
           <AudioLines
             className="rounded-lg p-1 hover:cursor-pointer hover:bg-white/20"

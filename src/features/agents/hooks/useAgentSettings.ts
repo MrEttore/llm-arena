@@ -2,16 +2,11 @@ import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import {
-  addContestant,
-  clearContestant,
-  getContestants,
-  updateContestant,
-} from "@/features/contestants/slice";
-import type { Contestant } from "@/types/domain";
+import { addAgent, clearAgent, getAgents, updateAgent } from "@/features/agents/slice";
+import type { Agent } from "@/features/agents/types";
 import { loadRandomPreset } from "@/utils/loadRandomPreset";
 
-export function useContestantForm(contestantNumber: number) {
+export function useAgentSettings(agentIndex: number) {
   const [name, setName] = useState<string>("");
   const [model, setModel] = useState<string>("gpt-4.1-mini");
   const [personality, setPersonality] = useState<string>("");
@@ -20,9 +15,9 @@ export function useContestantForm(contestantNumber: number) {
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
-  const contestants = useAppSelector(getContestants);
+  const agents = useAppSelector(getAgents);
 
-  const existing = contestants[contestantNumber];
+  const existing = agents[agentIndex];
 
   useEffect(() => {
     setName(existing?.name ?? "");
@@ -59,7 +54,7 @@ export function useContestantForm(contestantNumber: number) {
 
     if (existing) {
       dispatch(
-        updateContestant({
+        updateAgent({
           id: existing.id,
           name,
           model,
@@ -68,21 +63,21 @@ export function useContestantForm(contestantNumber: number) {
         }),
       );
     } else {
-      const newContestant: Contestant = {
+      const newAgent: Agent = {
         id: crypto.randomUUID(),
         name,
         model,
         systemPrompt: personality,
-        messages: [],
+        conversationMemory: [],
         avatarUrl,
       };
-      dispatch(addContestant(newContestant));
+      dispatch(addAgent(newAgent));
     }
     setError(null);
   };
 
   const handleClear = () => {
-    if (existing) dispatch(clearContestant(existing.id));
+    if (existing) dispatch(clearAgent(existing.id));
     setName("");
     setModel("gpt-4.1-mini");
     setPersonality("");

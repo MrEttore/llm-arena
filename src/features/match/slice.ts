@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import { generateResponse } from "@/features/match/thunks/generateResponse";
+import { generateResponse } from "@/features/match/thunks";
 import type { MatchState } from "@/types/domain";
 
 const initialState: MatchState = {

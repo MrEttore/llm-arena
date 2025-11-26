@@ -1,9 +1,8 @@
 import type { AppDispatch, RootState } from "@/app/store";
-import { switchActiveContestant } from "@/features/contestants/slice";
+import { switchActiveAgent } from "@/features/agents/slice";
+import { setStatus } from "@/features/match/slice";
+import type { RejectedPayload } from "@/features/match/thunks";
 import { generateResponse } from "@/features/match/thunks";
-
-import { setStatus } from "../slice";
-import type { RejectedPayload } from "./generateResponse";
 
 export function runConversation() {
   return async function (dispatch: AppDispatch, getState: () => RootState) {
@@ -13,7 +12,7 @@ export function runConversation() {
     for (let i = 0; i < numberOfExchanges; i++) {
       try {
         await dispatch(generateResponse()).unwrap();
-        dispatch(switchActiveContestant());
+        dispatch(switchActiveAgent());
       } catch (error) {
         const cancelError = error as RejectedPayload;
         if (cancelError?.canceled) {
