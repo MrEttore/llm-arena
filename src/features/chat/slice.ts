@@ -75,10 +75,10 @@ const chatSlice = createSlice({
   },
 });
 
-export const getMessages = createSelector(
-  (state: RootState) => state.chat.messageIds,
-  (state: RootState) => state.chat.messagesById,
-  (ids, byId) => ids.map((id) => byId[id]),
+export const getMessageIds = (state: RootState) => state.chat.messageIds;
+export const getMessagesById = (state: RootState) => state.chat.messagesById;
+export const getMessages = createSelector(getMessageIds, getMessagesById, (ids, byId) =>
+  ids.map((id) => byId[id]),
 );
 export const getMessageById = (state: RootState, id: string) => state.chat.messagesById[id];
 export const getMessagesCount = (state: RootState) => state.chat.messageIds.length;

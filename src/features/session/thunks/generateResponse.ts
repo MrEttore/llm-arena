@@ -11,7 +11,7 @@ import {
   startMessageStream,
 } from "@/features/chat/slice";
 import type { ChatMessage } from "@/features/chat/types";
-import { streamChatCompletion } from "@/services/llmManagerApi";
+import { streamChatCompletion } from "@/services/llmManager";
 import type { ApiMessage } from "@/types/domain";
 import { buildAssistantMessage, buildChatMessage, buildUserMessage } from "@/utils/messageBuilders";
 

@@ -1,7 +1,7 @@
 import { AudioLines } from "lucide-react";
 
 import { useAppSelector } from "@/app/hooks";
-import { getAgentById } from "@/features/agents/slice";
+import { getAgentIdAndIndex } from "@/features/agents/slice";
 import type { ChatMessage } from "@/features/chat/types";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export default function AgentSpeechBubble({ message }: Props) {
   const { content, authorId, status, stream } = message;
-  const { agent, index } = useAppSelector((state) => getAgentById(state, authorId));
+  const { agent, index } = useAppSelector((state) => getAgentIdAndIndex(state, authorId));
   const side = index === 0 ? "left" : "right";
   const resolvedContent =
     status === "streaming" ? (stream?.chunks.join("") ?? "") : (content ?? "");
