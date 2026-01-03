@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { addAgent, clearAgent, getAgentForSlot, updateAgent } from "@/features/agents/slice";
 import { generateAvatar } from "@/features/agents/thunks";
-import { loadRandomPreset } from "@/utils/loadRandomPreset";
+import { loadAgentPreset } from "@/features/agents/utils";
 
 export function useAgentSettings(agentIndex: number) {
   const slotIndex = agentIndex as 0 | 1;
@@ -67,7 +67,7 @@ export function useAgentSettings(agentIndex: number) {
   };
 
   const handleLoadPreset = () => {
-    const randomPreset = loadRandomPreset();
+    const randomPreset = loadAgentPreset();
     const { name, model, systemPrompt } = randomPreset;
 
     setName(name);
