@@ -1,10 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import type { AppDispatch, RootState } from "@/app/store";
+import { buildGenerateAvatarPrompt } from "@/features/agents/utils";
 import { generateImage } from "@/services/llmManager";
 
 export type GenerateAvatarArgs = {
   agentId: string;
+  name: string;
   personality: string;
 };
 
@@ -23,12 +25,10 @@ export const generateAvatar = createAsyncThunk<
     dispatch: AppDispatch;
     rejectValue: RejectedPayload;
   }
->("agents/generateAvatar", async ({ agentId, personality }, { rejectWithValue }) => {
+>("agents/generateAvatar", async ({ agentId, name, personality }, { rejectWithValue }) => {
   try {
-    // TODO: Transform personality into prompt.
-    // Build prompt fn.
-
-    const avatar = await generateImage({ prompt: personality });
+    const prompt = buildGenerateAvatarPrompt(name, personality);
+    const avatar = await generateImage({ prompt });
 
     return { agentId, avatarUrl: avatar.url };
   } catch (error) {

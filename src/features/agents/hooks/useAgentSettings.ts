@@ -63,7 +63,7 @@ export function useAgentSettings(agentIndex: number) {
       setError("Add the agent first before generating an avatar.");
       return;
     }
-    dispatch(generateAvatar({ agentId, personality }));
+    dispatch(generateAvatar({ agentId, name, personality }));
   };
 
   const handleLoadPreset = () => {
