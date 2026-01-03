@@ -8,7 +8,7 @@ import {
   buildAssistantMessage,
   buildSystemMessage,
   buildUserMessage,
-} from "@/utils/messageBuilders";
+} from "@/features/agents/utils";
 
 export const initAgentConversationMemory = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
