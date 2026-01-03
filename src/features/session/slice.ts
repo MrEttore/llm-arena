@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
-import { generateResponse } from "@/features/session/thunks";
+import { generateResponse } from "@/features/agents/thunks";
 import type { SessionState } from "@/features/session/types";
 
 const initialState: SessionState = {

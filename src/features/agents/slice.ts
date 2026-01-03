@@ -3,8 +3,8 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@/app/store";
 import { generateAvatar } from "@/features/agents/thunks";
+import { generateResponse } from "@/features/agents/thunks";
 import type { Agent, AgentsState } from "@/features/agents/types";
-import { generateResponse } from "@/features/session/thunks/generateResponse";
 import type { ApiMessage } from "@/types/domain";
 
 const initialState: AgentsState = {

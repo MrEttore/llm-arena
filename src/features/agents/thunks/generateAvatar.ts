@@ -4,7 +4,7 @@ import type { AppDispatch, RootState } from "@/app/store";
 import { buildGenerateAvatarPrompt } from "@/features/agents/utils";
 import { generateImage } from "@/services/llmManager";
 
-export type GenerateAvatarArgs = {
+type GenerateAvatarArgs = {
   agentId: string;
   name: string;
   personality: string;
@@ -15,7 +15,7 @@ type FulfilledPayload = {
   avatarUrl: string;
 };
 
-export type RejectedPayload = { message: string };
+type RejectedPayload = { message: string };
 
 export const generateAvatar = createAsyncThunk<
   FulfilledPayload,
