@@ -16,7 +16,6 @@ export function runConversation() {
       } catch (error) {
         const cancelError = error as RejectedPayload;
         if (cancelError?.canceled) {
-          console.log("Cancel detected! Breaking loop...");
           dispatch(setStatus("canceled"));
           return;
         }
