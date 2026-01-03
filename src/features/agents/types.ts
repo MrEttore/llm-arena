@@ -1,8 +1,10 @@
 import type { ApiMessage } from "@/types/domain";
 
 export type AgentsState = {
-  agents: Agent[];
-  activeAgentId?: string;
+  agentsById: { [id: string]: Agent };
+  agentIds: string[];
+  activeAgentId: string | undefined;
+  slotAgentIds: [string | null, string | null];
 };
 
 export type Agent = {
@@ -10,7 +12,7 @@ export type Agent = {
   name: string;
   model: string;
   systemPrompt: string;
+  avatar?: string;
   conversationMemory: ApiMessage[];
-  isThinking?: boolean;
-  avatarUrl?: string;
+  isGeneratingAvatar?: boolean;
 };

@@ -1,18 +1,22 @@
-import { Ban, LoaderCircle, X } from "lucide-react";
+import { Ban, X } from "lucide-react";
 
-import placeholderAvatar from "@/assets/placeholder-avatar.svg";
 import { PRESETS } from "@/data/presets";
+import { AgentAvatar, AgentControls } from "@/features/agents/components";
 import { useAgentSettings } from "@/features/agents/hooks";
-import { AddButton, ClearButton, GenAvatarButton, LoadPresetsButton } from "@/ui/buttons";
+import { AddAgentButton, ClearButton, GenAgentAvatarButton, LoadPresetsButton } from "@/ui/buttons";
 
 type Props = { agentIndex: number };
 
 export default function AgentSettings({ agentIndex }: Props) {
   const {
-    fields: { name, model, personality, avatarUrl, isLoadingImage },
-    setters: { setName, setModel, setPersonality, setIsLoadingImage },
+    fields: { name, model, personality, avatar },
+    setters: { setName, setModel, setPersonality },
     error,
     existing,
+    isGeneratingAvatar,
+    canSubmit,
+    canGenerateAvatar,
+    canUpdate,
     handleLoadPreset,
     handleGenerateAvatar,
     handleSubmit,
@@ -25,23 +29,7 @@ export default function AgentSettings({ agentIndex }: Props) {
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)]">
           <div className="flex flex-row justify-center lg:justify-start">
-            <div className="relative h-14 w-14 lg:h-18 lg:w-18">
-              {isLoadingImage && (
-                <div className="absolute inset-0 flex items-center justify-center rounded-full border border-white/10 bg-white/10 shadow-sm">
-                  <LoaderCircle className="h-5 w-5 animate-spin text-white/60" />
-                </div>
-              )}
-              <img
-                className={`absolute inset-0 rounded-full border border-white/10 object-cover shadow-sm transition-opacity duration-300 ${isLoadingImage ? "opacity-0" : "opacity-100"}`}
-                src={avatarUrl || placeholderAvatar}
-                alt={`Agent ${agentIndex}'s avatar`}
-                onLoad={() => setIsLoadingImage(false)}
-                onError={(e) => {
-                  e.currentTarget.src = placeholderAvatar;
-                  setIsLoadingImage(false);
-                }}
-              />
-            </div>
+            <AgentAvatar src={avatar} isBusy={isGeneratingAvatar} />
           </div>
 
           <div className="flex flex-col gap-1.5 sm:ml-3">
@@ -96,17 +84,16 @@ export default function AgentSettings({ agentIndex }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 pt-1 sm:justify-end">
-          <div className="ml-auto flex overflow-hidden rounded-xl border border-white/10 bg-white/5">
-            <ClearButton onClick={handleClear} />
-            <div className="flex border-l-1 border-white/10">
-              <GenAvatarButton
-                disabled={!personality ? true : false}
-                onClick={handleGenerateAvatar}
-              />
-              <LoadPresetsButton onClick={handleLoadPreset} />
-              <AddButton isUpdate={!existing ? false : true} />
-            </div>
+        <AgentControls>
+          <ClearButton onClick={handleClear} />
+          <div className="flex border-l-1 border-white/10">
+            <GenAgentAvatarButton disabled={!canGenerateAvatar} onClick={handleGenerateAvatar} />
+            <LoadPresetsButton onClick={handleLoadPreset} />
+
+            <AddAgentButton
+              isUpdate={Boolean(existing)}
+              disabled={existing ? !canUpdate : !canSubmit}
+            />
           </div>
 
           {error && (
@@ -122,7 +109,7 @@ export default function AgentSettings({ agentIndex }: Props) {
               </button>
             </div>
           )}
-        </div>
+        </AgentControls>
       </form>
     </div>
   );

@@ -2,13 +2,14 @@ import type { Agent } from "@/features/agents/types";
 import type { ChatMessage } from "@/features/chat/types";
 import type { ApiMessage } from "@/types/domain";
 
+// TODO: Refactor file.
+// TODO: Tweak prompt further for better engagement and adherence to persona.
+
 export function buildSystemMessage(agent: Agent, agents: Agent[]): ApiMessage {
   const otherAgent = agents.find((a) => a.id !== agent.id);
   if (!otherAgent) {
     throw new Error("Other agent not found");
   }
-
-  // TODO: Tweak prompt further for better engagement and adherence to persona.
 
   const content = `You are ${otherAgent.name}.
 Persona: "${otherAgent.systemPrompt}"

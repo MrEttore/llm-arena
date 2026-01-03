@@ -2,14 +2,11 @@ import { type FormEvent, type MouseEvent, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { getAgents, resetAgents } from "@/features/agents/slice";
+import { cancelGenerateResponse } from "@/features/agents/thunks";
 import type { Agent } from "@/features/agents/types";
 import { resetChat } from "@/features/chat/slice";
 import { getSessionStatus, resetSession } from "@/features/session/slice";
-import {
-  cancelGenerateResponse,
-  initConversation,
-  runConversation,
-} from "@/features/session/thunks";
+import { initConversation, runConversation } from "@/features/session/thunks";
 
 export function useSessionSettings() {
   const [startingAgent, setStartingAgent] = useState<Agent | null>(null);

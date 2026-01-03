@@ -1,18 +1,19 @@
-import type { ApiMessage } from "@/types/domain";
+import type {
+  GenerateImageArgs,
+  GenerateImageResponse,
+  GetChatCompletionArgs,
+  GetChatCompletionResponse,
+  StreamChatCompletionArgs,
+  StreamChatCompletionResponse,
+} from "@/services/llmManager";
 
 const LLM_MANAGER_BASE_URL = import.meta.env.VITE_LLM_MANAGER_BASE_URL;
-
-type GetChatCompletionArgs = {
-  model: string;
-  messages: ApiMessage[];
-  signal?: AbortSignal;
-};
 
 export const getChatCompletion = async ({
   model,
   messages,
   signal,
-}: GetChatCompletionArgs): Promise<string | undefined> => {
+}: GetChatCompletionArgs): Promise<GetChatCompletionResponse> => {
   try {
     const response = await fetch(`${LLM_MANAGER_BASE_URL}/api/v1/openai/chat/completion`, {
       method: "POST",
@@ -21,10 +22,9 @@ export const getChatCompletion = async ({
       signal,
     });
 
-    if (!response.ok || !response.body) throw new Error("Completion from llm-manager failed");
+    if (!response.ok) throw new Error("Completion from llm-manager failed");
 
     const data = await response.json();
-    console.log("Data from the llm-manager: ", data);
 
     return data.content;
   } catch (error) {
@@ -34,19 +34,12 @@ export const getChatCompletion = async ({
   }
 };
 
-type StreamChatCompletionArgs = {
-  model: string;
-  messages: ApiMessage[];
-  signal?: AbortSignal;
-  onChunk: (chunk: string) => void;
-};
-
 export const streamChatCompletion = async ({
   model,
   messages,
   signal,
   onChunk,
-}: StreamChatCompletionArgs) => {
+}: StreamChatCompletionArgs): Promise<StreamChatCompletionResponse> => {
   try {
     const stream = await fetch(`${LLM_MANAGER_BASE_URL}/api/v1/openai/chat/stream`, {
       method: "POST",
@@ -89,6 +82,32 @@ export const streamChatCompletion = async ({
     }
   } catch (error) {
     console.error("getChatCompletion failed:", error);
+
+    throw error;
+  }
+};
+
+export const generateImage = async ({
+  prompt,
+  model = "gpt-image-1-mini",
+  n = 1,
+  quality = "low",
+  size = "1024x1024",
+}: GenerateImageArgs): Promise<GenerateImageResponse> => {
+  try {
+    const response = await fetch(`${LLM_MANAGER_BASE_URL}/api/v1/openai/image`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, model, n, quality, size }),
+    });
+
+    if (!response.ok) throw new Error("Image generation from llm-manager failed");
+
+    const image: GenerateImageResponse = await response.json();
+
+    return image;
+  } catch (error) {
+    console.error("generateImage failed:", error);
 
     throw error;
   }

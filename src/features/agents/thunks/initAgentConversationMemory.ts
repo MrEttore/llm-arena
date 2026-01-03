@@ -1,14 +1,21 @@
 import type { AppDispatch, RootState } from "@/app/store";
-import { updateAgentConversationMemory } from "@/features/agents/slice";
+import {
+  getActiveAgentId,
+  getAgents,
+  updateAgentConversationMemory,
+} from "@/features/agents/slice";
 import {
   buildAssistantMessage,
   buildSystemMessage,
   buildUserMessage,
-} from "@/utils/messageBuilders";
+} from "@/features/agents/utils";
 
 export const initAgentConversationMemory = (conversationStarter: string) => {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { agents, activeAgentId } = getState().agents;
+    const state = getState();
+    const activeAgentId = getActiveAgentId(state);
+    const agents = getAgents(state);
+
     if (!activeAgentId) return;
 
     for (const agent of agents) {
