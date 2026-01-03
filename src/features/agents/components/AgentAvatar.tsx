@@ -6,9 +6,10 @@ import placeholderAvatar from "@/assets/placeholder-avatar.svg";
 type Props = {
   src: string;
   isBusy?: boolean;
+  size?: "small" | "large";
 };
 
-export default function AgentAvatar({ src, isBusy = false }: Props) {
+export default function AgentAvatar({ src, isBusy = false, size = "large" }: Props) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -21,7 +22,9 @@ export default function AgentAvatar({ src, isBusy = false }: Props) {
   const showSpinner = isBusy || (src && !isLoaded);
 
   return (
-    <div className="relative h-14 w-14 lg:h-18 lg:w-18">
+    <div
+      className={`relative ${size === "large" ? "h-14 w-14 lg:h-18 lg:w-18" : ""} ${size === "small" ? "h-8 w-8 lg:h-12 lg:w-12" : ""}`}
+    >
       <img
         className={`absolute inset-0 rounded-full border border-white/10 object-cover shadow-sm transition-opacity ${
           showSpinner ? "opacity-0" : "opacity-100"
