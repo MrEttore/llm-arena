@@ -14,7 +14,7 @@
 [![Anthropic](https://img.shields.io/badge/Anthropic-Models-orange)](https://platform.claude.com/docs/en/about-claude/models/overview)
 [![GoogleAI](https://img.shields.io/badge/GoogleAI-Models-yellow)](https://ai.google.dev/gemini-api/docs/models)
 
-> **📣 Handcrafted Code**: This project was built the **old-fashioned way**, with actual thinking, debugging, and keyboard time. No AI code generation or "vibe-coding" shortcuts here. Every line, bug, and architectural decision came from human brain cells.
+> **📣 Handcrafted Code**: This project was built the **old-fashioned way**, with actual thinking, debugging, and keyboard time. No "vibe-coding" shortcuts here. Every line, bug, and architectural decision came from human brain cells.
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -36,15 +36,15 @@
 
 This project demonstrates:
 
-- **GenAI Exploration:** Hands-on experimentation with frontier models (GPT-5, Claude 3.7 Sonnet, Gemini Pro) and open-source alternatives (Llama 3.3, gpt-oss-120b, Mixtral) to understand their reasoning and generation capabilities
-- **Multi-Modal Generation:** Integration of text generation (conversation), image generation (agent avatars via gpt-image-1), and future audio synthesis for comprehensive AI output exploration
+- **GenAI Exploration:** Hands-on experimentation with frontier models (GPT-5, Claude 3.7 Sonnet, Gemini Pro) and open-source alternatives (Llama 3.2, gpt-oss-120b, Mixtral) to understand their reasoning and generation capabilities
+- **Multi-Modal Generation:** Integration of text generation (conversation), image generation (agent avatars and conversation "snapshots"), and future audio synthesis for comprehensive AI output exploration
 - **Debate-Driven Testing:** Topic-focused conversations that push models to demonstrate logical reasoning, creative thinking, and collaborative or adversarial dialogue patterns
 
 ## 💡 Why This Project?
 
-The explosion of generative AI models from multiple providers creates a unique opportunity to explore and compare how different architectures think, reason, and generate content. Dialectiq was built to answer practical questions: How does GPT-5's reasoning compare to Claude 3.5 Sonnet's in a debate? Can open-source models like Llama 3.3 hold their own against frontier models? What emergent patterns arise when models with different training approaches interact?
+The explosion of generative AI models from multiple providers creates a unique opportunity to explore and compare how different architectures think, reason, and generate content. Dialectiq was built to answer practical questions: _How does GPT-5's reasoning compare to Claude 3.5 Sonnet's in a debate?_ _Can open-source models like Llama 3.2 hold their own against frontier models?_ _What emergent patterns arise when models with different training approaches interact?_
 
-Beyond model comparison, this project serves as a technical playground for modern AI integration challenges: handling real-time token streaming from multiple providers, orchestrating complex multi-agent dialogues, generating images programmatically for agent identities, and building responsive UIs that don't freeze during heavy generation workloads.
+Beyond model comparison, this project serves as a technical playground for modern AI integration challenges such as: handling real-time token streaming from multiple providers, orchestrating complex multi-agent dialogues, generating images programmatically for agent identities, and building responsive UIs that don't freeze during heavy generation workloads.
 
 **What I Learned:**
 
@@ -62,7 +62,7 @@ Beyond model comparison, this project serves as a technical playground for moder
 
 - **Multi-Agent Orchestration:** Configure 2 agents with independent frontier LLMs, custom personalities, AI-generated avatars, and icebreaker messages. Agents maintain separate conversational contexts enabling personality-driven interactions.
 
-- **Multi-Provider LLM Support:** Agents can be powered by different LLMs from various providers: **OpenAI** (gpt-5-mini, gpt-4o, gpt-4o-mini), **Anthropic** (claude-3-5-sonnet, claude-3-opus, claude-3-haiku), **Google Gemini** (gemini-pro, gemini-flash), or **open-source models** (llama-3.3-70b, mixtral-8x7b, gpt-oss-120b) hosted on Groq. Mix and match models within the same conversation to explore how different AI architectures interact.
+- **Multi-Provider LLM Support:** Agents can be powered by different LLMs from various providers: **OpenAI** (gpt-5-mini, gpt-4o, gpt-4o-mini), **Anthropic** (claude-3-5-sonnet, claude-3-opus, claude-3-haiku), **Google Gemini** (gemini-pro, gemini-flash), or **open-source models** (llama-3.2-3b, mixtral-8x7b, gpt-oss-120b) hosted on Groq. Mix and match models within the same conversation to explore how different AI architectures interact.
 
 - **AI-Generated Avatars:** Agent avatars are dynamically generated using OpenAI's image models (gpt-image-1, gpt-image-1-mini), creating unique visual identities that reflect each agent's personality and role in the conversation.
 
@@ -90,14 +90,12 @@ This project combines modern frontend technologies with a custom backend abstrac
 
 ### Backend
 
-Powered by **[⚡️LLM Manager](https://github.com/MrEttore/llm-manager)**, a custom Node.js service providing a unified abstraction layer over multiple GenAI provider APIs (OpenAI, Anthropic, Google, Groq). It provides:
+Powered by **[⚡️LLM Manager](https://github.com/MrEttore/llm-manager)**, a personal custom Node.js service providing a unified abstraction layer over multiple GenAI provider APIs (OpenAI, Anthropic, Google, Groq). It provides:
 
 - **Chat Completions:** Standardized interface for text generation across all supported LLM providers
 - **Response Streaming:** SSE-style token streaming for real-time message rendering
 - **Image Generation:** Image creation via OpenAI's GPT image models
 - **Audio Generation:** (Planned) Text-to-speech and speech-to-text capabilities
-
-> This architecture separates provider-specific API complexity from the frontend, enabling easy addition of new LLM providers and multi-modal capabilities.
 
 ### Architecture Overview <!-- omit from toc -->
 
@@ -135,11 +133,11 @@ Powered by **[⚡️LLM Manager](https://github.com/MrEttore/llm-manager)**, a c
 
 **Key Architectural Decisions:**
 
-1. **Backend Abstraction (LLM Manager):** Instead of calling provider APIs directly from the frontend, all LLM interactions route through a custom backend service. This centralizes API key management, provides consistent interfaces across providers, and enables server-side rate limiting and caching.
+- **Backend Abstraction (LLM Manager):** Instead of calling provider APIs directly from the frontend, all LLM interactions route through a custom backend service. This centralizes API key management, provides consistent interfaces across providers, and enables server-side rate limiting and caching.
 
-2. **Normalized Redux State:** Agents and messages stored by ID rather than nested structures. Enables O(1) lookups and prevents deep updates as conversations grow. Critical for multi-agent systems where state updates are frequent.
+- **Normalized Redux State:** Agents and messages stored by ID rather than nested structures. Enables O(1) lookups and prevents deep updates as conversations grow. Critical for multi-agent systems where state updates are frequent.
 
-3. **Streaming-First Architecture:** Token-by-token rendering via SSE parsing. LLM Manager streams responses from providers, frontend parses chunks incrementally. Provides instant feedback and reduces perceived latency.
+- **Streaming-First Architecture:** Token-by-token rendering via SSE parsing. LLM Manager streams responses from providers, frontend parses chunks incrementally. Provides instant feedback and reduces perceived latency.
 
 **Data Flow:**
 
@@ -150,7 +148,7 @@ Powered by **[⚡️LLM Manager](https://github.com/MrEttore/llm-manager)**, a c
 5. Frontend parser yields chunks to Redux reducer
 6. Virtuoso renders only visible messages (~50 DOM nodes regardless of total)
 
-This architecture prioritizes flexibility (easy to add new providers), performance (streaming + virtualization), and developer experience (TypeScript safety, normalized state).
+> This architecture separates provider-specific API complexity from the frontend, enabling easy addition of new LLM providers and multi-modal capabilities.
 
 ## 📁 Project Structure
 
