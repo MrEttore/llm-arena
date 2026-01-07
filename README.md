@@ -10,134 +10,149 @@
 [![React](https://img.shields.io/badge/React-19.1-61dafb?logo=react)](https://react.dev/)
 [![Redux Toolkit](https://img.shields.io/badge/Redux%20Toolkit-2.8-764abc?logo=redux)](https://redux-toolkit.js.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1-646cff?logo=vite)](https://vite.dev/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-Models-white)](https://platform.openai.com/docs/models)
+[![Anthropic](https://img.shields.io/badge/Anthropic-Models-orange)](https://platform.claude.com/docs/en/about-claude/models/overview)
+[![GoogleAI](https://img.shields.io/badge/GoogleAI-Models-yellow)](https://ai.google.dev/gemini-api/docs/models)
 
 > **📣 Handcrafted Code**: This project was built the **old-fashioned way**, with actual thinking, debugging, and keyboard time. No AI code generation or "vibe-coding" shortcuts here. Every line, bug, and architectural decision came from human brain cells.
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Overview](#overview)
-- [Why This Project?](#why-this-project)
-- [Key Features](#key-features)
-- [Tech Stack \& Architecture](#tech-stack--architecture)
-- [Project Structure](#project-structure)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+- [🔍 Overview](#-overview)
+- [💡 Why This Project?](#-why-this-project)
+- [✨ Key Features](#-key-features)
+- [🏗️ Tech Stack \& Architecture](#️-tech-stack--architecture)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+- [📁 Project Structure](#-project-structure)
+- [📜 License](#-license)
+- [🙏 Acknowledgements](#-acknowledgements)
 
-## Overview
+## 🔍 Overview
 
-**Problem Statement:** Traditional AI chat interfaces focus on single-agent interactions, limiting exploration of emergent behaviors, debate dynamics, and collaborative reasoning patterns that arise from multi-agent systems.
+**What It Is:** Dialectiq is an experimental platform for exploring modern generative AI capabilities through debate-driven dialogues. Multiple AI agents, each powered by different frontier or open-source LLMs, engage in topic-focused conversations that reveal their reasoning patterns, thinking capabilities, and generative strengths across text, images, and (planned) audio.
 
-**Solution:** Dialectiq is a real-time multi-agent conversation platform where configurable AI personas engage in streamed dialogues. Each agent maintains independent conversational memory, system prompts, and personality traits, enabling emergent interactions that showcase modern prompt engineering and agent orchestration patterns.
+**Why It Matters:** As the GenAI landscape rapidly expands with models from OpenAI, Anthropic, Google, and open-source communities, understanding how these models reason, debate, and generate content in conversational contexts becomes crucial. Dialectiq provides a controlled environment to compare model behaviors, test prompt engineering strategies, and observe emergent interaction patterns when different AI architectures collaborate or compete in dialogue.
 
 This project demonstrates:
 
-- **Real-world application:** Laboratory environment for exploring multi-agent AI dynamics, prompt design strategies, and streaming architecture patterns used in production AI systems
-- **Production-grade architecture:** Normalized Redux state management, custom hooks abstraction layer, virtualized rendering for performance at scale
+- **GenAI Exploration:** Hands-on experimentation with frontier models (GPT-5, Claude 3.7 Sonnet, Gemini Pro) and open-source alternatives (Llama 3.3, gpt-oss-120b, Mixtral) to understand their reasoning and generation capabilities
+- **Multi-Modal Generation:** Integration of text generation (conversation), image generation (agent avatars via gpt-image-1), and future audio synthesis for comprehensive AI output exploration
+- **Debate-Driven Testing:** Topic-focused conversations that push models to demonstrate logical reasoning, creative thinking, and collaborative or adversarial dialogue patterns
 
-## Why This Project?
+## 💡 Why This Project?
 
-This project explores emergent behaviors in multi-agent AI systems by enabling multiple autonomous agents to collaborate, debate, and build on each other's reasoning in real-time. As generative AI continues to evolve beyond single-agent chat interfaces, understanding multi-agent orchestration patterns becomes essential for building sophisticated AI applications. Dialectiq serves as a technical laboratory for experimenting with streaming architectures, prompt engineering strategies, and state management patterns required to coordinate complex AI interactions at scale.
+The explosion of generative AI models from multiple providers creates a unique opportunity to explore and compare how different architectures think, reason, and generate content. Dialectiq was built to answer practical questions: How does GPT-5's reasoning compare to Claude 3.5 Sonnet's in a debate? Can open-source models like Llama 3.3 hold their own against frontier models? What emergent patterns arise when models with different training approaches interact?
 
-**Learning Objectives:**
+Beyond model comparison, this project serves as a technical playground for modern AI integration challenges: handling real-time token streaming from multiple providers, orchestrating complex multi-agent dialogues, generating images programmatically for agent identities, and building responsive UIs that don't freeze during heavy generation workloads.
 
-- **Real-time streaming architecture:** Built fetch-based streaming parser handling backpressure, incomplete chunks, and signal-based cancellation.
+**What I Learned:**
 
-- **State management at scale:** Implemented normalized Redux patterns with memoized selectors, custom hooks layer for component decoupling, and thunk-based async orchestration separating business logic from UI.
+- **GenAI Model Behaviors:** Hands-on experience with diverse models reveals distinct reasoning styles, verbosity patterns, and creative capabilities. Frontier models show stronger coherence in extended debates, while open-source models offer impressive performance at lower latency.
 
-- **Performance optimization:** Integrated `react-virtuoso` for windowed rendering (constant memory regardless of message count), memoization strategies preventing unnecessary re-renders, and chunk-batching reducing layout thrashing during streaming.
+- **Prompt Engineering Strategies:** Crafting system prompts that elicit debate-worthy responses, maintain agent personalities, and guide topic-focused conversations requires iteration and model-specific tuning.
 
-## Key Features
+- **Multi-Modal AI Integration:** Combining text generation (conversations), image generation (avatars), and (planned) audio synthesis in a cohesive application reveals API integration patterns and resource management challenges.
 
-- **Multi-Agent Orchestration:** Configure 2 agents with independent GPTs models, custom system prompts, avatars, and icebreaker messages. Agents maintain separate conversational contexts enabling personality-driven interactions.
+- **Real-Time Streaming Architecture:** Building responsive UIs for token-by-token streaming from multiple concurrent LLM calls, handling backpressure, and supporting abort semantics mid-generation.
+
+- **State Management at Scale:** Normalized Redux patterns for tracking multiple agents, messages, and streaming states without performance degradation as conversations grow.
+
+## ✨ Key Features
+
+- **Multi-Agent Orchestration:** Configure 2 agents with independent frontier LLMs, custom personalities, AI-generated avatars, and icebreaker messages. Agents maintain separate conversational contexts enabling personality-driven interactions.
+
+- **Multi-Provider LLM Support:** Agents can be powered by different LLMs from various providers: **OpenAI** (gpt-5-mini, gpt-4o, gpt-4o-mini), **Anthropic** (claude-3-5-sonnet, claude-3-opus, claude-3-haiku), **Google Gemini** (gemini-pro, gemini-flash), or **open-source models** (llama-3.3-70b, mixtral-8x7b, gpt-oss-120b) hosted on Groq. Mix and match models within the same conversation to explore how different AI architectures interact.
+
+- **AI-Generated Avatars:** Agent avatars are dynamically generated using OpenAI's image models (gpt-image-1, gpt-image-1-mini), creating unique visual identities that reflect each agent's personality and role in the conversation.
+
+- **Topic-Driven Conversations:** Sessions are organized around specific discussion topics, ensuring focused multi-agent interactions and coherent dialogue flow. Agents build on the conversation theme while maintaining their individual perspectives.
 
 - **Real-Time Streaming Generation:** Server-Sent Events style streaming parser updates messages token-by-token as generation occurs. Provides sub-50ms perceived latency from first token with full abort capability mid-generation.
 
 - **Virtualized Chat Performance:** `react-virtuoso` windowed rendering maintains constant memory (~5MB) regardless of conversation length.
 
-## Tech Stack & Architecture
+## 🏗️ Tech Stack & Architecture
 
-### Technology Choices <!-- omit from toc -->
+This project combines modern frontend technologies with a custom backend abstraction layer to enable seamless multi-provider GenAI experimentation.
 
-- **React:** Essential for this project's heavy reliance on dynamic, real-time UI updates during streaming. Concurrent features enable non-blocking message rendering as chunks arrive, preventing UI freezes during rapid token generation. Component-based architecture naturally maps to the multi-agent system where each agent is an independent entity with its own state and controls.
+### Frontend
 
-- **TypeScript** Critical for managing the complexity of multi-agent orchestration. Strict typing catches errors in message routing between agents, ensures type-safe reducer actions during streaming, and provides autocomplete for nested state structures. Path aliases (`@/*`) keep imports clean across the feature-based architecture.
+- **React:** Handles real-time UI updates during token streaming without freezing. Concurrent features enable smooth rendering as multiple agents generate responses simultaneously.
 
-- **Redux Toolkit:** Specifically chosen for normalized state management required by multi-agent systems. The `agentsById` and `messagesById` pattern prevents performance degradation as conversations grow. Thunk middleware provides a clean way to orchestrate async operations like sequential agent responses.
+- **TypeScript:** Manages complexity of multi-agent orchestration with strict typing for message routing, streaming states, and API responses across different LLM providers.
 
-- **Tailwind CSS:** Enables rapid UI iteration when experimenting with agent presentation styles and chat layouts. Utility classes make it easy to adjust spacing, colors, and responsive behavior without context switching.
+- **Redux Toolkit:** Normalized state pattern (`agentsById`, `messagesById`) prevents performance issues as conversations grow. Orchestrates async operations for sequential or concurrent agent responses.
 
-- **React Virtuoso:** Essential for handling potentially infinite conversation lengths. Automatically calculates variable message heights (agents produce different length responses), maintains smooth scrolling performance, and prevents memory bloat by rendering only visible messages. Critical for the project's goal of supporting extended multi-agent dialogues.
+- **React Virtuoso:** Renders only visible messages regardless of conversation length. Essential for extended debates without memory bloat.
+
+- **Tailwind CSS:** Rapid UI iteration for agent layouts and conversation styling.
+
+### Backend
+
+Powered by **[⚡️LLM Manager](https://github.com/MrEttore/llm-manager)**, a custom Node.js service providing a unified abstraction layer over multiple GenAI provider APIs (OpenAI, Anthropic, Google, Groq). It provides:
+
+- **Chat Completions:** Standardized interface for text generation across all supported LLM providers
+- **Response Streaming:** SSE-style token streaming for real-time message rendering
+- **Image Generation:** Image creation via OpenAI's GPT image models
+- **Audio Generation:** (Planned) Text-to-speech and speech-to-text capabilities
+
+> This architecture separates provider-specific API complexity from the frontend, enabling easy addition of new LLM providers and multi-modal capabilities.
 
 ### Architecture Overview <!-- omit from toc -->
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    CLIENT LAYER (SPA)                       │
-│                                                             │
-│  ┌─────────────┐    ┌──────────────┐    ┌──────────────┐    │
-│  │    React    │───▶│ Redux Toolkit│───▶│  React Query │    │
-│  │  Components │    │  Normalized  │    │   (planned)  │    │
-│  └─────────────┘    │    State     │    └──────────────┘    │
-│         │           └──────────────┘                        │
-│         ▼                                                   │
+│                    DIALECTIQ (Client)                       │
 │  ┌─────────────────────────────────────────────────────┐    │
-│  │                  Streaming Parser                   │    │
-│  │  Chunk-by-chunk SSE-style parsing + abort support   │    │
+│  │  Multi-Agent Orchestration                          │    │
+│  │  • Agent state management                           │    │
+│  │  • Streaming message parsing                        │    │
+│  │  • UI rendering (virtualized)                       │    │
 │  └─────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────┘
                             │
-                            ▼ HTTP/REST
-                ┌──────────────────────────┐
-                │  LLM Manager Service     │
-                │  (External Backend)      │
-                │  ─────────────────────── │
-                │  • OpenAI API Wrapper    │
-                │  • Stream Endpoint       │
-                │  • Completion Endpoint   │
-                │  • Image Generation      │
-                └──────────────────────────┘
+                            │ HTTP/REST + SSE
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   LLM MANAGER (Backend)                     │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │  Unified API Abstraction Layer                       │   │
+│  │  • Chat completions routing                          │   │
+│  │  • Token streaming (SSE)                             │   │
+│  │  • Image generation                                  │   │
+│  │  • Audio synthesis                                   │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            │ Multiple Provider APIs
+                            ▼
+    ┌───────────┬────────────┬────────────┬──────────────┐
+    │  OpenAI   │ Anthropic  │  Google    │  Groq        │
+    │  API      │  API       │  Gemini    │  (OSS Models)│
+    └───────────┴────────────┴────────────┴──────────────┘
 ```
 
-**Core Architectural Decisions:**
+**Key Architectural Decisions:**
 
-The architecture is built on three fundamental choices that enable production-grade performance and maintainability:
+1. **Backend Abstraction (LLM Manager):** Instead of calling provider APIs directly from the frontend, all LLM interactions route through a custom backend service. This centralizes API key management, provides consistent interfaces across providers, and enables server-side rate limiting and caching.
 
-1. **Normalized Redux State:** Agent and message entities stored by ID (`agentsById`, `messagesById`) rather than nested structures. This mirrors relational database normalization, preventing deep updates and enabling O(1) lookups that scale linearly with conversation length.
+2. **Normalized Redux State:** Agents and messages stored by ID rather than nested structures. Enables O(1) lookups and prevents deep updates as conversations grow. Critical for multi-agent systems where state updates are frequent.
 
-2. **Custom Streaming Parser:** Chunk-by-chunk SSE-style parsing via fetch rather than awaiting complete responses. Provides instant visual feedback, abort semantics mid-generation, and mirrors production patterns used by OpenAI/Anthropic APIs.
-
-3. **Modern Tooling Choices:** Vite selected for sub-second HMR and optimal tree-shaking. React 19's concurrent features enable non-blocking streaming updates and automatic batching, critical for smooth UI during rapid message generation.
-
-**Frontend Architecture:**
-
-- **Feature-based organization:** `features/` directory containing domain slices (`agents/`, `chat/`, `session/`) with co-located components, thunks, hooks, types, and utils
-- **Normalized state:** Entities stored by ID in maps (`agentsById: Record<string, Agent>`) with arrays of IDs for ordering (`agentIds: string[]`)
-- **Selector layer:** Memoized selectors (`selectAgentById`, `selectAllAgents`) prevent re-computations on unrelated state changes
-- **Custom hooks abstraction:** Components access state via custom hooks (`useAgentSettings()`) enabling easy refactoring
+3. **Streaming-First Architecture:** Token-by-token rendering via SSE parsing. LLM Manager streams responses from providers, frontend parses chunks incrementally. Provides instant feedback and reduces perceived latency.
 
 **Data Flow:**
 
-1. User action triggers thunk dispatch (`runConversation`)
-2. Thunk orchestrates sequential agent responses via streaming API
-3. Streaming parser yields chunks to reducer (`appendToMessage` action)
-4. Memoized selectors compute derived state (active agent, visible messages)
-5. Virtuoso renders only visible messages (~50 DOM nodes for any list size)
+1. User initiates conversation with topic and agent configurations
+2. Frontend dispatches thunk to orchestrate agent responses
+3. LLM Manager receives request, routes to appropriate provider(s)
+4. Provider streams tokens back through LLM Manager
+5. Frontend parser yields chunks to Redux reducer
+6. Virtuoso renders only visible messages (~50 DOM nodes regardless of total)
 
-**Streaming Strategy:**
+This architecture prioritizes flexibility (easy to add new providers), performance (streaming + virtualization), and developer experience (TypeScript safety, normalized state).
 
-- Custom fetch-based parser handles incomplete UTF-8 sequences across chunk boundaries
-- Signal-based abort propagation allows mid-generation cancellation
-- Reducer batches rapid chunk updates preventing 60fps render blocking
-- Optimistic UI updates show loading states before first token arrives
-
-**Scalability Considerations:**
-
-- Normalized state prevents O(n²) nested updates as agent/message counts grow
-- Virtualized rendering maintains constant memory (5MB baseline regardless of conversation length)
-- Selector memoization with referential equality checks prevent cascade re-renders
-- Code-splitting planned for agent preset library (reduces initial bundle by ~30KB)
-
-## Project Structure
+## 📁 Project Structure
 
 The project follows a **feature-based architecture** with clear separation of concerns:
 
@@ -157,23 +172,17 @@ src/
 └── utils/        # Global utilities
 ```
 
-### Future Considerations <!-- omit from toc -->
+## 📜 License
 
-- **Text-to-Speech:** Web Speech API or ElevenLabs integration for message narration
-- **Multi-Modal Expansion:** Image + voice inputs for richer agent interactions
-- **Conversation Analytics:** Sentiment analysis, topic modeling, reasoning quality scoring
-- **Export Capabilities:** Markdown/JSON export of conversation threads
-- **Deployment:** Vercel/Netlify deployment with LLM Manager backend integration
-- **CI/CD Pipeline:** GitHub Actions for automated testing, linting, and deployment
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
-## License
+## 🙏 Acknowledgements
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+- **Frontier Model Providers:** OpenAI, Anthropic, and Google for their exceptional models and developer-friendly APIs that make multi-provider experimentation possible
 
-## Acknowledgements
+- **Open-Source Communities:** The contributors behind Llama, Mixtral, and other open-weight models for democratizing access to powerful AI capabilities
 
-- **OpenAI API:** Powering the conversational AI capabilities
-- **Inspiration:** ChatGPT, Claude, and other modern streaming chat interfaces
+- **[Ed Donner](https://github.com/ed-donner):** For outstanding AI engineering courses covering GenAI, LLMs, and agentic AI systems that informed many architectural decisions in this project
 
 ---
 
