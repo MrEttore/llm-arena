@@ -76,7 +76,7 @@ Beyond model comparison, this project serves as a technical playground for moder
 
 This project combines modern frontend technologies with a custom backend abstraction layer to enable seamless multi-provider GenAI experimentation.
 
-### Frontend
+### Frontend <!-- omit in toc -->
 
 - **React:** Handles real-time UI updates during token streaming without freezing. Concurrent features enable smooth rendering as multiple agents generate responses simultaneously.
 
@@ -88,7 +88,7 @@ This project combines modern frontend technologies with a custom backend abstrac
 
 - **Tailwind CSS:** Rapid UI iteration for agent layouts and conversation styling.
 
-### Backend
+### Backend <!-- omit in toc -->
 
 Powered by **[⚡️LLM Manager](https://github.com/MrEttore/llm-manager)**, a personal custom Node.js service providing a unified abstraction layer over multiple GenAI provider APIs (OpenAI, Anthropic, Google, Groq). It provides:
 
