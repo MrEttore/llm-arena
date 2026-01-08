@@ -22,8 +22,6 @@
 - [💡 Why This Project?](#-why-this-project)
 - [✨ Key Features](#-key-features)
 - [🏗️ Tech Stack \& Architecture](#️-tech-stack--architecture)
-  - [Frontend](#frontend)
-  - [Backend](#backend)
 - [📁 Project Structure](#-project-structure)
 - [📜 License](#-license)
 - [🙏 Acknowledgements](#-acknowledgements)
