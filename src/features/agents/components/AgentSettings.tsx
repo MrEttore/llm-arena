@@ -25,7 +25,7 @@ export default function AgentSettings({ agentIndex }: Props) {
   } = useAgentSettings(agentIndex);
 
   return (
-    <div className="min-h-0 rounded-xl border border-white/10 bg-white/10 p-3 shadow-sm backdrop-blur sm:p-4 lg:space-y-4 2xl:space-y-6">
+    <div className="min-h-0">
       <form className="space-y-3" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-[auto_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)]">
           <div className="flex flex-row justify-center lg:justify-start">

@@ -1,4 +1,5 @@
 export { default as AgentAvatar } from "./AgentAvatar";
+export { default as AgentCarousel } from "./AgentCarousel";
 export { default as AgentControls } from "./AgentControls";
 export { default as AgentProfile } from "./AgentProfile";
 export { default as AgentSettings } from "./AgentSettings";
