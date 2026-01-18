@@ -24,7 +24,6 @@ export default function AgentCarousel() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <p className="text-sm font-medium text-white/80 sm:text-base">Configure your AI agents</p>
         <div className="flex items-center gap-2">
-          {/* Indicators */}
           <div className="flex gap-1.5">
             {Array.from({ length: TOTAL_AGENTS }).map((_, i) => (
               <button
