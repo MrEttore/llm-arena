@@ -1,7 +1,7 @@
 import { Ban, X } from "lucide-react";
 
 import { PRESETS } from "@/data/presets";
-import { AgentAvatar, AgentControls } from "@/features/agents/components";
+import { AgentAvatar, AgentControls, ModelSelector } from "@/features/agents/components";
 import { useAgentSettings } from "@/features/agents/hooks";
 import { AddAgentButton, ClearButton, GenAgentAvatarButton, LoadPresetsButton } from "@/ui/buttons";
 
@@ -56,13 +56,10 @@ export default function AgentSettings({ agentIndex }: Props) {
             >
               Model
             </label>
-            <input
-              type="text"
-              id="model"
+            <ModelSelector
               value={model}
-              onChange={(e) => setModel(e.target.value)}
-              className="rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`${PRESETS[agentIndex].model}`}
+              onChange={setModel}
+              placeholder={PRESETS[agentIndex].model}
             />
           </div>
 
