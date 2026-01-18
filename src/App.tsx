@@ -10,6 +10,7 @@ export default function App() {
       <main className="flex min-h-0 flex-1 flex-col px-3 py-4 backdrop-blur sm:px-2 lg:px-4">
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
           <Settings>
+            {/* TODO: Refactor: "AgentSettings" -> "AgentCarousel" -> "Agent"  */}
             <AgentCarousel />
             <SessionSettings />
           </Settings>
