@@ -45,7 +45,7 @@ export default function AgentSettings({ agentIndex }: Props) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`e.g., ${PRESETS[agentIndex].name}`}
+              placeholder={`${PRESETS[agentIndex].name}`}
             />
           </div>
 
@@ -62,7 +62,7 @@ export default function AgentSettings({ agentIndex }: Props) {
               value={model}
               onChange={(e) => setModel(e.target.value)}
               className="rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`e.g., ${PRESETS[agentIndex].model}`}
+              placeholder={`${PRESETS[agentIndex].model}`}
             />
           </div>
 
@@ -79,7 +79,7 @@ export default function AgentSettings({ agentIndex }: Props) {
               value={personality}
               onChange={(e) => setPersonality(e.target.value)}
               className="min-h-[96px] resize-none rounded-xl border-1 border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors duration-300 placeholder:font-light placeholder:text-white/40 placeholder:italic hover:border-white/20 focus:border-white/50 focus:bg-white/10 focus:outline-none sm:text-base lg:text-sm 2xl:text-base"
-              placeholder={`e.g., ${PRESETS[agentIndex].systemPrompt}`}
+              placeholder={`${PRESETS[agentIndex].systemPrompt.slice(0, 290)}${PRESETS[agentIndex].systemPrompt.length > 150 ? "..." : ""}`}
             />
           </div>
         </div>
